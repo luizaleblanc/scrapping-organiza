@@ -1,0 +1,8 @@
+﻿__pycache__/
+*.py[cod]
+data/private/*
+!data/private/.gitkeep
+data/processed/reviews_*.csv
+logs/*.log
+.venv/
+vendor/
