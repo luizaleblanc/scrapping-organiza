@@ -1,110 +1,85 @@
-# Protocolo de apoio à codificação qualitativa
+# Protocolo de apoio ? codifica??o qualitativa
 
-Atualizado em 22/11/2026 para a rodada atual (6 strings de busca, 40 apps presentes nas duas lojas, reviews da Google Play e da App Store).
+Atualizado em 22/11/2026 para o protocolo com seis strings de busca, quatro mercados e avalia??es da Google Play e da App Store. As contagens de avalia??es cr?ticas ainda est?o sendo geradas; use `[N]` quando precisar indicar uma contagem.
 
 ## Base de trabalho
 
-A análise usa os dois arquivos de reviews críticas (nota até 3 e sentimento negativo ou neutro pelo LeIA, escore < 0,05; nomes de pessoas censurados), em versão redigida:
+A an?lise usa avalia??es com nota ? 3 e sentimento negativo ou neutro, em c?pias redigidas do passo 7. A base inclui portugu?s (Brasil), ingl?s (Estados Unidos) e espanhol (Espanha e M?xico). Preserve os campos de m?scara do app, loja, mercado, idioma, nota, data e, quando dispon?vel, compound. O compound n?o ? a regra de classifica??o para o espanhol.
 
-| Arquivo | Loja | Linhas | Apps | Nota 1 / 2 / 3 | Sem texto |
-| --- | --- | --- | --- | --- | --- |
-| `data/brasil/google_play_store/reviews_para_ia/reviews_critical_redacted.csv` | Google Play | 19.454 | 36 de 40 | 10.999 / 3.870 / 4.585 | 0 |
-| `data/brasil/app_store/reviews_para_ia/reviews_critical_redacted.csv` | App Store | 1.834 | 25 de 40 | 1.244 / 292 / 298 | 0 |
+- **Google Play:** fora do Brasil, a coleta inclui notas de 1 a 3 estrelas, limitada a at? 1.000 avalia??es por nota e por app.
+- **App Store:** feed RSS p?blico da Apple, com at? 500 avalia??es mais recentes por app. A App Store ? mantida como fonte de avalia??es por decis?o da pesquisadora; considerar o risco de interpreta??o dos termos da Apple.
+- **Sentimento:** LeIA para portugu?s e VADER para ingl?s; ficam reviews com compound < 0,05. No espanhol, `pysentimiento` mant?m r?tulos `NEG` e `NEU`. S? avalia??es positivas saem. Review sem texto n?o deve quebrar o processamento.
+- **Censura:** nomes de pessoas, marcas de apps, outras empresas, lugares e identificadores diretos s?o substitu?dos por marcadores no passo 7.
 
-- **Idioma:** todo o corpus está em português (`pt`), loja Brasil. O corpus bilíngue da rodada anterior não vale mais.
-- **Apps sem reviews críticas:** 4 apps na Google Play e 15 na App Store. São apps pequenos, sem nenhuma review com nota até 3 e texto negativo. Eles ficam fora desta análise, e isso deve constar no artigo.
-- **Volume desigual:** a App Store traz no máximo 500 avaliações recentes por app; a Google Play traz o histórico completo. Comparações entre lojas devem ser feitas por app ou em proporção, nunca em números absolutos.
-- **Concentração:** um único app tem 48% das reviews da Google Play (identificável pelo volume de linhas). Relate os achados com e sem ele, ou pondere por app.
-- **Escopo:** os achados descrevem relatos críticos, não a experiência de toda a base de usuários.
+As seis buscas e os crit?rios de sele??o est?o em `docs/pipeline_explicativo.md`. As strings s?o S1?S6, com vers?es traduzidas para ingl?s e espanhol.
 
-Os detalhes da coleta, dos critérios e do funil estão em `docs/pipeline_explicativo.md`.
+## Cuidados de validade
 
-## Decisão pendente do artigo (seção 3.2)
+A App Store cont?m no m?ximo 500 avalia??es recentes por app; esse recorte n?o equivale ao hist?rico completo. Para Google Play nos mercados internacionais, a coleta tem limite pr?prio por nota. Compare lojas e pa?ses considerando essas diferen?as, e prefira propor??es ou compara??es por app quando forem adequadas.
 
-Antes de codificar, os autores precisam escolher o recorte:
+O classificador de sentimento e o NER podem errar, especialmente em texto curto, ir?nico, multil?ngue ou sem contexto. No espanhol, a decis?o de cr?tica usa o r?tulo de `pysentimiento`; n?o compare diretamente o compound de idiomas diferentes como se fosse uma escala id?ntica. Os resultados descrevem avalia??es coletadas e n?o representam necessariamente todos os usu?rios.
 
-- **Recorte A (Dark UX):** codificação dedutiva pela ontologia de Gray et al. (2024). Bugs e falhas de sincronização são excluídos na inspeção manual.
-- **Recorte B (elicitação de requisitos):** codificação pela taxonomia de Maalej e Nabil (2015). Bugs entram como categoria.
-- **Opção híbrida:** coletar e filtrar uma única vez e codificar em duas camadas, com dark patterns para o artigo principal e falhas funcionais para o relatório de requisitos do MVP.
+A App Store ? mantida como fonte de reviews por decis?o da pesquisadora. A utiliza??o do RSS p?blico envolve risco relacionado aos termos e condi??es da Apple, que deve ser discutido com a orienta??o.
 
-O esquema de saída abaixo já separa as duas camadas (`issue_codes` e `gray_ontology`), então serve a qualquer das três opções.
+## Decis?o anal?tica
 
-## Método indicado pelo artigo-base
+O artigo-base prop?e modelagem de t?picos com BERTopic, An?lise Tem?tica Reflexiva conforme Braun e Clarke, codifica??o dedutiva pela ontologia de dark patterns de Gray et al. e categoriza??o de falhas recorrentes. Os autores devem definir se o recorte principal ser? dark UX, elicita??o de requisitos ou uma an?lise em duas camadas. A escolha deve ser registrada antes da codifica??o.
 
-O artigo propõe:
+A IA pode ajudar a organizar evid?ncias, sugerir c?digos e resumir padr?es. Ela n?o substitui a interpreta??o dos pesquisadores e n?o demonstra que um app pratica um dark pattern.
 
-1. modelagem de tópicos com BERTopic e inspeção dos tópicos;
-2. Análise Temática Reflexiva, conforme Braun e Clarke (2006, 2019);
-3. codificação dedutiva pela ontologia de dark patterns de Gray et al. (2024);
-4. categorização das falhas recorrentes.
+- Reclama??es sobre bugs, pre?o, recursos ausentes ou suporte podem ser codificadas como falhas ou experi?ncias relatadas.
+- Sugira um dark pattern apenas quando a avalia??o descrever uma intera??o enganosa ou coercitiva concreta.
+- Se faltar evid?ncia, use `insufficient_evidence` ou `not_a_dark_pattern`.
+- N?o generalize para todos os usu?rios, n?o infira causalidade e n?o atribua pr?ticas a apps espec?ficos com base em relatos isolados.
 
-Como mitigação de validade, o artigo prevê inspeção manual dos tópicos e codificação por dois pesquisadores.
+## Censura e uso respons?vel
 
-## Uso responsável de IA
+O passo 7 combina regras e o modelo `Davlan/bert-base-multilingual-cased-ner-hrl`. Os marcadores s?o `[NOME]` para pessoas, `[APP]` para marcas dos apps da amostra, `[MARCA]` para outras empresas, `[LOCAL]` para lugares, `[EMAIL]`, `[PHONE]`, `[CPF]`, `[URL]` e `[HANDLE]` para identificadores diretos. Marcas gen?ricas que tamb?m s?o palavras comuns, como ?era? e ?wallet?, s?o ignoradas pela lista de marcas de apps.
 
-A IA serve para organizar evidências, sugerir códigos e resumir padrões. Ela não substitui a interpretação dos pesquisadores e não serve como prova de que um app pratica um dark pattern.
-
-- Reclamações sobre bugs, preço, recursos ausentes ou suporte são codificadas como falhas ou experiências relatadas.
-- Um dark pattern só é sugerido quando a avaliação descreve uma interação enganosa ou coercitiva concreta.
-- Se faltar evidência, use `insufficient_evidence` ou `not_a_dark_pattern`.
-
-Envie ao modelo apenas os arquivos de `data/brasil/google_play_store/reviews_para_ia/` e `data/brasil/app_store/reviews_para_ia/`, em lotes manejáveis. Preserve `app_mask_id`, a loja, a nota e o escore de sentimento. Nunca envie `appId`, título do app ou o mapeamento de `data/chave_apps_mascarados_NAO_COMPARTILHAR/`.
-
-A redação automática não pega todo dado pessoal. Revise uma amostra antes de enviar.
+A reda??o autom?tica n?o encontra todo dado pessoal. Revise uma amostra e n?o tente reidentificar avaliadores ou apps. Nunca envie a chave de m?scaras, `appId`, t?tulo real do app ou dados identific?veis a um modelo externo. Use c?pias redigidas, preserve as m?scaras e a loja, e inclua o idioma e o mercado na an?lise.
 
 ## Fluxo de trabalho
 
-1. **Preparar e congelar a base.** Guarde uma cópia datada dos dois CSVs de críticas. Remova as duplicatas exatas, documentando as quantidades. Acrescente a coluna `store` (`google_play` ou `app_store`) se as lojas forem analisadas juntas.
-2. **Modelar tópicos com BERTopic.**
-   - Registre o modelo de embeddings (multilíngue ou específico para português), os parâmetros e a semente.
-   - Rode as lojas juntas, com `store` como metadado, ou separadas. Registre a escolha.
-   - Inspecione os tópicos e os outliers. Avalie a coerência `c_v` quando o pré-processamento permitir, mas não escolha o modelo só pelo escore.
-   - Teste o efeito do app dominante, com e sem ele.
-3. **Inspecionar tópicos e exemplos.** Para cada tópico relevante, revise as palavras-chave e as avaliações representativas. A IA pode propor rótulos e interpretações. Os pesquisadores revisam os exemplos e escrevem memorandos analíticos.
-4. **Construir o codebook iterativo.** Combine os códigos dedutivos da ontologia de Gray et al. (níveis alto, meso e baixo) com códigos emergentes de falhas recorrentes em apps financeiros e de educação financeira. Cada código tem nome, descrição, critérios de inclusão e exclusão e exemplos.
-5. **Codificar e revisar.** A IA pode sugerir códigos por avaliação ou trecho, sempre com uma evidência textual curta e uma justificativa. Os pesquisadores revisam as sugestões, discutem divergências e atualizam o codebook e os memorandos. Registre exclusões e casos ambíguos. Não alegue codificação independente por dois pesquisadores se ela não ocorreu.
-6. **Sintetizar.** Apresente:
-   - temas e subtemas;
-   - frequências, apenas como descrição do corpus;
-   - exemplos parafraseados (seção 4.1 do artigo);
-   - diferenças entre lojas e entre apps, quando sustentadas;
-   - limitações.
+1. **Preparar e congelar a base.** Guarde c?pias datadas dos arquivos de avalia??es cr?ticas por mercado e loja. Remova duplicatas exatas, documentando a opera??o. Se juntar lojas, preserve a coluna `store`; preserve tamb?m o mercado e o idioma.
+2. **Modelar t?picos com BERTopic.** Registre embeddings, par?metros e semente. Decida se os mercados/idiomas ser?o modelados juntos ou separados e justifique a escolha. Inspecione t?picos e outliers; n?o selecione o modelo apenas por uma m?trica autom?tica.
+3. **Inspecionar t?picos e exemplos.** Revise palavras-chave e avalia??es representativas. Use sugest?es de IA como ponto de partida; pesquisadores revisam os exemplos e registram memorandos anal?ticos.
+4. **Construir o codebook.** Combine c?digos dedutivos da ontologia de Gray et al. com c?digos emergentes de falhas recorrentes. Documente nome, descri??o, crit?rios de inclus?o e exclus?o e exemplos.
+5. **Codificar e revisar.** Para cada sugest?o, mantenha evid?ncia textual curta e justificativa. Pesquisadores revisam sugest?es, discutem diverg?ncias e atualizam o codebook e os memorandos. N?o alegue codifica??o independente por dois pesquisadores se ela n?o ocorreu.
+6. **Sintetizar.** Apresente temas, subtemas, frequ?ncias descritivas do corpus, exemplos parafraseados, diferen?as entre lojas/mercados quando sustentadas e limita??es. N?o escreva contagens finais at? a base ser consolidada; use `[N]` como marcador provis?rio.
 
-   Não generalize para todos os usuários nem infira causalidade a partir de avaliações. Não atribua práticas a apps específicos: os resultados são agregados.
-
-## Formato de saída por avaliação
+## Formato de sa?da por avalia??o
 
 ```json
 {
   "app_mask_id": "APP_0XX",
   "store": "google_play",
+  "market": "br",
   "lang": "pt",
   "score": 2,
   "compound": -0.42,
+  "sentiment_label": null,
   "issue_codes": ["..."],
   "gray_ontology": {
     "high_level": "... ou null",
     "meso_level": "... ou null",
     "low_level": "... ou null"
   },
-  "evidence": "trecho curto da própria avaliação",
-  "rationale": "por que o trecho sustenta o código",
+  "evidence": "trecho curto da avalia??o redigida",
+  "rationale": "por que o trecho sustenta o c?digo",
   "dark_pattern_evidence": "explicit / insufficient / none",
   "needs_human_review": true
 }
 ```
 
-- Não force cada avaliação a caber num padrão de Gray.
-- Permita vários códigos quando a avaliação relatar problemas distintos.
-- Separe "tema de falha" de "dark pattern".
+Para avalia??es em espanhol, registre `sentiment_label` como `NEG`, `NEU` ou `POS`; n?o trate `compound` como crit?rio de inclus?o. Evite for?ar avalia??es a caber em uma categoria. Permita mais de um c?digo quando houver problemas distintos e separe tema de falha de dark pattern.
 
 ## Prompt de trabalho para IA
 
-> Analise somente as avaliações fornecidas neste lote. Elas são avaliações públicas, em português, de apps brasileiros de finanças pessoais e educação financeira, coletadas na Google Play e na App Store e já filtradas para nota até 3 e sentimento negativo. Para cada avaliação, proponha códigos descritivos de falha ou experiência relatada. Separadamente, proponha um mapeamento à ontologia de dark patterns de Gray et al. (2024), nos níveis alto, meso e baixo, apenas quando o texto trouxer evidência de interação enganosa ou coercitiva. Não deduza a interface, a intenção da empresa ou comportamentos que não estejam descritos. Se houver apenas bug, recurso ausente, preço ou atendimento ruim, registre isso como falha ou experiência e use `not_a_dark_pattern` ou `insufficient_evidence`. Preserve os identificadores mascarados e a loja. Responda em JSON, conforme o esquema deste protocolo, com uma evidência curta por código, no idioma original. Ao final, liste ambiguidades, padrões recorrentes provisórios e exemplos que exigem leitura humana. Não apresente os resultados como temas finais: são sugestões para a análise temática reflexiva e para a revisão dos pesquisadores.
+> Analise somente as avalia??es redigidas fornecidas neste lote. Elas s?o avalia??es p?blicas de apps de finan?as pessoais e educa??o financeira, coletadas na Google Play ou na App Store, em portugu?s, ingl?s ou espanhol, e filtradas para nota at? 3 e sentimento negativo ou neutro. Para cada avalia??o, proponha c?digos descritivos de falha ou experi?ncia relatada. Separadamente, proponha um mapeamento ? ontologia de dark patterns de Gray et al. (2024), nos n?veis alto, meso e baixo, apenas quando o texto trouxer evid?ncia de intera??o enganosa ou coercitiva. N?o deduza interface, inten??o da empresa ou comportamentos que n?o estejam descritos. Se houver apenas bug, recurso ausente, pre?o ou atendimento ruim, registre como falha ou experi?ncia e use `not_a_dark_pattern` ou `insufficient_evidence`. Preserve m?scara, loja, mercado e idioma. Em espanhol, preserve o r?tulo `NEG`, `NEU` ou `POS`; o filtro manteve somente `NEG` e `NEU`. Responda em JSON conforme o esquema deste protocolo, com evid?ncia curta no idioma original. Ao final, liste ambiguidades e padr?es provis?rios que exigem leitura humana. N?o apresente sugest?es como temas finais: elas dependem da an?lise dos pesquisadores.
 
-## Referências
+## Refer?ncias
 
 - Braun, V.; Clarke, V. (2006). *Using thematic analysis in psychology*. [DOI](https://doi.org/10.1191/1478088706qp063oa).
 - Braun, V.; Clarke, V. (2019). *Reflecting on reflexive thematic analysis*. [DOI](https://doi.org/10.1080/2159676X.2019.1628806).
-- Gray, C. M.; Santos, C.; Bielova, N.; Mildner, T. (2024). *An Ontology of Dark Patterns Knowledge*. [Artigo CHI 2024](https://doi.org/10.1145/3613904.3642436) · [Ontologia e materiais](https://ontology.darkpatternsresearchandimpact.com/).
+- Gray, C. M.; Santos, C.; Bielova, N.; Mildner, T. (2024). *An Ontology of Dark Patterns Knowledge*. [Artigo CHI 2024](https://doi.org/10.1145/3613904.3642436) ? [Ontologia e materiais](https://ontology.darkpatternsresearchandimpact.com/).
 - Maalej, W.; Nabil, H. (2015). *Bug report, feature request, or simply praise? On automatically classifying app reviews*. RE 2015, IEEE.
