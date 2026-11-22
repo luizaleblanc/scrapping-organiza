@@ -86,3 +86,12 @@ Só avaliações públicas. Nome, foto e ID do avaliador nunca são gravados. E-
 telefones, CPFs, URLs e @menções no texto são substituídos. Os apps aparecem mascarados
 (`APP_001`…), e o mapeamento fica em `data/chave_apps_mascarados_NAO_COMPARTILHAR/`. A redação por regex não pega todo
 dado pessoal; revise antes de compartilhar.
+
+## Licença
+
+O código deste repositório está sob a [licença MIT](LICENSE) © 2026 Luiza Ferraz Leblanc.
+
+A licença cobre só o código. Não cobre:
+- **Dados das lojas:** títulos, descrições e metadados dos apps em `data/` pertencem às respectivas lojas e desenvolvedores e são usados aqui para fins de pesquisa.
+- **Avaliações de usuários:** não fazem parte do repositório e não são redistribuídas.
+- **LeIA** (`vendor/LeIA`): é baixado à parte e segue a licença do próprio projeto ([rafjaa/LeIA](https://github.com/rafjaa/LeIA)).
