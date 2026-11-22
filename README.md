@@ -1,26 +1,88 @@
-﻿# Google Play personal finance review pipeline
+# Padrões enganosos em apps de finanças pessoais — pipeline de dados
 
-## Setup
+> Explicação completa do que foi feito, funil e decisões: [docs/pipeline_explicativo.md](docs/pipeline_explicativo.md)
 
-Python 3.10+ recommended. Install dependencies with `python -m pip install -r requirements.txt`.
+Triagem de apps nas duas lojas, coleta de avaliações públicas da Google Play e filtro
+de avaliações críticas (replicação do protocolo de Alsebayel et al., 2025).
 
-LeIA's upstream repository is source-only and has no `setup.py` or `pyproject.toml`, so install it by cloning the source into `vendor/LeIA`:
+**Strings de busca (únicas usadas, nas duas lojas, Brasil, top 30 cada):**
+`finanças` · `organizador de finanças` · `educador de finanças` · `aplicativos financeiros` ·
+`ia para finanças` · `organizador financeiro com ia`
 
-`git clone https://github.com/rafjaa/LeIA.git vendor/LeIA`
+**Ficam fora:** bancos e contas digitais, maquininhas, carteiras/pagamentos, trading,
+cripto e investimentos, ferramentas empresariais/crédito, categorias diferentes de
+Finance, apps sem avaliações ou sem atualização há 12 meses, apps presentes em só uma
+loja e o Organiza AI. As listas ficam em `src/config.py`; cada exclusão é registrada
+com motivo.
 
-The sentiment script imports `leia.SentimentIntensityAnalyzer` from that source tree.
+Reviews são coletadas **nas duas lojas** (mudança de protocolo em 22/11/2026): Google Play pelo `google-play-scraper` (histórico completo) e App Store pelo feed RSS público de avaliações da Apple (até 500 mais recentes por app).
 
-## Run
+## Instalação (uma vez)
 
-1. `python src/01_search_apps.py` searches the configured English/US and Portuguese/Brazil terms and writes deduplicated metadata to `data/raw/apps_candidates.csv`.
-2. `python src/02_screen_apps.py` checks official category, review count, recent update, and likely Apple App Store availability using Apple's public search endpoint. Review criteria 1 (personal budgeting purpose) and 5 (B2C) in `data/processed/apps_screening.csv` and fill each decision with `yes` or `no` before continuing.
-3. `python src/03_scrape_reviews.py` scrapes Google Play only for apps passing automatic checks and both manual decisions. Stored review fields are allowlisted; user names, photos, and review IDs are discarded in memory.
-4. `python src/04_filter_sentiment.py` applies the star and language-specific sentiment filters.
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+git clone https://github.com/rafjaa/LeIA.git vendor/LeIA
+```
 
-Logs are timestamped in `logs/`; funnel counts are updated in `outputs/funnel_metrics.json`. The Apple query is an approximate cross-platform existence match and should be checked manually where ambiguous. Candidate metadata and screening contain app IDs/titles; the separate mapping in `data/private/` is created only when collection is explicitly run after manual screening.
+## Passo a passo
 
-## Search strategy
+Execute na pasta do projeto, com o ambiente ativado. Defina antes
+`$env:PYTHONIOENCODING = "utf-8"` para os acentos aparecerem no terminal.
 
-Google Play candidate searches use task-specific personal budgeting phrases in English and Portuguese. They exclude terms such as `educador de finanças` from the primary app sample because those searches bring financial education products that may not meet the budgeting-app inclusion criterion. Literature searches about review mining and scraping are separately recorded as `LITERATURE_SEARCH_QUERIES` in `src/config.py`; do not pass those queries to Google Play.
+| # | Comando | O que faz | Saída |
+|---|---|---|---|
+| 1 | `python src/01_search_google_play.py` | Busca as 6 strings na Google Play | `data/google_play_store/busca_e_triagem/search_hits.csv` |
+| 2 | `python src/02_search_app_store.py` | Busca as 6 strings na App Store | `data/app_store/busca_e_triagem/search_hits.csv` |
+| 3 | `python src/03_clean_stores.py` | Aplica os critérios nas duas lojas e deduplica | `apps_eligible.csv` e `apps_excluded_audit.csv` em cada pasta |
+| 3b | `python src/03b_check_other_store.py` | Critério 4: procura cada elegível na outra loja pelo nome (mesma marca e mesmas regras) | acrescenta a `apps_eligible.csv` com `discovery_source = availability_check` |
+| 4 | `python src/04_cross_store_dedup.py` | Mantém só apps presentes nas duas lojas | `data/apps_nas_duas_lojas/apps_both_stores.csv` |
+| 5 | `python src/05_scrape_google_play_reviews.py --no-reuse` | Coleta e anonimiza reviews da Google Play **só dos apps de `apps_both_stores.csv`** (excluídos nunca são coletados) | `data/google_play_store/reviews/reviews_anonymized.csv` |
+| 5b | `python src/05b_scrape_app_store_reviews.py` | Coleta e anonimiza avaliações da App Store dos mesmos apps (feed RSS, até 500 por app) | `data/app_store/reviews/reviews_anonymized.csv` |
+| 6 | `python src/06_filter_sentiment.py` | Mantém nota ≤ 3 e sentimento negativo/neutro (as duas lojas) | `data/<loja>/reviews/reviews_critical.csv` |
+| 7 | `python src/07_build_ai_share.py` | Gera cópias redigidas para uso com IA (as duas lojas) | `data/<loja>/reviews_para_ia/*.csv` |
 
-The current candidate CSV and screening CSV predate the latest query refinement. Rerun steps 1 and 2 to regenerate them.
+**Revisão manual (entre os passos 4 e 5):** pares parecidos, mas não idênticos, entre as
+lojas ficam em `data/apps_nas_duas_lojas/manual_match_decisions.csv`. Preencha a coluna
+`decision` com `yes` (mesmo app) ou `no` e rode o passo 4 de novo. Sem `yes`, o par não
+entra na amostra.
+
+**Passo 5:** pode demorar mais de uma hora. Se cair, rode de novo e ele continua de onde
+parou. Reviews já coletadas em 20/11/2026 são reaproveitadas; use `--no-reuse` para
+coletar tudo de novo ou `--max-per-app 20` para um teste rápido.
+
+Os passos 1 e 2 refazem a busca e podem trazer resultados diferentes. Para reproduzir a
+amostra atual, comece pelo passo 3.
+
+## Pastas
+
+```
+data/
+├── google_play_store/
+│   ├── busca_e_triagem/                          busca, elegíveis e excluídos com motivo
+│   ├── reviews/                                  reviews anonimizadas e críticas (não versionado)
+│   └── reviews_para_ia/                          cópias redigidas para IA (não versionado)
+├── app_store/
+│   ├── busca_e_triagem/
+│   ├── reviews/
+│   └── reviews_para_ia/
+├── apps_nas_duas_lojas/                          amostra final, loja única, revisão manual
+└── chave_apps_mascarados_NAO_COMPARTILHAR/     mapeamento APP_001 -> appId (não versionado)
+outputs/funnel_metrics.json                       contagens de cada etapa do funil
+src/                                              scripts do pipeline (01 a 07)
+docs/pipeline_explicativo.md                      explicação completa do pipeline e das decisões
+docs/protocolo_codificacao_qualitativa.md         protocolo da análise (BERTopic, Gray, prompt para IA)
+vendor/LeIA/                                      analisador de sentimento em português
+arquivo_rodadas_anteriores/                       tudo de rodadas antigas (somente consulta)
+├── dados/                                        buscas e pipeline anterior (38 apps)
+├── scripts_antigos/                              scripts que não fazem mais parte do pipeline
+└── documentos_rodada_20261120/                   relatório e protocolo da rodada antiga
+```
+
+## Ética
+
+Só avaliações públicas. Nome, foto e ID do avaliador nunca são gravados. E-mails,
+telefones, CPFs, URLs e @menções no texto são substituídos. Os apps aparecem mascarados
+(`APP_001`…), e o mapeamento fica em `data/chave_apps_mascarados_NAO_COMPARTILHAR/`. A redação por regex não pega todo
+dado pessoal; revise antes de compartilhar.
