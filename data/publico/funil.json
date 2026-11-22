@@ -1,0 +1,176 @@
+{
+  "02_app_store_search": {
+    "strings": {
+      "S1": "finanças",
+      "S2": "organizador de finanças",
+      "S3": "educador de finanças",
+      "S4": "aplicativos financeiros",
+      "S5": "ia para finanças",
+      "S6": "organizador financeiro com ia"
+    },
+    "country": "br",
+    "collected_at": "2026-11-22T11:59:20.771106+00:00",
+    "hits": 170,
+    "unique_apps": 147
+  },
+  "updated_at": "2026-11-22T15:45:33.285533+00:00",
+  "01_google_play_search": {
+    "strings": {
+      "S1": "finanças",
+      "S2": "organizador de finanças",
+      "S3": "educador de finanças",
+      "S4": "aplicativos financeiros",
+      "S5": "ia para finanças",
+      "S6": "organizador financeiro com ia"
+    },
+    "country": "br",
+    "collected_at": "2026-11-22T12:00:00.373221+00:00",
+    "hits": 180,
+    "unique_apps": 98
+  },
+  "03_clean_google_play_store": {
+    "search_hits": 180,
+    "duplicates_removed_within_store": 82,
+    "unique_apps": 98,
+    "recency_cutoff_utc": "2025-11-22T12:00:00.373221+00:00",
+    "removed_by_reason": {
+      "conflict_of_interest_organiza_ai": 0,
+      "wrong_category_productivity_or_game": 3,
+      "wrong_category_other": 4,
+      "excluded_bank_or_card_machine": 13,
+      "excluded_wallet_payment": 8,
+      "excluded_trading_crypto_investment": 6,
+      "excluded_b2b_accounting_credit": 0,
+      "excluded_by_official_description": 0,
+      "no_ratings": 11,
+      "missing_update_date": 0,
+      "outdated_over_12_months": 2
+    },
+    "removed_total": 47,
+    "eligible": 51
+  },
+  "03_clean_app_store": {
+    "search_hits": 170,
+    "duplicates_removed_within_store": 23,
+    "unique_apps": 147,
+    "recency_cutoff_utc": "2025-11-22T11:59:20.771106+00:00",
+    "removed_by_reason": {
+      "conflict_of_interest_organiza_ai": 0,
+      "wrong_category_productivity_or_game": 10,
+      "wrong_category_other": 33,
+      "excluded_bank_or_card_machine": 11,
+      "excluded_wallet_payment": 5,
+      "excluded_trading_crypto_investment": 12,
+      "excluded_b2b_accounting_credit": 4,
+      "excluded_by_official_description": 4,
+      "no_ratings": 15,
+      "missing_update_date": 0,
+      "outdated_over_12_months": 7
+    },
+    "removed_total": 101,
+    "eligible": 46
+  },
+  "04_cross_store": {
+    "google_play_eligible": 58,
+    "app_store_eligible": 64,
+    "both_stores": 40,
+    "by_match_confidence": {
+      "exact_title": 20,
+      "exact": 10,
+      "normalized_brand": 6,
+      "fuzzy_review": 4
+    },
+    "fuzzy_pending_manual_review": 0,
+    "single_store_google_play": 18,
+    "single_store_app_store": 24
+  },
+  "03b_availability_check": {
+    "counterparts_checked": 37,
+    "added_to_google_play_eligible": 7,
+    "added_to_app_store_eligible": 18
+  },
+  "05_reviews": {
+    "apps": 40,
+    "reviews_total": 223688,
+    "redactions_this_run": {
+      "email": 0,
+      "url": 0,
+      "cpf": 1,
+      "phone": 1,
+      "handle": 18,
+      "possible_phone_or_number": 19
+    },
+    "max_per_app": "all"
+  },
+  "07_ai_share": {
+    "ai_full": {
+      "rows": 223688,
+      "apps": 40,
+      "redactions": {
+        "email": 0,
+        "url": 0,
+        "cpf": 0,
+        "phone": 0,
+        "handle": 0
+      }
+    },
+    "ai_critical": {
+      "rows": 19454,
+      "apps": 36,
+      "redactions": {
+        "email": 0,
+        "url": 0,
+        "cpf": 0,
+        "phone": 0,
+        "handle": 0
+      }
+    },
+    "ai_as_full": {
+      "rows": 5467,
+      "apps": 38,
+      "redactions": {
+        "email": 0,
+        "url": 0,
+        "cpf": 0,
+        "phone": 0,
+        "handle": 0
+      }
+    },
+    "ai_as_critical": {
+      "rows": 1834,
+      "apps": 25,
+      "redactions": {
+        "email": 0,
+        "url": 0,
+        "cpf": 0,
+        "phone": 0,
+        "handle": 0
+      }
+    }
+  },
+  "05b_app_store_reviews": {
+    "source": "Apple RSS customerreviews (br, mostrecent, max 10 páginas x 50)",
+    "apps": 40,
+    "reviews_total": 5467,
+    "redactions": {
+      "email": 0,
+      "url": 0,
+      "cpf": 0,
+      "phone": 1,
+      "handle": 5
+    },
+    "incomplete_pages_last_run": []
+  },
+  "06_sentiment_google_play": {
+    "reviews_total": 223688,
+    "removed_by_score_gt_3": 189734,
+    "removed_by_positive_or_neutral_sentiment": 14500,
+    "critical_reviews": 19454
+  },
+  "06_sentiment_app_store": {
+    "reviews_total": 5467,
+    "removed_by_score_gt_3": 2851,
+    "removed_by_positive_or_neutral_sentiment": 782,
+    "critical_reviews": 1834
+  }
+}
