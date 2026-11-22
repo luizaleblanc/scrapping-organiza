@@ -90,11 +90,15 @@ foreach ($m in "us", "es", "mx") {
 }
 Remove-Item Env:MARKET
 python src/10_build_country_folders.py          # monta os criticas.csv de cada país
+python src/08b_build_public_international.py    # versão pública, sem nome de app nem de pessoa
 ```
 
 O resultado fica na raiz de `data/brasil/` e de `data/mercados_internacionais/<país>/` (não versionado),
 **só com as críticas**: `apps_elegiveis.csv` (apps do país e quantas críticas cada um teve),
 e `criticas.csv` (todas as críticas do país num só arquivo, com as colunas `app` e `loja`).
+A versão **pública** (pode ir para o GitHub) fica em `data/publico/mercados_internacionais/<país>/reviews_criticas.csv`:
+só máscara do app (`APP_xxx`), loja, nota, texto redigido (nomes de pessoas censurados), idioma, data sem hora e
+compound. O 08b confere se sobrou e-mail, URL, @, telefone/CPF ou hora e não grava nada se sobrar.
 Apps elegíveis em mais de um país (incluindo o Brasil) ficam em
 `data/mercados_internacionais/apps_em_varios_paises.csv`, com as críticas de cada país.
 As máscaras `APP_xxx` são as mesmas em todos os países.
