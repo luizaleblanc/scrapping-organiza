@@ -29,6 +29,9 @@ def main():
             raise SystemExit(f"{src}: app_mask_id fora da amostra {sorted(outside)}; rode as etapas 4-6 de novo.")
         counter = Counter()
         df["content"] = [redact_text(x, counter) for x in df.content.fillna("").astype(str)]
+        # Só a data (sem hora): o horário exato da review, junto com o texto, ajuda a
+        # identificar quem escreveu.
+        df["at"] = df["at"].astype(str).str.slice(0, 10)
         cols = ["app_mask_id", "content", "score", "lang", "at"] + (["compound"] if "compound" in df else [])
         write_csv(df[cols], C.PATHS[dst])
         counts[dst] = {"rows": int(len(df)), "apps": int(df.app_mask_id.nunique()), "redactions": dict(counter)}
