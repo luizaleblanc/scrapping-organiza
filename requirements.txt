@@ -1,8 +1,7 @@
-﻿google-play-scraper>=1.2.7
+google-play-scraper>=1.2.7
 pandas>=2.2
 requests>=2.32
 tqdm>=4.66
 vaderSentiment>=3.3.2
-pyarrow>=18.0
-# LeIA is checked out as source in vendor/LeIA; see README.md.
-
+# LeIA (analisador de sentimento em português) não é instalável via pip:
+#   git clone https://github.com/rafjaa/LeIA.git vendor/LeIA

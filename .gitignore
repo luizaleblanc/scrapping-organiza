@@ -1,8 +1,11 @@
-﻿__pycache__/
+__pycache__/
 *.py[cod]
-data/private/*
-!data/private/.gitkeep
-data/processed/reviews_*.csv
-logs/*.log
 .venv/
 vendor/
+logs/
+data/chave_apps_mascarados_NAO_COMPARTILHAR/*
+!data/chave_apps_mascarados_NAO_COMPARTILHAR/.gitkeep
+data/*/reviews/
+data/*/reviews_para_ia/
+arquivo_rodadas_anteriores/dados/pipeline_anterior_38_apps_strings_antigas/dados_processados/
+arquivo_rodadas_anteriores/dados/pipeline_anterior_38_apps_strings_antigas/mapeamento_privado/
