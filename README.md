@@ -62,7 +62,7 @@ data/
 ├── google_play_store/
 │   ├── busca_e_triagem/                          busca, elegíveis e excluídos com motivo
 │   ├── reviews/                                  reviews anonimizadas e críticas (não versionado)
-│   └── reviews_para_ia/                          cópias redigidas para IA (não versionado)
+│   └── reviews_para_ia/                          cópias redigidas; só as críticas são versionadas
 ├── app_store/
 │   ├── busca_e_triagem/
 │   ├── reviews/
@@ -93,5 +93,5 @@ O código deste repositório está sob a [licença MIT](LICENSE) © 2026 Luiza F
 
 A licença cobre só o código. Não cobre:
 - **Dados das lojas:** títulos, descrições e metadados dos apps em `data/` pertencem às respectivas lojas e desenvolvedores e são usados aqui para fins de pesquisa.
-- **Avaliações de usuários:** não fazem parte do repositório e não são redistribuídas.
+- **Avaliações de usuários:** só as críticas (1 a 3 estrelas), anonimizadas e redigidas, estão no repositório, para fins de pesquisa. O texto pertence aos seus autores; não use para identificar pessoas.
 - **LeIA** (`vendor/LeIA`): é baixado à parte e segue a licença do próprio projeto ([rafjaa/LeIA](https://github.com/rafjaa/LeIA)).
