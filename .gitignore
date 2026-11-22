@@ -3,11 +3,9 @@ __pycache__/
 .venv/
 vendor/
 logs/
-data/chave_apps_mascarados_NAO_COMPARTILHAR/*
-!data/chave_apps_mascarados_NAO_COMPARTILHAR/.gitkeep
-data/*/reviews/
-# Só as críticas redigidas (1 a 3 estrelas) são publicadas; o resto fica local.
-data/*/reviews_para_ia/*
-!data/*/reviews_para_ia/reviews_critical_redacted.csv
-arquivo_rodadas_anteriores/dados/pipeline_anterior_38_apps_strings_antigas/dados_processados/
-arquivo_rodadas_anteriores/dados/pipeline_anterior_38_apps_strings_antigas/mapeamento_privado/
+
+# Dados: SÓ data/publico/ vai para o GitHub (anonimizado pelo src/08_build_public_data.py).
+# Tudo o mais tem nome, ID, URL ou descrição de app, ou texto de review completo.
+data/*
+!data/publico/
+outputs/
