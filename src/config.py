@@ -17,6 +17,10 @@ SEARCH_STRINGS = {
 }
 LANG, COUNTRY = "pt", "br"
 RESULTS_PER_TERM = 30
+# Reviews críticas = nota <= 3 E sentimento NEGATIVO (compound <= -0,05, corte padrão
+# do VADER/LeIA). Positivas e neutras são descartadas (decisão da pesquisadora, 22/11/2026).
+MAX_SCORE = 3
+NEGATIVE_COMPOUND = -0.05
 RECENCY_MONTHS = 12
 REQUEST_DELAY_SECONDS = 1.0
 APP_STORE_DELAY_SECONDS = 3.2  # Apple documenta ~20 buscas/minuto.
@@ -125,8 +129,4 @@ PATHS = {
     "mapping": PRIVATE_DIR / "app_mapping.csv",
     "checkpoint": PRIVATE_DIR / "review_checkpoint.json",
     "metrics": OUTPUTS / "funnel_metrics.json",
-    # Reviews do Google Play já coletadas em 2026-11-20 (reaproveitadas para não
-    # repetir a raspagem dos mesmos apps).
-    "legacy_reviews": ROOT / "arquivo_rodadas_anteriores/dados/pipeline_anterior_38_apps_strings_antigas/dados_processados/reviews_anonymized.csv",
-    "legacy_mapping": ROOT / "arquivo_rodadas_anteriores/dados/pipeline_anterior_38_apps_strings_antigas/mapeamento_privado/app_mapping.csv",
 }

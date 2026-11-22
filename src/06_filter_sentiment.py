@@ -1,6 +1,6 @@
-"""Etapa 6 — Mantém reviews críticas: nota <= 3 e sentimento negativo/neutro.
+"""Etapa 6 — Mantém reviews críticas: nota <= 3 e sentimento NEGATIVO.
 
-PT: LeIA (vendor/LeIA); EN: VADER. Compound <= 0.05 conta como neutro/negativo.
+PT: LeIA (vendor/LeIA); EN: VADER. Só NEGATIVAS: compound <= C.NEGATIVE_COMPOUND (-0,05).
 Saídas: data/google_play_store/reviews/reviews_critical.csv e data/app_store/reviews/reviews_critical.csv
 """
 import sys
@@ -27,14 +27,14 @@ def main():
             print(f"[{store}] sem arquivo de reviews ({C.PATHS[src].name}); pulando")
             continue
         df = pd.read_csv(C.PATHS[src], encoding="utf-8-sig")
-        low = df[pd.to_numeric(df.score, errors="coerce") <= 3].copy()
+        low = df[pd.to_numeric(df.score, errors="coerce") <= C.MAX_SCORE].copy()
         low["compound"] = [(pt if str(lang).startswith("pt") else en).polarity_scores(str(text))["compound"]
                            for text, lang in zip(low.content, low.lang)]
-        critical = low[low.compound <= 0.05]
+        critical = low[low.compound <= C.NEGATIVE_COMPOUND]
         write_csv(critical, C.PATHS[dst])
         update_metrics(f"06_sentiment_{store}", {
             "reviews_total": int(len(df)), "removed_by_score_gt_3": int(len(df) - len(low)),
-            "removed_by_positive_sentiment": int(len(low) - len(critical)),
+            "removed_by_positive_or_neutral_sentiment": int(len(low) - len(critical)),
             "critical_reviews": int(len(critical)),
             "critical_by_app_mask": {k: int(v) for k, v in critical.app_mask_id.value_counts().sort_index().items()},
         })
