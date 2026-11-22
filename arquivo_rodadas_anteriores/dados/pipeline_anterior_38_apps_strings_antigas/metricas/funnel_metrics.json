@@ -1,0 +1,24 @@
+{
+  "collected_at": "2026-11-20T19:56:59.052366+00:00",
+  "search_result_rows": 348,
+  "unique_apps": 155,
+  "excluded_organiza_ai": 0,
+  "results_per_term": 30,
+  "searches_configured": 12,
+  "screened_apps": 155,
+  "category_pass": 142,
+  "reviews_present_pass": 126,
+  "apple_presence_confirmed": 69,
+  "recent_update_pass": 118,
+  "automatic_screen_pass": 50,
+  "manual_review_required": 155,
+  "screening_note": "Manual criteria 1 and 5 must be reviewed; Apple search is an approximate existence check. No reviews were retrieved from Apple.",
+  "reviews_collected": 162092,
+  "reviews_total": 162092,
+  "removed_by_score": 124844,
+  "removed_by_sentiment": 13351,
+  "final_by_language": {
+    "en": 16410,
+    "pt": 7487
+  }
+}

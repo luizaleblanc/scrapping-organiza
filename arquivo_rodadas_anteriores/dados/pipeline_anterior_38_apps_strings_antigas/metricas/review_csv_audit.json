@@ -1,0 +1,73 @@
+{
+  "audited_at": "2026-11-20T23:53:21.601850+00:00",
+  "inputs": {
+    "full_reviews": "C:\\Users\\luiza\\OneDrive\\Documentos\\organiza-scrapping\\data\\processed\\reviews_anonymized.csv",
+    "critical_reviews": "C:\\Users\\luiza\\OneDrive\\Documentos\\organiza-scrapping\\data\\processed\\reviews_critical.csv"
+  },
+  "outputs": {
+    "full_redacted": "C:\\Users\\luiza\\OneDrive\\Documentos\\organiza-scrapping\\data\\processed\\ai_share\\reviews_anonymized_redacted.csv",
+    "critical_redacted": "C:\\Users\\luiza\\OneDrive\\Documentos\\organiza-scrapping\\data\\processed\\ai_share\\reviews_critical_redacted.csv",
+    "source_csvs_updated": true
+  },
+  "divergence": {
+    "full_rows": 162092,
+    "critical_rows": 23897,
+    "full_app_masks": 38,
+    "critical_app_masks": 36,
+    "critical_rows_not_found_in_full_multiset": 0,
+    "full_rows_absent_from_critical": 138195,
+    "rows_with_score_at_most_3": 37248,
+    "rows_removed_by_sentiment_after_star_filter": 13351,
+    "full_languages": {
+      "en": 89393,
+      "pt": 72699
+    },
+    "critical_languages": {
+      "en": 16410,
+      "pt": 7487
+    },
+    "full_scores": {
+      "5": 107537,
+      "1": 23522,
+      "4": 17307,
+      "3": 7642,
+      "2": 6084
+    },
+    "critical_scores": {
+      "1": 16540,
+      "3": 3736,
+      "2": 3621
+    },
+    "full_empty_text_rows": 36,
+    "critical_empty_text_rows": 1,
+    "critical_compound_above_0_05": 0
+  },
+  "redactions": {
+    "full_reviews_replacements_by_type": {
+      "email": 0,
+      "url": 0,
+      "cpf": 0,
+      "phone": 0,
+      "handle": 0
+    },
+    "critical_reviews_replacements_by_type": {
+      "email": 0,
+      "url": 0,
+      "cpf": 0,
+      "phone": 0,
+      "handle": 0
+    },
+    "possible_phone_or_number_matches_before_redaction": {
+      "full_reviews": {
+        "matches": 0,
+        "rows": 0
+      },
+      "critical_reviews": {
+        "matches": 0,
+        "rows": 0
+      }
+    },
+    "method": "Regex-based replacement of likely emails, URLs, CPFs, @handles, strict phone formats, and ambiguous 8-11 digit number strings not next to common currency symbols or matching common numeric date formats. Ambiguous values may be false positives."
+  },
+  "notice": "Regex redaction cannot find every personal detail. Ambiguous number strings are replaced and may include non-personal values. Review the CSVs before external sharing."
+}

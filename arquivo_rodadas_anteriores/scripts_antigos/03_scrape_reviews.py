@@ -1,5 +1,6 @@
-"""Collect approved Google Play reviews; store only allowlisted anonymous fields."""
+"""Collect approved reviews, allowlist fields, and redact likely identifiers in text."""
 import json, socket, sys, time
+from collections import Counter
 from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
@@ -9,6 +10,7 @@ from google_play_scraper import Sort, reviews
 socket.setdefaulttimeout(30)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from config import OUTPUT, REQUEST_DELAY_SECONDS
+from review_redaction import redact_text
 
 REVIEW_COLUMNS = ["app_mask_id", "content", "score", "lang", "at"]
 MAPPING_COLUMNS = ["app_mask_id", "appId", "title"]
@@ -19,6 +21,7 @@ def main():
     OUTPUT["reviews"].parent.mkdir(parents=True, exist_ok=True)
     OUTPUT["mapping"].parent.mkdir(parents=True, exist_ok=True)
     screening = pd.read_csv(OUTPUT["screening"])
+    redaction_counts = Counter()
     approved = screening[
         (screening["automatic_criteria_pass"] == True)
         & screening["criterion_1_decision"].astype(str).str.casefold().eq("yes")
@@ -39,6 +42,8 @@ def main():
     if OUTPUT["reviews"].exists():
         stored = pd.read_csv(OUTPUT["reviews"], encoding="utf-8-sig")
         anonymized = stored.reindex(columns=REVIEW_COLUMNS).fillna("").to_dict("records")
+        for row in anonymized:
+            row["content"] = redact_text(row.get("content", ""), redaction_counts)
     else:
         anonymized = []
     if OUTPUT["mapping"].exists():
@@ -70,7 +75,7 @@ def main():
                     # personal fields are discarded and never written to disk.
                     collected_for_app.append({
                         "app_mask_id": mask,
-                        "content": item.get("content", ""),
+                        "content": redact_text(item.get("content", ""), redaction_counts),
                         "score": item.get("score"),
                         "lang": lang,
                         "at": str(item.get("at", "")),
@@ -114,6 +119,9 @@ def main():
         metrics = {}
     metrics["reviews_collected"] = len(anonymized)
     OUTPUT["metrics"].write_text(json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8")
+    redacted_total = sum(redaction_counts.values())
+    if redacted_total:
+        tqdm.write(f"Redações de identificadores no texto: {dict(redaction_counts)}")
 
 if __name__ == "__main__":
     main()

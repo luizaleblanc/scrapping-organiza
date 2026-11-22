@@ -8,7 +8,7 @@
 
 A primeira fase da pesquisa analisa aplicativos comerciais de finanças pessoais e orçamento a partir de avaliações públicas de usuários. O Organiza AI é o contexto aplicado da pesquisa, mas não é o objeto da coleta de avaliações.
 
-A busca foi configurada para duas regiões: termos em português na Google Play brasileira (`pt`, `br`) e termos em inglês na Google Play dos Estados Unidos (`en`, `us`). Portanto, a amostra é internacional e inclui resultados brasileiros; não representa apenas o mercado brasileiro.
+**Escopo de busca atualizado:** a descoberta atual usa somente a frase `gestão pessoal de finanças com IA`, na loja brasileira. Os números históricos abaixo foram gerados com buscas mais amplas e não representam o novo escopo.
 
 ## 2. Método alinhado ao artigo
 
@@ -20,14 +20,13 @@ O filtro guarda avaliações com nota `<= 3` e escore composto `<= 0.05` (neutro
 
 ## 3. Buscas configuradas
 
-O arquivo `src/config.py` contém 12 buscas de aplicativos, executadas individualmente com até 30 resultados por termo:
+O arquivo `src/config.py` contém uma busca de aplicativos, executada na região brasileira:
 
 | Região | Termos |
 |---|---|
-| EUA / inglês | `budget planner`; `expense tracker`; `personal finance`; `AI money assistant`; `money manager` |
-| Brasil / português | `finanças pessoais`; `organizador financeiro`; `controle de gastos`; `orçamento pessoal`; `aplicativo de controle financeiro`; `IA para finanças`; `organizador financeiro com IA` |
+| Brasil / português | `gestão pessoal de finanças com IA` |
 
-As buscas bibliográficas sobre scraping/mineração de avaliações estão separadas no código e não são enviadas à Google Play. `educador de finanças` não foi incluído na busca principal de apps porque tende a retornar educação financeira que pode não satisfazer o critério de aplicativo de orçamento/controle pessoal.
+As buscas bibliográficas sobre scraping/mineração de avaliações estão separadas no código e não são enviadas às lojas. A triagem Apple exige categoria Finance, título aderente e exclui bancos; categorias médicas, Games, Lifestyle e Health & Fitness ficam fora do nicho.
 
 ## 4. Pipeline implementado
 
@@ -46,7 +45,7 @@ O arquivo `outputs/funnel_metrics.json` registra a execução:
 |---|---:|
 | Linhas de resultados de busca | 348 |
 | Apps únicos na métrica de busca | 155 |
-| Termos configurados | 12 |
+| Termos configurados na execução histórica | 12 |
 | Apps aprovados automaticamente | 50 |
 | Avaliações coletadas | 162.092 |
 | Removidas pelo filtro de nota | 124.844 |
@@ -57,28 +56,44 @@ O arquivo `outputs/funnel_metrics.json` registra a execução:
 
 Os 38 apps aprovados nos critérios automáticos e nas duas decisões manuais foram coletados. O resultado filtrado está em `data/processed/reviews_critical.csv`; a base coletada está em `data/processed/reviews_anonymized.csv`.
 
+Uma auditoria automatizada confirmou que as avaliações críticas são subconjunto da base completa. O script `src/06_audit_anonymize_reviews.py` redige e-mails, URLs, CPF, telefones, @identificadores e sequências numéricas ambíguas; esta redação também foi aplicada aos CSVs principais a pedido da pesquisadora. As sequências numéricas ambíguas podem incluir números não pessoais. `src/03_scrape_reviews.py` agora aplica a mesma redação antes de salvar novas avaliações. A redação por regex não garante anonimização completa; revisar os arquivos antes de qualquer compartilhamento externo.
+
 **Ponto de reconciliação:** o JSON registra 155 apps únicos e 155 triados, mas o arquivo atual `data/processed/apps_screening.csv` contém 156 IDs distintos. Antes de publicar números finais, atualize/reconcilie as métricas do funil com o CSV atual. Os números das avaliações e do filtro acima são os valores registrados no JSON da execução concluída.
 
 ## 6. Concorrentes brasileiros
 
 Foi criado `outputs/concorrentes_brasileiros.md` como mapa inicial de concorrentes e referências de produto, incluindo Oinc. Oinc está documentado como concorrente, mas não consta na amostra atual de 38 apps coletados; o próprio mapa recomenda buscá-lo nominalmente e triá-lo na próxima rodada. A presença no mapa competitivo não significa inclusão na amostra de pesquisa.
 
+Em 20/11/2026, a busca exploratória anterior da Apple usou strings mais amplas e consultas nominais: 700 ocorrências, 416 apps brutos deduplicados e 152 candidatos após a auditoria antiga. **Esses dados foram retirados dos caminhos ativos e arquivados em `data/raw/app_store/previous_scope_20261120/`; não devem ser tratados como resultados da frase de busca atual.** O novo conjunto só existirá após executar novamente a busca e a auditoria.
+
+A nova rotina Apple está implementada em `src/10_scrape_app_store_reviews.py`, `src/11_filter_app_store_sentiment.py` e `src/12_map_app_store_behavior.py`. A coleta usa o RSS público, limitado às páginas disponibilizadas por app, e grava os dados em CSVs separados dos resultados Google Play. Os sinais comportamentais são tags lexicais agregadas por app e indicam temas autorrelatados; servem como apoio exploratório à codificação qualitativa, não como inferências psicológicas individuais. A rotina não foi executada nesta rodada porque a busca antiga foi arquivada e o ambiente local não alcança o endpoint da Apple; execute os comandos no terminal com rede.
+
 ## 7. Arquivos principais
 
 - `src/config.py` — termos, idioma/região, caminhos e parâmetros da coleta.
 - `src/01_search_apps.py` a `src/04_filter_sentiment.py` — pipeline executável.
+- `src/05_search_app_store.py` — descoberta de apps na Apple App Store.
+- `src/08_audit_app_store_candidates.py` — auditoria de escopo dos candidatos da App Store e separação de inclusões/exclusões/revisões.
+- `src/10_scrape_app_store_reviews.py` a `src/12_map_app_store_behavior.py` — coleta RSS, filtro por sentimento e mapa agregado de sinais comportamentais Apple.
+- `src/06_audit_anonymize_reviews.py` — compara a base completa e o subconjunto crítico e gera cópias com redação heurística de identificadores.
+- `src/review_redaction.py` — regras reutilizadas para redigir texto durante coleta e preparação dos CSVs.
+- `src/07_export_cross_store_matches.py` — exporta apps da Google Play encontrados também pela busca da App Store.
+- `data/raw/app_store/search_hits.csv` e `data/raw/app_store/candidates.csv` — resultados da busca da Apple por termo/região e apps deduplicados.
 - `data/raw/apps_candidates.csv` — candidatos descobertos.
 - `data/processed/apps_screening.csv` — triagem e decisões manuais.
+- `data/processed/apps_in_both_stores.csv` — 69 correspondências reportadas pela triagem da Apple; 28 também têm título exato no conjunto de candidatos Apple e 38 pertencem à amostra aprovada atual. Correspondências aproximadas estão marcadas para revisão manual.
 - `data/processed/reviews_anonymized.csv` — avaliações coletadas com campos permitidos.
 - `data/processed/reviews_critical.csv` — avaliações selecionadas por nota e sentimento.
+- `data/processed/ai_share/` — cópias redigidas para revisão antes de análise assistida por IA.
+- `outputs/review_csv_audit.json` — métricas agregadas da comparação e redação; sem textos de avaliações.
 - `data/private/app_mapping.csv` e `data/private/review_checkpoint.json` — mapeamento e retomada local da coleta; não devem ser publicados.
 - `outputs/funnel_metrics.json` — contagens registradas no funil.
 - `outputs/concorrentes_brasileiros.md` — pesquisa competitiva inicial.
 
 ## 8. Próximos passos
 
-1. Reconciliar os 155 apps registrados nas métricas com os 156 IDs do CSV de triagem.
-2. Reexecutar nominalmente a busca por Oinc e pelos demais concorrentes previstos no mapa, aplicar os critérios de elegibilidade e documentar inclusões/exclusões.
+1. Reexecutar a descoberta nas lojas com a frase atual, auditar candidatos e executar coleta/filtro/perfil Apple no terminal com rede.
+2. Reconciliar os 155 apps registrados nas métricas históricas com os 156 IDs do CSV de triagem.
 3. Se a etapa analítica do artigo ainda não foi executada, modelar tópicos com BERTopic, avaliar coerência e conduzir a análise temática reflexiva prevista.
 4. Registrar parâmetros, versões de dependências e data de execução para tornar o resultado reproduzível.
 
