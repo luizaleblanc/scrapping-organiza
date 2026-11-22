@@ -1,6 +1,6 @@
-"""Etapa 1 — Busca na Google Play (Brasil) somente as strings aprovadas (top 30 cada).
+"""Etapa 1 — Busca na Google Play (Brasil; ou MARKET=us|es|mx) somente as strings aprovadas (top 30 cada).
 
-Saída: data/google_play_store/busca_e_triagem/search_hits.csv (1 linha por ocorrência string x app,
+Saída: data/brasil/google_play_store/busca_e_triagem/search_hits.csv (1 linha por ocorrência string x app,
 com metadados e descrição oficial para a triagem).
 """
 import re
@@ -27,7 +27,7 @@ def page_updated(app_id):
     google-play-scraper devolve updated=None. Retorna Unix seconds ou None."""
     try:
         html = requests.get("https://play.google.com/store/apps/details",
-                            params={"id": app_id, "hl": "pt_BR", "gl": "BR"}, timeout=30).text
+                            params={"id": app_id, "hl": "pt_BR", "gl": "BR"}, timeout=30).text  # regex em pt; data é igual em todo país
     except requests.RequestException:
         return None
     m = re.search(r"Atualizado em</div><div[^>]*>(\d{1,2}) de ([a-z]{3})\.? de (\d{4})<", html)
@@ -51,6 +51,14 @@ def fill_missing_dates(hits):
     return hits
 
 
+def page_search(term):
+    """Fallback: ids na ordem em que aparecem na página pública de busca da Play Store."""
+    html = requests.get("https://play.google.com/store/search",
+                        params={"q": term, "c": "apps", "hl": C.HL, "gl": C.GL}, timeout=30).text
+    ids = dict.fromkeys(re.findall(r"/store/apps/details\?id=([\w.]+)", html))
+    return [{"appId": i} for i in ids]
+
+
 def retry(fn, *args, **kwargs):
     for attempt in range(4):
         try:
@@ -65,7 +73,11 @@ def main():
     collected_at = datetime.now(timezone.utc).isoformat()
     details_cache, rows = {}, []
     for term_id, term in C.SEARCH_STRINGS.items():
-        results = retry(search, term, lang=C.LANG, country=C.COUNTRY, n_hits=C.RESULTS_PER_TERM)
+        try:
+            results = retry(search, term, lang=C.LANG, country=C.COUNTRY, n_hits=C.RESULTS_PER_TERM)
+        except TypeError:  # bug da biblioteca ao ler o "resultado em destaque" de algumas buscas
+            results = page_search(term)
+            print(f"  {term!r}: busca pela página pública da Play Store (fallback)")
         results = [r for r in results if r.get("appId")][: C.RESULTS_PER_TERM]
         print(f"{term_id} {term!r}: {len(results)} resultados")
         for rank, res in enumerate(results, 1):

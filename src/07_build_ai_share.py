@@ -11,15 +11,15 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config as C  # noqa: E402
-from review_redaction import redact_text  # noqa: E402
+from review_redaction import redact_person_names, redact_text  # noqa: E402
 from rules import update_metrics, write_csv  # noqa: E402
 
 
 def main():
     allowed = set(pd.read_csv(C.PATHS["mapping"], encoding="utf-8-sig").app_mask_id)
     counts = {}
-    for src, dst in [("reviews", "ai_full"), ("critical", "ai_critical"),
-                     ("as_reviews", "ai_as_full"), ("as_critical", "ai_as_critical")]:
+    # Só as críticas: a cópia redigida de TODAS as reviews não era usada por nenhuma etapa.
+    for src, dst in [("critical", "ai_critical"), ("as_critical", "ai_as_critical")]:
         if not C.PATHS[src].exists():
             print(f"{C.PATHS[src].name} não existe; pulando")
             continue
@@ -29,6 +29,7 @@ def main():
             raise SystemExit(f"{src}: app_mask_id fora da amostra {sorted(outside)}; rode as etapas 4-6 de novo.")
         counter = Counter()
         df["content"] = [redact_text(x, counter) for x in df.content.fillna("").astype(str)]
+        df["content"] = redact_person_names(df.content.tolist(), counter)  # qualquer nome de pessoa
         # Só a data (sem hora): o horário exato da review, junto com o texto, ajuda a
         # identificar quem escreveu.
         df["at"] = df["at"].astype(str).str.slice(0, 10)

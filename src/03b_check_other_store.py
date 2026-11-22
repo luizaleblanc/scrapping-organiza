@@ -2,13 +2,13 @@
 
 O critério 4 do artigo pede disponibilidade nas duas lojas, não que o app apareça no
 top 30 das strings nas duas. Para cada app elegível que não tem par na outra loja,
-procura o mesmo app pelo nome na outra loja (Brasil) e:
+procura o mesmo app pelo nome na outra loja (mesmo país da busca) e:
   - só considera resultados com a MESMA MARCA (nome-base do título);
   - aplica à versão encontrada exatamente as mesmas regras (rules.classify);
   - se elegível, acrescenta ao apps_eligible.csv da outra loja com
     discovery_source = "availability_check" (a origem fica rastreável).
 O pareamento final continua sendo feito (e conferido) na etapa 4.
-Saída extra: data/apps_nas_duas_lojas/availability_check_audit.csv
+Saída extra: data/brasil/apps_nas_duas_lojas/availability_check_audit.csv
 """
 import importlib
 import re
@@ -43,7 +43,7 @@ def featured_app_id(title):
     pelo primeiro link 'details?id=' da página pública de busca da Play Store."""
     try:
         html = requests.get("https://play.google.com/store/search", params={
-            "q": title, "c": "apps", "hl": "pt_BR", "gl": "BR"}, timeout=30).text
+            "q": title, "c": "apps", "hl": C.HL, "gl": C.GL}, timeout=30).text
     except requests.RequestException:
         return None
     m = re.search(r"/store/apps/details\?id=([\w.]+)", html)
@@ -123,7 +123,8 @@ def main():
 
     write_csv(pd.concat([gp, pd.DataFrame(add_gp)], ignore_index=True), C.PATHS["gp_eligible"])
     write_csv(pd.concat([a_s, pd.DataFrame(add_as)], ignore_index=True), C.PATHS["as_eligible"])
-    write_csv(pd.DataFrame(audit), AUDIT)
+    if C.MARKET == "br":  # o audit lista também apps excluídos; nos mercados internacionais não é gravado
+        write_csv(pd.DataFrame(audit), AUDIT)
     update_metrics("03b_availability_check", {
         "counterparts_checked": len(audit),
         "added_to_google_play_eligible": len(add_gp), "added_to_app_store_eligible": len(add_as),

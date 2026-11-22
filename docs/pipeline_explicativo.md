@@ -49,8 +49,8 @@ São sete etapas, cada uma um script em `src/`. A saída de cada uma alimenta a 
 3. **03b — Disponibilidade.** Procura cada elegível pelo nome na outra loja. A versão encontrada passa pelas mesmas regras.
 4. **04 — Cruzamento.** Pareia os apps das duas lojas em camadas: título e desenvolvedor, título, marca e, por último, revisão manual. Saída: `apps_both_stores.csv`.
 5. **05 e 05b — Reviews.** Coleta e anonimiza as reviews da Google Play e da App Store, só dos apps da amostra.
-6. **06 — Sentimento.** Mantém as reviews com nota até 3 e sentimento negativo (LeIA, escore ≤ −0,05).
-7. **07 — Cópias para IA.** Grava as versões redigidas e confere as máscaras.
+6. **06 — Sentimento.** Mantém as reviews com nota até 3 e sentimento negativo ou neutro (LeIA, escore < 0,05), como no artigo.
+7. **07 — Cópias para IA.** Grava as versões redigidas das críticas, com nomes de pessoas censurados, e confere as máscaras.
 
 ## Funil por etapa
 
@@ -138,11 +138,11 @@ As reviews são coletadas só dos 40 apps da amostra; nenhum app excluído entra
 | Apps no limite de 500 | não se aplica | 6 |
 | Apps sem avaliação em texto | nenhum | 2 |
 
-**Anonimização na ingestão.** Nome, foto e ID do avaliador nunca são gravados. Ficam só cinco colunas: app mascarado, texto, nota, idioma e data. No texto, e-mails, telefones, CPFs, URLs e @menções são substituídos por marcadores. Na App Store, título e corpo da avaliação viram um só texto.
+**Anonimização na ingestão.** Nome, foto e ID do avaliador nunca são gravados. Ficam só cinco colunas: app mascarado, texto, nota, idioma e data. No texto, e-mails, telefones, CPFs, URLs e @menções são substituídos por marcadores. No passo 7, qualquer nome de pessoa vira `[NOME]` (modelo de reconhecimento de entidades multilíngue, mais regras para "meu nome é…"). Na App Store, título e corpo da avaliação viram um só texto.
 
 **Sentimento.** As reviews com nota até 3 passam pelo LeIA, adaptação do VADER para o português. Ficam só as negativas, com escore composto até −0,05. Saíram as de texto positivo ou neutro: 14.500 na Google Play e 782 na App Store.
 
-**Cópias para IA.** O passo 7 grava cópias redigidas em `data/google_play_store/reviews_para_ia/` e `data/app_store/reviews_para_ia/` e confere que só as 40 máscaras da amostra estão presentes.
+**Cópias para IA.** O passo 7 grava cópias redigidas em `data/brasil/google_play_store/reviews_para_ia/` e `data/brasil/app_store/reviews_para_ia/` e confere que só as 40 máscaras da amostra estão presentes.
 
 ## Decisões, correções e problemas encontrados
 
@@ -171,13 +171,13 @@ Em `data/`, cada loja tem sua pasta com as mesmas três subpastas; a amostra com
 
 | Pasta | Conteúdo |
 | --- | --- |
-| `data/google_play_store/busca_e_triagem/` | busca, elegíveis e excluídos com motivo |
-| `data/google_play_store/reviews/` | reviews anonimizadas e críticas |
-| `data/google_play_store/reviews_para_ia/` | cópias redigidas para uso com IA |
-| `data/app_store/busca_e_triagem/` | busca, elegíveis e excluídos com motivo |
-| `data/app_store/reviews/` | avaliações anonimizadas e críticas |
-| `data/app_store/reviews_para_ia/` | cópias redigidas para uso com IA |
-| `data/apps_nas_duas_lojas/` | amostra final, apps de uma loja só, verificação de disponibilidade, decisões manuais |
+| `data/brasil/google_play_store/busca_e_triagem/` | busca, elegíveis e excluídos com motivo |
+| `data/brasil/google_play_store/reviews/` | reviews anonimizadas e críticas |
+| `data/brasil/google_play_store/reviews_para_ia/` | cópias redigidas para uso com IA |
+| `data/brasil/app_store/busca_e_triagem/` | busca, elegíveis e excluídos com motivo |
+| `data/brasil/app_store/reviews/` | avaliações anonimizadas e críticas |
+| `data/brasil/app_store/reviews_para_ia/` | cópias redigidas para uso com IA |
+| `data/brasil/apps_nas_duas_lojas/` | amostra final, apps de uma loja só, verificação de disponibilidade, decisões manuais |
 | `data/chave_apps_mascarados_NAO_COMPARTILHAR/` | mapeamento de APP_001 para o app real |
 | `outputs/funnel_metrics.json` | contagens de cada etapa do funil |
 

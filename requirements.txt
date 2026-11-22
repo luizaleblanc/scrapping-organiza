@@ -3,5 +3,7 @@ pandas>=2.2
 requests>=2.32
 tqdm>=4.66
 vaderSentiment>=3.3.2
+pysentimiento>=0.7  # sentimento em espanhol (passo 6, MARKET=es/mx)
 # LeIA (analisador de sentimento em português) não é instalável via pip:
 #   git clone https://github.com/rafjaa/LeIA.git vendor/LeIA
+transformers>=4.40  # censura de nomes de pessoas (NER multilíngue, passo 7); já vem com o pysentimiento

@@ -6,6 +6,7 @@
 - Checkpoint por app: se cair, rode de novo e ele continua de onde parou.
 
 Uso: python src/05_scrape_google_play_reviews.py [--max-per-app N]
+Outros idiomas: defina $env:MARKET (us, es, mx) e rode antes o 09b, que gera a lista de apps.
 """
 import argparse
 import json
@@ -34,7 +35,8 @@ def build_mapping(both):
     apps; apps novos recebem máscaras livres sorteadas."""
     old = (pd.read_csv(C.PATHS["mapping"], encoding="utf-8-sig") if C.PATHS["mapping"].exists()
            else pd.DataFrame(columns=["app_mask_id", "appId", "title"]))
-    keep = old[old.appId.isin(set(both.gp_app_id))]
+    # Mercados extras só ACRESCENTAM à chave (as apps do Brasil nunca saem dela).
+    keep = old if C.MARKET != "br" else old[old.appId.isin(set(both.gp_app_id))]
     new_apps = both[~both.gp_app_id.isin(set(keep.appId))]
     free = [f"APP_{i:03d}" for i in range(1, len(both) + len(old) + 1) if f"APP_{i:03d}" not in set(keep.app_mask_id)]
     secrets.SystemRandom().shuffle(free)
@@ -44,12 +46,21 @@ def build_mapping(both):
 
 
 def scrape(app_id, mask, max_per_app, counter):
+    """Brasil: histórico completo. Mercados internacionais: só 1, 2 e 3 estrelas (a Google
+    Play filtra por nota na origem); max_per_app vale para CADA nota."""
+    if C.MARKET == "br":
+        return scrape_star(app_id, mask, max_per_app, counter, None)
+    return [r for star in range(1, C.MAX_SCORE + 1)
+            for r in scrape_star(app_id, mask, max_per_app, counter, star)]
+
+
+def scrape_star(app_id, mask, max_per_app, counter, star):
     out, token = [], None
     while True:
         for attempt in range(4):
             try:
                 batch, token = reviews(app_id, lang=C.LANG, country=C.COUNTRY, sort=Sort.NEWEST,
-                                       count=200, continuation_token=token)
+                                       count=200, filter_score_with=star, continuation_token=token)
                 break
             except Exception:
                 if attempt == 3:
@@ -73,9 +84,10 @@ def main():
     ap.add_argument("--max-per-app", type=int, default=0, help="limite para testes (0 = todas)")
     args = ap.parse_args()
 
-    both = pd.read_csv(C.PATHS["both_stores"], encoding="utf-8-sig").sort_values("gp_app_id")
-    mapping = build_mapping(both)
-    write_csv(mapping, C.PATHS["mapping"])
+    both = pd.read_csv(C.PATHS["sample"], encoding="utf-8-sig").sort_values("gp_app_id")
+    full_mapping = build_mapping(both)
+    write_csv(full_mapping, C.PATHS["mapping"])
+    mapping = full_mapping[full_mapping.appId.isin(set(both.gp_app_id))]  # só as apps deste mercado
 
     ckpt_path = C.PATHS["checkpoint"]
     try:

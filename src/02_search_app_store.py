@@ -1,8 +1,8 @@
-"""Etapa 2 — Busca na App Store (Brasil) somente as strings aprovadas (top 30 cada).
+"""Etapa 2 — Busca na App Store (Brasil; ou MARKET=us|es|mx) somente as strings aprovadas (top 30 cada).
 
 Usa só a iTunes Search API oficial. A Apple serve apenas para busca/triagem
 (critério 4); nenhum review da App Store é coletado.
-Saída: data/app_store/busca_e_triagem/search_hits.csv
+Saída: data/brasil/app_store/busca_e_triagem/search_hits.csv
 """
 import sys
 import time

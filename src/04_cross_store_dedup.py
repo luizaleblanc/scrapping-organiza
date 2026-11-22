@@ -7,7 +7,7 @@ Camadas de matching (pareamento 1:1, melhor camada primeiro):
   normalized_brand  marca (nome-base) == e similaridade de desenvolvedor >= 0.75
   fuzzy_review      similaridade combinada >= 0.85 ou marca == com desenvolvedor
                     divergente -> só entra se aprovado em manual_match_decisions.csv
-Saídas: data/apps_nas_duas_lojas/apps_both_stores.csv (1 linha por app, base da coleta),
+Saídas: data/brasil/apps_nas_duas_lojas/apps_both_stores.csv (1 linha por app, base da coleta),
         apps_single_store_excluded.csv e manual_match_decisions.csv (para revisão).
 """
 import sys
@@ -100,7 +100,8 @@ def main():
             ["store", "app_id", "title", "developer"]],
     ]).assign(exclusion_reason="excluded_single_store_criterion_4")
     write_csv(both, C.PATHS["both_stores"])
-    write_csv(single, C.PATHS["single_store"])
+    if C.MARKET == "br":
+        write_csv(single, C.PATHS["single_store"])
     write_csv(pd.DataFrame(review, columns=["gp_app_id", "gp_title", "gp_developer", "as_track_id",
                                             "as_title", "as_developer", "score", "decision"]),
               C.PATHS["manual_matches"])

@@ -10,7 +10,7 @@ por app. É uma amostra recente, não o histórico completo (diferente da Google
 Anonimização na ingestão (igual à Google Play): autor, link e id da avaliação são
 descartados; ficam só app_mask_id (mesma máscara APP_xxx da Google Play), texto
 redigido, nota, idioma e data. Título + corpo da avaliação viram um único texto.
-Saída: data/app_store/reviews/reviews_anonymized.csv
+Saída: data/brasil/app_store/reviews/reviews_anonymized.csv
 """
 import sys
 import time
@@ -71,7 +71,7 @@ def to_row(mask, e, counter):
 
 def main():
     mapping = pd.read_csv(C.PATHS["mapping"], encoding="utf-8-sig")
-    both = pd.read_csv(C.PATHS["both_stores"], encoding="utf-8-sig")
+    both = pd.read_csv(C.PATHS["sample"], encoding="utf-8-sig")
     apps = mapping.merge(both[["gp_app_id", "as_track_id", "as_title"]], left_on="appId", right_on="gp_app_id")
     counter, rows, incomplete = Counter(), [], []
     for app in apps.itertuples():
@@ -102,7 +102,7 @@ def main():
     write_csv(df, path)
     per_app = {k: int(v) for k, v in df.app_mask_id.value_counts().sort_index().items()}
     update_metrics("05b_app_store_reviews", {
-        "source": "Apple RSS customerreviews (br, mostrecent, max 10 páginas x 50)",
+        "source": f"Apple RSS customerreviews ({C.COUNTRY}, mostrecent, max 10 páginas x 50)",
         "apps": int(len(apps)), "reviews_total": int(len(df)),
         "reviews_by_app_mask": per_app, "redactions": dict(counter),
         "incomplete_pages_last_run": incomplete,

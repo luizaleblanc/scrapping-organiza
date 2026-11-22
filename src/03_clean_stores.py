@@ -54,7 +54,8 @@ def clean_store(name, cfg):
     eligible = apps[apps.exclusion_reason.eq("")][cols].sort_values(cfg["title"])
     excluded = apps[apps.exclusion_reason.ne("")][cols + ["exclusion_reason", "audit_note"]]
     write_csv(eligible, C.PATHS[cfg["eligible"]])
-    write_csv(excluded, C.PATHS[cfg["excluded"]])
+    if C.MARKET == "br":  # mercados internacionais: motivos só nas métricas, sem arquivo de excluídos
+        write_csv(excluded, C.PATHS[cfg["excluded"]])
     counts = excluded.exclusion_reason.value_counts()
     stats = {
         "search_hits": int(len(hits)),

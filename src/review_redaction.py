@@ -12,6 +12,14 @@ REDACTION_PATTERNS = {
         r"[\s.-]\d{3,5}[\s.-]\d{4}(?!\w)"
     ),
     "handle": re.compile(r"(?<![\w.+-])@[A-Za-z0-9_][A-Za-z0-9_.-]{1,30}"),
+    # Nome que o próprio avaliador escreve ("Meu nome é Fulano de Tal", "Att. Fulano").
+    # Troca só o nome (até 5 palavras com maiúscula, aceitando de/da/do/dos/das/del/y/e).
+    "name": re.compile(
+        r"(\b(?:[Mm]eu nome (?:é|e)|[Mm]e chamo|[Mm]y name is|[Mm]e llamo|[Mm]i nombre es|"
+        r"[Aa]tt\.?|[Aa]ss\.?|[Aa]tenciosamente,?|[Aa]tentamente,?|[Ss]incerely,?|[Rr]egards,?) )"
+        r"[A-ZÁÉÍÓÚÂÊÔÃÕÇÑ][a-záéíóúâêôãõçñ'-]+"  # minúsculas depois da inicial: siglas (CPF) não contam
+        r"(?: (?:(?:de|da|do|dos|das|del|y|e) )?[A-ZÁÉÍÓÚÂÊÔÃÕÇÑ][a-záéíóúâêôãõçñ'-]+){0,4}"
+    ),
 }
 REDACTION_LABELS = {
     "email": "[EMAIL]",
@@ -19,6 +27,7 @@ REDACTION_LABELS = {
     "cpf": "[CPF]",
     "phone": "[PHONE]",
     "handle": "[HANDLE]",
+    "name": r"\g<1>[NOME]",  # mantém "Meu nome é", troca só o nome
 }
 POSSIBLE_NUMBER = re.compile(r"(?<!\d)(?:\d[ .-]{0,2}){7,10}\d(?!\d)")
 DATE_SHAPE = re.compile(r"^(?:\d{4}[.-]\d{2}[.-]\d{2}|\d{2}[.-]\d{2}[.-]\d{4})$")
@@ -67,3 +76,45 @@ def possible_number_counts(series):
         matches += row_matches
         rows += int(row_matches > 0)
     return {"matches": matches, "rows": rows}
+
+
+# ---------------------------------------------------------------------------
+# Nomes de pessoas em qualquer lugar do texto (pt, en, es): modelo de NER multilíngue.
+# Regras não pegam nome solto ("o atendente Carlos me ignorou"). O modelo às vezes marca
+# nome de app como pessoa; nesse caso censura a mais, o que não expõe ninguém.
+# ---------------------------------------------------------------------------
+NER_MODEL = "Davlan/bert-base-multilingual-cased-ner-hrl"
+NER_MIN_SCORE = 0.6
+_ner = None
+
+
+def redact_person_names(texts, counters=None, batch_size=32):
+    """Troca por [NOME] toda entidade PER encontrada. Recebe e devolve uma lista de textos."""
+    global _ner
+    if counters is None:
+        counters = {}
+    if _ner is None:
+        from transformers import pipeline
+        _ner = pipeline("ner", model=NER_MODEL, aggregation_strategy="simple")
+    texts = ["" if pd.isna(t) else str(t) for t in texts]
+    # Pedaços de até ~800 caracteres (cortados em espaço) para caber no limite do modelo
+    # e nenhum trecho de review longa ficar sem verificação.
+    pieces = []  # (índice do texto, deslocamento, trecho)
+    for i, t in enumerate(texts):
+        pos = 0
+        while pos < len(t):
+            end = len(t) if len(t) - pos <= 800 else (t.rfind(" ", pos, pos + 800) if t.rfind(" ", pos, pos + 800) > pos else pos + 800)
+            if t[pos:end].strip():
+                pieces.append((i, pos, t[pos:end]))
+            pos = end
+    results = _ner([p[2] for p in pieces], batch_size=batch_size) if pieces else []
+    spans = {}
+    for (i, off, _), ents in zip(pieces, results):
+        spans.setdefault(i, []).extend((off + e["start"], off + e["end"]) for e in ents
+                                       if e["entity_group"] == "PER" and e["score"] >= NER_MIN_SCORE)
+    out = list(texts)
+    for i, sp in spans.items():
+        for start, end in sorted(sp, reverse=True):
+            out[i] = out[i][:start] + "[NOME]" + out[i][end:]
+        counters["person_name"] = counters.get("person_name", 0) + len(sp)
+    return out

@@ -4,12 +4,12 @@ Atualizado em 22/11/2026 para a rodada atual (6 strings de busca, 40 apps presen
 
 ## Base de trabalho
 
-A análise usa os dois arquivos de reviews críticas (nota até 3 e sentimento negativo pelo LeIA, escore ≤ −0,05), em versão redigida:
+A análise usa os dois arquivos de reviews críticas (nota até 3 e sentimento negativo ou neutro pelo LeIA, escore < 0,05; nomes de pessoas censurados), em versão redigida:
 
 | Arquivo | Loja | Linhas | Apps | Nota 1 / 2 / 3 | Sem texto |
 | --- | --- | --- | --- | --- | --- |
-| `data/google_play_store/reviews_para_ia/reviews_critical_redacted.csv` | Google Play | 19.454 | 36 de 40 | 10.999 / 3.870 / 4.585 | 0 |
-| `data/app_store/reviews_para_ia/reviews_critical_redacted.csv` | App Store | 1.834 | 25 de 40 | 1.244 / 292 / 298 | 0 |
+| `data/brasil/google_play_store/reviews_para_ia/reviews_critical_redacted.csv` | Google Play | 19.454 | 36 de 40 | 10.999 / 3.870 / 4.585 | 0 |
+| `data/brasil/app_store/reviews_para_ia/reviews_critical_redacted.csv` | App Store | 1.834 | 25 de 40 | 1.244 / 292 / 298 | 0 |
 
 - **Idioma:** todo o corpus está em português (`pt`), loja Brasil. O corpus bilíngue da rodada anterior não vale mais.
 - **Apps sem reviews críticas:** 4 apps na Google Play e 15 na App Store. São apps pequenos, sem nenhuma review com nota até 3 e texto negativo. Eles ficam fora desta análise, e isso deve constar no artigo.
@@ -48,7 +48,7 @@ A IA serve para organizar evidências, sugerir códigos e resumir padrões. Ela 
 - Um dark pattern só é sugerido quando a avaliação descreve uma interação enganosa ou coercitiva concreta.
 - Se faltar evidência, use `insufficient_evidence` ou `not_a_dark_pattern`.
 
-Envie ao modelo apenas os arquivos de `data/google_play_store/reviews_para_ia/` e `data/app_store/reviews_para_ia/`, em lotes manejáveis. Preserve `app_mask_id`, a loja, a nota e o escore de sentimento. Nunca envie `appId`, título do app ou o mapeamento de `data/chave_apps_mascarados_NAO_COMPARTILHAR/`.
+Envie ao modelo apenas os arquivos de `data/brasil/google_play_store/reviews_para_ia/` e `data/brasil/app_store/reviews_para_ia/`, em lotes manejáveis. Preserve `app_mask_id`, a loja, a nota e o escore de sentimento. Nunca envie `appId`, título do app ou o mapeamento de `data/chave_apps_mascarados_NAO_COMPARTILHAR/`.
 
 A redação automática não pega todo dado pessoal. Revise uma amostra antes de enviar.
 
