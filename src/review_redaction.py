@@ -85,11 +85,12 @@ def possible_number_counts(series):
 # ---------------------------------------------------------------------------
 NER_MODEL = "Davlan/bert-base-multilingual-cased-ner-hrl"
 NER_MIN_SCORE = 0.6
+NER_LABELS = {"PER": "[NOME]", "ORG": "[MARCA]", "LOC": "[LOCAL]"}  # pessoas, marcas/empresas e lugares
 _ner = None
 
 
 def redact_person_names(texts, counters=None, batch_size=32):
-    """Troca por [NOME] toda entidade PER encontrada. Recebe e devolve uma lista de textos."""
+    """Troca pessoas por [NOME] e marcas/empresas (ORG) por [MARCA]. Recebe e devolve uma lista."""
     global _ner
     if counters is None:
         counters = {}
@@ -110,11 +111,68 @@ def redact_person_names(texts, counters=None, batch_size=32):
     results = _ner([p[2] for p in pieces], batch_size=batch_size) if pieces else []
     spans = {}
     for (i, off, _), ents in zip(pieces, results):
-        spans.setdefault(i, []).extend((off + e["start"], off + e["end"]) for e in ents
-                                       if e["entity_group"] == "PER" and e["score"] >= NER_MIN_SCORE)
+        spans.setdefault(i, []).extend((off + e["start"], off + e["end"], NER_LABELS[e["entity_group"]])
+                                       for e in ents
+                                       if e["entity_group"] in NER_LABELS and e["score"] >= NER_MIN_SCORE
+                                       and texts[i][off + e["start"]:off + e["end"]] not in ("[APP]", "APP"))
     out = list(texts)
     for i, sp in spans.items():
-        for start, end in sorted(sp, reverse=True):
-            out[i] = out[i][:start] + "[NOME]" + out[i][end:]
-        counters["person_name"] = counters.get("person_name", 0) + len(sp)
+        t = texts[i]
+        widened = set()
+        for start, end, label in sp:  # o modelo às vezes marca só parte da palavra: cobre a palavra inteira
+            while start > 0 and (t[start - 1].isalnum() or t[start - 1] in "'-"):
+                start -= 1
+            while end < len(t) and (t[end].isalnum() or t[end] in "'-"):
+                end += 1
+            widened.add((start, end, label))
+        merged = []  # junta trechos sobrepostos
+        for start, end, label in sorted(widened):
+            if merged and start <= merged[-1][1]:
+                merged[-1] = (merged[-1][0], max(end, merged[-1][1]), merged[-1][2])
+            else:
+                merged.append((start, end, label))
+        sp = merged
+        for start, end, label in sorted(sp, reverse=True):
+            out[i] = out[i][:start] + label + out[i][end:]
+            key = {"[NOME]": "person_name", "[MARCA]": "other_brand", "[LOCAL]": "place"}[label]
+            counters[key] = counters.get(key, 0) + 1
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Marcas dos apps da amostra dentro do texto ("o Mobills cobra caro" -> "o [APP] cobra caro").
+# Nomes genéricos que também são palavras comuns ficam de fora para não destruir o texto.
+# ---------------------------------------------------------------------------
+GENERIC_BRANDS = {
+    "all", "era", "origin", "wallet", "sia", "efe", "fing", "w1", "s1nc", "pierre", "monee", "expend",
+    "meus gastos", "minhas financas", "minhas economias", "gastos diarios", "gastos diarios 4", "mis gastos",
+    "finanzas personales", "spending tracker", "registro contable", "contabilidad personal",
+    "dinero y control de gastos", "ganhos e gastos", "minhas contas e despesas", "mis cuentas y gastos",
+    "despesas financas pessoais", "money manager expense budget", "assistente financeiro ia",
+    "ai personal finance tracker", "everything money", "cash coach ai", "beyond budget", "orcamento facil",
+    "presupuesto rapido", "cofrinho", "ai office", "money pro", "wealthy", "rolly", "fortuno",
+}
+_ACCENTS = {"a": "[aáàâãä]", "e": "[eéèêë]", "i": "[iíìîï]", "o": "[oóòôõö]", "u": "[uúùûü]",
+            "c": "[cç]", "n": "[nñ]", " ": r"[\s\-_.]?"}
+
+
+def brand_regex(terms):
+    """Uma regex (sem diferenciar maiúsculas e acentos) com as marcas, palavra inteira."""
+    terms = sorted({t for t in terms if t and len(t) >= 4 and t not in GENERIC_BRANDS}, key=len, reverse=True)
+    if not terms:
+        return None
+    alts = ["".join(_ACCENTS.get(ch, re.escape(ch)) for ch in t) for t in terms]
+    return re.compile(r"(?i)(?<![\w])(?:" + "|".join(alts) + r")(?![\w])")
+
+
+def redact_brands(texts, pattern, counters=None):
+    if counters is None:
+        counters = {}
+    out = []
+    for t in texts:
+        t = "" if pd.isna(t) else str(t)
+        if pattern is not None:
+            t, n = pattern.subn("[APP]", t)
+            counters["app_brand"] = counters.get("app_brand", 0) + n
+        out.append(t)
     return out
