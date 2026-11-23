@@ -1,0 +1,27 @@
+% Metodologia. Os números vêm de outputs/funnel_metrics*.json; [N] = ainda não calculado.
+% O progresso fica em docs/checklist_artigo.md.
+\section{Metodologia}
+
+\subsection{Seleção dos aplicativos e coleta}
+% TODO: strings S1--S6, critérios de elegibilidade, pareamento entre lojas (docs/pipeline_explicativo.md).
+
+\subsection{Pré-processamento}
+% TODO (Etapa 1): ainda não implementado no pipeline.
+
+\subsection{Análise de sentimento e filtro de criticidade}
+Para o português, utilizamos o LeIA; para o inglês, o VADER; para o espanhol, o \textit{pysentimiento}.
+Mantivemos as avaliações com nota igual ou inferior a três estrelas \textbf{e} sentimento negativo ou neutro
+(\textit{compound} $< 0{,}05$; no espanhol, rótulos \texttt{NEG} ou \texttt{NEU}).
+No Brasil, das 223.688 avaliações da Google Play e 5.467 da App Store, restaram 23.811 e 2.037
+\textit{avaliações críticas}, respectivamente.
+% TODO: distribuição % pos/neu/neg; N do filtro só por estrelas; checagem manual da amostra.
+Reconhecemos que relatos relevantes podem ter sido excluídos por discrepância entre sentimento e nota.
+
+\subsection{Modelagem de tópicos}
+% TODO (Etapa 3).
+
+\subsection{Inspeção manual dos tópicos}
+% TODO (Etapa 4) + tabela do funil.
+
+\subsection{Análise temática reflexiva}
+% TODO (Etapa 5).
