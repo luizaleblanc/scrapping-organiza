@@ -1,0 +1,13 @@
+﻿app_mask_id,paises,n_paises,criticas_brasil,criticas_estados_unidos,criticas_espanha,criticas_mexico
+APP_026,brasil + estados_unidos + espanha + mexico,4,11836,1396,2051,2210
+APP_023,brasil + estados_unidos + espanha + mexico,4,158,1484,954,908
+APP_039,brasil + estados_unidos + espanha + mexico,4,710,1705,1727,1780
+APP_031,brasil + espanha + mexico,3,412,,785,800
+APP_048,estados_unidos + espanha + mexico,3,,1531,875,871
+APP_020,brasil + espanha + mexico,3,675,,341,349
+APP_009,brasil + espanha + mexico,3,6,,16,17
+APP_068,espanha + mexico,2,,,2,2
+APP_065,espanha + mexico,2,,,110,99
+APP_016,brasil + mexico,2,108,,,335
+APP_025,brasil + espanha,2,2,,5,
+APP_062,espanha + mexico,2,,,190,189
