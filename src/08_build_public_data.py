@@ -11,7 +11,6 @@ Os arquivos completos ficam só na máquina da pesquisadora (ver .gitignore).
 """
 import json
 import secrets
-import shutil
 import sys
 from pathlib import Path
 
@@ -63,8 +62,7 @@ def main():
     write_csv(amostra, PUB / "amostra_40_apps_resumo.csv")
 
     # Reviews críticas: copia as versões redigidas (já sem dados do avaliador e sem hora)
-    for store, key in [("google_play_store", "ai_critical"), ("app_store", "ai_as_critical")]:
-        shutil.copy(C.PATHS[key], PUB / f"reviews_criticas_{store}.csv")
+    # As críticas públicas (em tabelas pequenas por país, loja e app) são geradas pelo 08b.
 
     m = json.loads(C.PATHS["metrics"].read_text(encoding="utf-8"))
     def strip(d):
