@@ -2,8 +2,80 @@
 % O progresso fica em docs/checklist_artigo.md.
 \section{Metodologia}
 
+Esta pesquisa replica e adapta o protocolo de mineração de avaliações de aplicativos \parencite{gencnayebi2017} proposto por \textcite{alsebayel2025} para o domínio de finanças pessoais e educação financeira. O estudo investiga aplicativos comerciais disponíveis nas duas principais lojas móveis (Google Play Store e Apple App Store) em quatro mercados e três idiomas: Brasil (português), Estados Unidos (inglês), Espanha (espanhol) e México (espanhol). Para mitigar conflito de interesse, o aplicativo em desenvolvimento no contexto aplicado desta pesquisa não integra a amostra.
+
 \subsection{Seleção dos aplicativos e coleta}
-% TODO: strings S1--S6, critérios de elegibilidade, pareamento entre lojas (docs/pipeline_explicativo.md).
+
+\textbf{Strings de busca.} Seguindo \textcite{alsebayel2025}, definimos previamente seis strings de busca (S1--S6), sem consultas por nomes de marca, preservando a mesma intenção de busca nas traduções para inglês e espanhol (Tabela~\ref{tab:strings}). Em 22 de novembro de 2026, cada string foi consultada individualmente na Google Play Store e na Apple App Store, registrando-se até os 30 primeiros resultados retornados por termo em cada loja e mercado.
+
+\begin{table}[htbp]
+\centering
+\caption{Strings de busca aplicadas na Google Play Store e na Apple App Store por mercado e idioma.}
+\label{tab:strings}
+\small
+\begin{tabular}{llll}
+\toprule
+\textbf{ID} & \textbf{Brasil (pt)} & \textbf{Estados Unidos (en)} & \textbf{Espanha e México (es)} \\
+\midrule
+S1 & \texttt{finanças} & \texttt{finance} & \texttt{finanzas} \\
+S2 & \texttt{organizador de finanças} & \texttt{finance organizer} & \texttt{organizador de finanzas} \\
+S3 & \texttt{educador de finanças} & \texttt{finance educator} & \texttt{educador de finanzas} \\
+S4 & \texttt{aplicativos financeiros} & \texttt{financial apps} & \texttt{aplicaciones financieras} \\
+S5 & \texttt{ia para finanças} & \texttt{ai for finance} & \texttt{ia para finanzas} \\
+S6 & \texttt{organizador financeiro com ia} & \texttt{ai financial organizer} & \texttt{organizador financiero con ia} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Extração e deduplicação intraloja.} Na Google Play Store, a busca e a coleta de metadados utilizaram a biblioteca \texttt{google-play-scraper}\footnote{\url{https://github.com/JoMingyu/google-play-scraper}}, com recurso à página pública de busca quando a biblioteca falha ao ler resultados em destaque e complementação da data de atualização pela página pública do aplicativo quando o campo retorna ausente. Na Apple App Store, os metadados foram obtidos pela iTunes Search API oficial. Para cada ocorrência foram registrados identificador do aplicativo, título, desenvolvedor, categoria, número de avaliações, nota média, data da última atualização, descrição oficial, URL, faixa de instalações (apenas Google Play), termo de origem e posição no ranqueamento. Entradas duplicadas entre as seis strings dentro da mesma loja foram removidas pelo identificador único (\texttt{appId} na Google Play; \texttt{trackId} na App Store), preservando-se os termos de origem e a melhor posição obtida. Ao todo, as buscas retornaram 1.246 ocorrências (632 na Google Play e 614 na App Store).
+
+\textbf{Critérios de elegibilidade.} Em conformidade com \textcite{alsebayel2025}, a triagem aplica critérios de elegibilidade em cascata: o aplicativo que falha em qualquer critério é excluído, registrando-se o primeiro motivo de exclusão de forma auditável:
+\begin{enumerate}
+    \item[(1)] \textit{Conflito de interesse:} exclui o aplicativo em desenvolvimento no contexto aplicado da pesquisa (0 exclusões).
+    \item[(2)] \textit{Categoria:} o aplicativo deve pertencer à categoria ``Finanças'' (\textit{Finance} / \textit{Finanzas}); aplicativos da categoria ``Educação'' (\textit{Education} / \textit{Educación}) são admitidos somente quando o título ou o desenvolvedor indicam explicitamente educação financeira, excluindo-se cursos ou simulados voltados a certificações profissionais e \textit{trading}. Aplicativos de produtividade, jogos e demais categorias são excluídos.
+    \item[(3)] \textit{Escopo funcional direto ao consumidor:} o aplicativo deve ser voltado a orçamento pessoal, controle de gastos ou educação financeira para indivíduos. Por meio de listas auditáveis aplicadas ao título, ao desenvolvedor e a sinais específicos da descrição oficial, excluem-se bancos e contas digitais, maquininhas de cartão e adquirentes, carteiras digitais e meios de pagamento ou remessa, plataformas de \textit{trading}, criptomoedas, corretoras e investimentos, ferramentas empresariais ou contábeis (B2B) e serviços de crédito, empréstimo ou adiantamento salarial.\footnote{Nos mercados internacionais, as listas de exclusão foram ampliadas com equivalentes em inglês e espanhol seguindo a mesma lógica aplicada ao Brasil.}
+    \item[(4)] \textit{Presença de avaliações:} o aplicativo deve possuir ao menos uma avaliação de usuário registrada na loja.
+    \item[(5)] \textit{Atualização recente:} o aplicativo deve apresentar data de atualização válida nos 12 meses anteriores à coleta (corte em 22 de novembro de 2025).
+    \item[(6)] \textit{Disponibilidade nas duas lojas:} o aplicativo deve estar disponível simultaneamente na Google Play Store e na Apple App Store no mesmo mercado.
+\end{enumerate}
+
+Na triagem intraloja dos quatro mercados, foram excluídos 687 registros únicos (290 na Google Play e 397 na App Store), principalmente por categoria fora do escopo (224, sendo 180 em outras categorias e 44 em produtividade ou jogos), \textit{trading}, criptomoedas e investimentos (127), bancos, contas digitais e maquininhas (108), ausência de avaliações (93), carteiras digitais e pagamentos (55), ferramentas empresariais e crédito (48), desatualização superior a 12 meses (23) e sinais na descrição oficial (9).
+
+\textbf{Verificação de disponibilidade e pareamento entre lojas.} Como o critério (6) exige presença do aplicativo nas duas lojas, e não necessariamente sua aparição simultânea entre os 30 primeiros resultados de busca em ambas, cada aplicativo elegível em apenas uma loja foi pesquisado pelo título na loja complementar, no mesmo mercado. Apenas correspondências com o mesmo nome-base de marca foram avaliadas pelas mesmas regras de elegibilidade em cascata, sendo incorporadas com origem rastreável (\texttt{availability\_check}) sem alterar as strings de busca. Em seguida, o pareamento 1:1 entre lojas operou em quatro camadas ordenadas por confiança: \texttt{exact} (título e desenvolvedor normalizados idênticos), \texttt{exact\_title} (título normalizado idêntico, admitindo variação de razão social), \texttt{normalized\_brand} (mesmo nome-base de marca e similaridade de desenvolvedor $\ge 0{,}75$) e \texttt{fuzzy\_review} (similaridade combinada $\ge 0{,}85$ ou mesma marca com desenvolvedor divergente), sendo esta última aceita apenas após confirmação manual. Nenhum par permaneceu pendente de revisão manual em qualquer mercado. Nos mercados internacionais, uma validação manual complementar descartou 4 aplicativos fora do escopo que haviam atravessado as regras lexicais (1 nos Estados Unidos, 1 na Espanha e 2 no México), resultando em 89 entradas aplicativo--mercado (67 aplicativos distintos, dos quais 12 figuram em mais de um mercado).
+
+\textbf{Coleta das avaliações.} As avaliações públicas foram coletadas apenas para os aplicativos da amostra pareada em cada mercado. Na Google Play Store, a coleta empregou a biblioteca \texttt{google-play-scraper}, ordenada das avaliações mais recentes para as mais antigas. No Brasil, coletou-se todo o histórico acessível pela loja (223.688 avaliações de 40 aplicativos); nos mercados internacionais, coletaram-se diretamente as avaliações de 1, 2 e 3 estrelas na origem, limitadas a até 1.000 avaliações por nota e por aplicativo (até 3.000 por aplicativo). Na Apple App Store, diferentemente de \textcite{alsebayel2025} --- que a empregaram apenas na busca e triagem ---, a loja foi mantida como fonte de avaliações por decisão das autoras, visando ampliar a comparação entre plataformas. A coleta utilizou o \textit{feed} RSS público de avaliações da Apple (ordenado por \texttt{mostrecent}), cujo limite técnico é de 10 páginas de 50 entradas (no máximo as 500 avaliações mais recentes por aplicativo), concatenando título e corpo em um único texto. Ao todo, foram coletadas 278.046 avaliações brutas (262.678 na Google Play e 15.368 na App Store), detalhadas na Tabela~\ref{tab:coleta}. Em razão do limite de recência do \textit{feed} RSS e do recorte por estrelas na Google Play fora do Brasil, os volumes e horizontes temporais diferem entre plataformas e mercados. Além disso, as lojas da Espanha e do México podem retornar avaliações em espanhol oriundas de outros países, motivo pelo qual os dados são analisados por mercado de coleta e idioma, sem inferir o país de residência do autor.
+
+\begin{table}[htbp]
+\centering
+\caption{Funil de busca, triagem, pareamento entre lojas e coleta bruta de avaliações ($N_0$) por mercado.}
+\label{tab:coleta}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+\textbf{Mercado} & \textbf{Ocorr.} & \textbf{Únicos} & \textbf{Eleg.} & \textbf{Eleg.} & \textbf{Pares} & \textbf{Amostra} & \textbf{Aval.} & \textbf{Aval.} & \textbf{Total} \\
+ & \textbf{GP / AS} & \textbf{GP / AS} & \textbf{GP}$^a$ & \textbf{AS}$^a$ & \textbf{2 lojas} & \textbf{final}$^b$ & \textbf{GP} & \textbf{AS} & \textbf{($N_0$)} \\
+\midrule
+Brasil (pt)         & 180 / 170 &  98 / 147 & 58 & 64 & 40 & 40 & 223.688 &  5.467 & 229.155 \\
+Estados Unidos (en) & 163 / 165 & 115 / 138 & 36 & 42 & 25 & 24 &  23.638 &  6.664 &  30.302 \\
+Espanha (es)        & 145 / 138 & 101 / 123 & 24 & 35 & 12 & 11 &   7.441 &    901 &   8.342 \\
+México (es)         & 144 / 141 & 106 / 122 & 34 & 29 & 16 & 14 &   7.911 &  2.336 &  10.247 \\
+\midrule
+\textbf{Total}      & \textbf{632 / 614} & \textbf{---} & \textbf{---} & \textbf{---} & \textbf{93} & \textbf{89}$^c$ & \textbf{262.678} & \textbf{15.368} & \textbf{278.046} \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\raggedright\scriptsize
+$^a$Inclui os aplicativos elegíveis incorporados na verificação cruzada de disponibilidade (\texttt{availability\_check}): Brasil (+7 GP, +18 AS), Estados Unidos (+11 GP, +7 AS), Espanha (+0 GP, +7 AS) e México (+4 GP, +5 AS).\\
+$^b$Após validação manual nos mercados internacionais (removidos 1 nos EUA, 1 na Espanha e 2 no México).\\
+$^c$Corresponde a 67 aplicativos distintos; 12 aplicativos aparecem em mais de um mercado.
+\end{table}
+
+\textbf{Anonimização, mascaramento e redação de dados.} A anonimização ocorre desde a ingestão por política de lista de permissão (\textit{allowlist}): nomes de usuário, imagens de perfil, links e identificadores das avaliações são descartados na coleta, mantendo-se apenas a máscara do aplicativo, o texto, a nota, o idioma e a data. Cada aplicativo recebe uma máscara aleatória no formato \texttt{APP\_xxx}, sorteada de maneira não alfabética e mantida consistente entre lojas e mercados; a tabela de correspondência permanece em diretório privado fora do repositório e não é compartilhada, reduzindo o viés dos pesquisadores e evitando a atribuição de práticas a aplicativos específicos \parencite{alsebayel2025}. Na redação textual, regras determinísticas substituem e-mails (\texttt{[EMAIL]}), URLs (\texttt{[URL]}), CPFs (\texttt{[CPF]}), telefones (\texttt{[PHONE]}), sequências numéricas ambíguas (\texttt{[POSSIBLE\_PHONE\_OR\_NUMBER]}), identificadores com \texttt{@} (\texttt{[HANDLE]}) e nomes próprios autodeclarados em assinaturas ou saudações (\texttt{[NOME]}). Na preparação das cópias de trabalho e compartilhamento, uma expressão regular insensível a maiúsculas e acentos substitui as marcas dos aplicativos da amostra por \texttt{[APP]} --- desconsiderando termos coincidentes com palavras de uso comum para preservar a legibilidade --- e o modelo multilíngue de reconhecimento de entidades nomeadas \texttt{Davlan/bert-base-multilingual-cased-ner-hrl}\footnote{\url{https://huggingface.co/Davlan/bert-base-multilingual-cased-ner-hrl}} (limiar de confiança $\ge 0{,}6$, com expansão para palavra inteira e segmentação de textos longos em blocos de até 800 caracteres) substitui menções a pessoas (\texttt{[NOME]}), outras organizações (\texttt{[MARCA]}) e lugares (\texttt{[LOCAL]}). Ademais, as datas são truncadas ao dia (\texttt{AAAA-MM-DD}), removendo-se o horário exato, e uma verificação automatizada impede a gravação das tabelas públicas caso detecte marcas residuais de aplicativos, identificadores diretos ou datas com hora. Como a redação automática pode apresentar falhas e não garante anonimização absoluta, os trechos eventualmente citados no artigo são parafraseados para impedir a reidentificação dos avaliadores por busca reversa.
+
+\textbf{Termos de serviço e considerações éticas.} Foram coletadas exclusivamente avaliações publicamente acessíveis. Seguindo a recomendação de \textcite{krotov2020}, a legalidade e a conformidade contratual da coleta devem ser verificadas frente aos Termos de Serviço das plataformas. Para a Google Play Store, adota-se o mesmo escopo de dados públicos de \textcite{alsebayel2025}; para a Apple App Store, embora o \textit{feed} RSS público tenha sido mantido como fonte por decisão das autoras, a interpretação dos Termos e Condições da Apple --- bem como a confirmação formal da verificação dos Termos de Serviço de ambas as plataformas --- permanece registrada como pendência ética e metodológica a ser confirmada junto à orientação antes da submissão final.
+% TODO: confirmar com a orientação a verificação formal dos Termos de Serviço da Google Play e a conformidade do uso do feed RSS público frente aos Termos e Condições da Apple antes da submissão.
 
 \subsection{Pré-processamento}
 % TODO (Etapa 1): ainda não implementado no pipeline.

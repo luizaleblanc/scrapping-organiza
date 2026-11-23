@@ -32,27 +32,55 @@ class SentimentRulesTests(unittest.TestCase):
         retained = [value for value in compounds if value < config.POSITIVE_COMPOUND]
         self.assertEqual(retained, [-1.0, 0.0, cutoff - 0.0001])
 
-    def test_main_filters_score_sentiment_spanish_labels_and_empty_text(self):
+    def test_preprocess_removes_empty_short_and_exact_duplicates_keeping_oldest(self):
+        import pandas as pd
+        rows = pd.DataFrame([
+            {"app_mask_id": "APP_001", "score": 1, "lang": "pt", "at": "2026-01-01", "content": ""},
+            {"app_mask_id": "APP_001", "score": 1, "lang": "pt", "at": "2026-01-02", "content": "   "},
+            {"app_mask_id": "APP_001", "score": 1, "lang": "pt", "at": "2026-01-03", "content": "app muito ruim"},
+            {"app_mask_id": "APP_001", "score": 1, "lang": "pt", "at": "2026-01-05", "content": "App cobra   sem avisar antes"},
+            {"app_mask_id": "APP_001", "score": 2, "lang": "pt", "at": "2026-01-04", "content": "app cobra sem avisar antes"},
+            {"app_mask_id": "APP_001", "score": 1, "lang": "pt", "at": "2026-01-06", "content": "Não consigo cancelar a assinatura"},
+        ])
+        cleaned, steps = sentiment.preprocess(rows)
+        self.assertEqual(steps, {
+            "n0_collected": 6,
+            "removed_empty": 2,
+            "removed_short_le_3_words": 1,
+            "removed_exact_duplicates": 1,
+            "n1_after_preprocessing": 2,
+        })
+        self.assertEqual(cleaned["at"].tolist(), ["2026-01-04", "2026-01-06"])
+        self.assertEqual(
+            cleaned["content_clean"].tolist(),
+            ["app cobra sem avisar antes", "não consigo cancelar a assinatura"],
+        )
+
+    def test_main_filters_score_sentiment_spanish_labels_and_preprocessing(self):
         import pandas as pd
         from unittest.mock import MagicMock
         rows = pd.DataFrame([
-            {"score": 3, "lang": "en", "content": "negative", "app_mask_id": "APP_001"},
-            {"score": 3, "lang": "en", "content": "neutral", "app_mask_id": "APP_001"},
-            {"score": 3, "lang": "en", "content": "boundary", "app_mask_id": "APP_001"},
-            {"score": 4, "lang": "en", "content": "low sentiment but high score", "app_mask_id": "APP_001"},
-            {"score": 5, "lang": "en", "content": "high score", "app_mask_id": "APP_001"},
-            {"score": 2, "lang": "en", "content": "", "app_mask_id": "APP_001"},
-            {"score": 3, "lang": "es", "content": "spanish negative", "app_mask_id": "APP_001"},
-            {"score": 3, "lang": "es", "content": "spanish neutral", "app_mask_id": "APP_001"},
-            {"score": 3, "lang": "es", "content": "spanish positive", "app_mask_id": "APP_001"},
+            {"score": 3, "lang": "en", "at": "2026-01-01", "content": "this app is very negative", "app_mask_id": "APP_001"},
+            {"score": 3, "lang": "en", "at": "2026-01-02", "content": "this app is totally neutral", "app_mask_id": "APP_001"},
+            {"score": 3, "lang": "en", "at": "2026-01-03", "content": "this app hits positive boundary", "app_mask_id": "APP_001"},
+            {"score": 4, "lang": "en", "at": "2026-01-04", "content": "low sentiment but high score", "app_mask_id": "APP_001"},
+            {"score": 5, "lang": "en", "at": "2026-01-05", "content": "high score and great app", "app_mask_id": "APP_001"},
+            {"score": 2, "lang": "en", "at": "2026-01-06", "content": "", "app_mask_id": "APP_001"},
+            {"score": 2, "lang": "en", "at": "2026-01-07", "content": "too short review", "app_mask_id": "APP_001"},
+            {"score": 3, "lang": "es", "at": "2026-01-08", "content": "esta app es muy negativa", "app_mask_id": "APP_001"},
+            {"score": 3, "lang": "es", "at": "2026-01-09", "content": "esta app es totalmente neutra", "app_mask_id": "APP_001"},
+            {"score": 3, "lang": "es", "at": "2026-01-10", "content": "esta app es muy positiva", "app_mask_id": "APP_001"},
         ])
         fake_path = MagicMock()
         fake_path.exists.return_value = True
         missing_path = MagicMock()
         missing_path.exists.return_value = False
         analyzers = {
-            "negative": -0.2, "neutral": 0.0, "boundary": config.POSITIVE_COMPOUND,
-            "": 0.0,
+            "this app is very negative": -0.2,
+            "this app is totally neutral": 0.0,
+            "this app hits positive boundary": config.POSITIVE_COMPOUND,
+            "low sentiment but high score": -0.5,
+            "high score and great app": 0.8,
         }
         analyzer = MagicMock()
         analyzer.polarity_scores.side_effect = lambda text: {"compound": analyzers[text]}
@@ -64,20 +92,38 @@ class SentimentRulesTests(unittest.TestCase):
         ]
         leia = types.ModuleType("leia")
         leia.SentimentIntensityAnalyzer = MagicMock(return_value=analyzer)
-        paths = {"reviews": fake_path, "critical": "critical.csv",
-                 "as_reviews": missing_path, "as_critical": "as_critical.csv"}
+        paths = {"reviews": fake_path, "critical": Path("critical.csv"),
+                 "as_reviews": missing_path, "as_critical": Path("as_critical.csv")}
         saved = {}
+        metrics = {}
         with patch.dict(sys.modules, {"leia": leia}), \
              patch.object(sentiment.C, "PATHS", paths), \
              patch.object(sentiment.pd, "read_csv", return_value=rows), \
              patch.object(sentiment, "SentimentIntensityAnalyzer", return_value=analyzer), \
              patch.object(sentiment, "spanish_analyzer", return_value=spanish), \
-             patch.object(sentiment, "write_csv", side_effect=lambda df, path: saved.update({path: df.copy()})), \
-             patch.object(sentiment, "update_metrics"):
+             patch.object(sentiment, "write_csv", side_effect=lambda df, path: saved.update({Path(path).name: df.copy()})), \
+             patch.object(sentiment, "update_metrics", side_effect=lambda k, v: metrics.update({k: v})):
             sentiment.main()
         result = saved["critical.csv"]
-        self.assertEqual(result.content.tolist(), ["negative", "neutral", "", "spanish negative", "spanish neutral"])
-        self.assertEqual(spanish.predict.call_args.args[0], ["spanish negative", "spanish neutral", "spanish positive"])
+        self.assertEqual(
+            result.content.tolist(),
+            [
+                "this app is very negative",
+                "this app is totally neutral",
+                "esta app es muy negativa",
+                "esta app es totalmente neutra",
+            ],
+        )
+        self.assertEqual(
+            spanish.predict.call_args.args[0],
+            ["esta app es muy negativa", "esta app es totalmente neutra", "esta app es muy positiva"],
+        )
+        self.assertEqual(metrics["06_sentiment_google_play"]["preprocessing"]["n0_collected"], 10)
+        self.assertEqual(metrics["06_sentiment_google_play"]["preprocessing"]["removed_empty"], 1)
+        self.assertEqual(metrics["06_sentiment_google_play"]["preprocessing"]["removed_short_le_3_words"], 1)
+        self.assertEqual(metrics["06_sentiment_google_play"]["preprocessing"]["n1_after_preprocessing"], 8)
+        self.assertEqual(metrics["06_sentiment_google_play"]["stars_only_le_3"], 6)
+        self.assertEqual(metrics["06_sentiment_google_play"]["critical_reviews"], 4)
 
 
 class RedactionTests(unittest.TestCase):

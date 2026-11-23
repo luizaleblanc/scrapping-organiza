@@ -44,6 +44,8 @@ RESULTS_PER_TERM = 30
 # são descartadas. No espanhol (pysentimiento): rótulo NEG ou NEU.
 MAX_SCORE = 3
 POSITIVE_COMPOUND = 0.05  # descarta compound >= 0,05
+MIN_WORDS = 3  # Etapa 1: remove avaliações com <= 3 palavras (palavra = token separado por espaço)
+SEED = 42  # semente fixa para amostragem reprodutível
 RECENCY_MONTHS = 12
 REQUEST_DELAY_SECONDS = 1.0
 APP_STORE_DELAY_SECONDS = 3.2  # Apple documenta ~20 buscas/minuto.

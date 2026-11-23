@@ -19,7 +19,7 @@ Legenda: `[x]` feito · `[~]` parcial · `[ ]` falta. Cada item tem **(A)** aná
 - [ ] (A) Converter para minúsculas, sem stopwords nem stemming.
 - [ ] (A) Registrar N0 → N1 em `outputs/funnel_metrics*.json`.
 - [ ] (B) Parágrafo de pré-processamento.
-- [ ] Decidir se o pré-processamento roda antes ou depois do filtro (o guia o coloca antes).
+- [ ] O pré-processamento roda antes do filtro.
 
 ## Etapa 2: Sentimento e filtro
 
@@ -27,7 +27,6 @@ Legenda: `[x]` feito · `[~]` parcial · `[ ]` falta. Cada item tem **(A)** aná
 - [x] (A) Limiar declarado: compound < 0,05; para es, os rótulos NEG/NEU.
 - [x] (A) Regra de **interseção**: nota ≤ 3 **E** sentimento negativo ou neutro.
 - [x] (A) Contagens: BR GP 23.811 críticas; BR AS 2.037.
-- [ ] (A) Distribuição % pos/neu/neg geral e por app (hoje só há a contagem de removidas).
 - [ ] (A) N que o filtro só por estrelas reteria (calculável: total − `removed_by_score_gt_3`).
 - [ ] (A) Checagem manual de 100 avaliações com a taxa de erro.
 - [ ] (B) Parágrafo de sentimento com a frase de limitação.
