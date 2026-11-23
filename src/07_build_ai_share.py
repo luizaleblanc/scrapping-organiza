@@ -11,8 +11,23 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config as C  # noqa: E402
-from review_redaction import redact_person_names, redact_text  # noqa: E402
+from review_redaction import brand_regex, redact_brands, redact_person_names, redact_text  # noqa: E402
 from rules import update_metrics, write_csv  # noqa: E402
+from text_norm import brand  # noqa: E402
+
+
+def app_brand_terms():
+    """Marcas (nome-base do título e do desenvolvedor) de todos os apps de todas as amostras."""
+    terms = set()
+    for f in [C.BR_BOTH_STORES, *C.DATA.glob("mercados_internacionais/*/apps_nas_duas_lojas/apps_both_stores.csv")]:
+        if f.exists():
+            d = pd.read_csv(f, encoding="utf-8-sig")
+            for col in ["gp_title", "as_title", "gp_developer", "as_developer"]:
+                terms |= {brand(x) for x in d[col].dropna()}
+    return terms
+
+
+BRANDS = brand_regex(app_brand_terms())
 
 
 def main():
@@ -29,7 +44,8 @@ def main():
             raise SystemExit(f"{src}: app_mask_id fora da amostra {sorted(outside)}; rode as etapas 4-6 de novo.")
         counter = Counter()
         df["content"] = [redact_text(x, counter) for x in df.content.fillna("").astype(str)]
-        df["content"] = redact_person_names(df.content.tolist(), counter)  # qualquer nome de pessoa
+        df["content"] = redact_brands(df.content.tolist(), BRANDS, counter)  # marcas da amostra -> [APP]
+        df["content"] = redact_person_names(df.content.tolist(), counter)  # pessoas e outras marcas
         # Só a data (sem hora): o horário exato da review, junto com o texto, ajuda a
         # identificar quem escreveu.
         df["at"] = df["at"].astype(str).str.slice(0, 10)
