@@ -3,9 +3,11 @@ __pycache__/
 .venv/
 vendor/
 logs/
+outputs/
 
-# Dados: SÓ data/publico/ vai para o GitHub (anonimizado pelo src/08_build_public_data.py).
-# Tudo o mais tem nome, ID, URL ou descrição de app, ou texto de review completo.
+# Dados: SÓ data/publico/ vai para o GitHub, com os apps mascarados (APP_xxx) e os nomes de
+# pessoas censurados. data/brasil/ e data/mercados_internacionais/ são as pastas de trabalho:
+# têm nome, ID e descrição dos apps, e as reviews brutas (texto sem censura, data com hora).
+# A chave APP_xxx -> app real fica em data/chave_apps_mascarados_NAO_COMPARTILHAR/.
 data/*
 !data/publico/
-outputs/
