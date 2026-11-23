@@ -1,73 +1,98 @@
-# Pipeline de coleta, triagem e publica??o
+# Pipeline de coleta, triagem e publicação
 
 Atualizado em 22/11/2026.
 
 ## Escopo
 
-O pipeline identifica apps de finan?as pessoais e educa??o financeira, coleta avalia??es p?blicas das lojas Google Play e App Store e prepara uma amostra de cr?ticas para an?lise. O crit?rio de cr?tica ? nota ? 3 e sentimento negativo ou neutro. As contagens ainda est?o sendo geradas; onde uma contagem de cr?ticas for necess?ria, usa-se `[N]`.
+O pipeline identifica apps de finanças pessoais e educação financeira, coleta avaliações públicas da Google Play e da App Store e prepara uma amostra de avaliações críticas para análise. Avaliação crítica é aquela com nota ≤ 3 e sentimento negativo ou neutro. As contagens ainda estão sendo geradas; onde uma contagem de críticas for necessária, usa-se `[N]`.
 
-A an?lise abrange Brasil, Estados Unidos, Espanha e M?xico. O Brasil usa `data/brasil/`. Os mercados internacionais usam `data/mercados_internacionais/estados_unidos/`, `data/mercados_internacionais/espanha/` e `data/mercados_internacionais/mexico/`. A vari?vel `MARKET` seleciona `br` (padr?o), `us`, `es` ou `mx`. Estados Unidos usam ingl?s; Espanha e M?xico usam espanhol.
+A análise abrange quatro mercados:
 
-## Strings de busca e sele??o de apps
+| Mercado | Pasta | Idioma |
+| --- | --- | --- |
+| Brasil | `data/brasil/` | português |
+| Estados Unidos | `data/mercados_internacionais/estados_unidos/` | inglês |
+| Espanha | `data/mercados_internacionais/espanha/` | espanhol |
+| México | `data/mercados_internacionais/mexico/` | espanhol |
 
-As mesmas seis inten??es de busca s?o usadas nos mercados, com tradu??es para ingl?s e espanhol. N?o s?o feitas buscas por nomes de marcas para compor a amostra.
+A variável `MARKET` seleciona o mercado: `br` (padrão), `us`, `es` ou `mx`.
 
-| ID | Brasil (pt) | Estados Unidos (en) | Espanha e M?xico (es) |
+## Strings de busca e seleção de apps
+
+Os quatro mercados usam as mesmas seis intenções de busca, traduzidas para o inglês e o espanhol. Não há buscas por nome de marca.
+
+| ID | Brasil (pt) | Estados Unidos (en) | Espanha e México (es) |
 | --- | --- | --- | --- |
-| S1 | finan?as | finance | finanzas |
-| S2 | organizador de finan?as | finance organizer | organizador de finanzas |
-| S3 | educador de finan?as | finance educator | educador de finanzas |
+| S1 | finanças | finance | finanzas |
+| S2 | organizador de finanças | finance organizer | organizador de finanzas |
+| S3 | educador de finanças | finance educator | educador de finanzas |
 | S4 | aplicativos financeiros | financial apps | aplicaciones financieras |
-| S5 | ia para finan?as | ai for finance | ia para finanzas |
+| S5 | ia para finanças | ai for finance | ia para finanzas |
 | S6 | organizador financeiro com ia | ai financial organizer | organizador financiero con ia |
 
-A triagem aplica os crit?rios em cascata; o primeiro crit?rio que falha define o motivo registrado. Inclui-se a categoria Finance/Finan?as. A categoria Educa??o s? ? aceita quando o t?tulo ou o desenvolvedor indicam educa??o financeira. Excluem-se conflito de interesse, bancos e contas digitais, maquininhas, carteiras e meios de pagamento, trading, cripto e investimentos, ferramentas empresariais, cr?dito e empr?stimos, sinais de exclus?o na descri??o oficial, apps sem avalia??es, apps sem atualiza??o nos ?ltimos 12 meses e apps sem disponibilidade nas duas lojas. As listas audit?veis est?o em `src/config.py`.
+A triagem aplica os critérios em cascata, e o primeiro critério que falha define o motivo da exclusão.
 
-A verifica??o de disponibilidade procura cada app eleg?vel na outra loja pelo nome e aplica as mesmas regras. Pares semelhantes, mas n?o id?nticos, podem ser revisados manualmente. Essa busca adicional verifica disponibilidade e n?o acrescenta termos ? tabela de strings.
+- **Incluídos:** apps da categoria Finanças (Finance). Apps da categoria Educação só entram quando o título ou o desenvolvedor indicam educação financeira.
+- **Excluídos:**
+  - conflito de interesse;
+  - bancos e contas digitais;
+  - maquininhas de cartão;
+  - carteiras e meios de pagamento;
+  - trading, cripto e investimentos;
+  - ferramentas empresariais;
+  - crédito e empréstimos;
+  - sinais de exclusão na descrição oficial;
+  - apps sem avaliações;
+  - apps sem atualização nos últimos 12 meses;
+  - apps que não estão disponíveis nas duas lojas.
 
-## Coleta das avalia??es
+As listas auditáveis estão em `src/config.py`.
 
-A coleta ? feita somente para apps eleg?veis inclu?dos na amostra pareada entre as lojas.
+A verificação de disponibilidade procura cada app elegível na outra loja pelo nome e aplica as mesmas regras. Pares parecidos, mas não idênticos, podem ser revisados manualmente. Essa busca só confirma a disponibilidade e não acrescenta termos à tabela de strings.
+
+## Coleta das avaliações
+
+A coleta é feita apenas para os apps elegíveis da amostra pareada entre as lojas.
 
 | Fonte | Brasil | Mercados internacionais |
 | --- | --- | --- |
-| Google Play | Avalia??es acess?veis pelo `google-play-scraper` | Somente 1, 2 e 3 estrelas; at? 1.000 avalia??es por nota por app |
-| App Store | Feed RSS p?blico da Apple; at? 500 avalia??es mais recentes por app | Feed RSS p?blico da Apple; at? 500 avalia??es mais recentes por app |
+| Google Play | Avaliações acessíveis pelo `google-play-scraper` | Só notas 1, 2 e 3; até 1.000 avaliações por nota e por app |
+| App Store | Feed RSS público da Apple; até 500 avaliações mais recentes por app | Feed RSS público da Apple; até 500 avaliações mais recentes por app |
 
-A App Store ? mantida como fonte de avalia??es por decis?o da pesquisadora, al?m de seu uso na busca e na verifica??o de disponibilidade. O RSS limita a amostra ?s avalia??es mais recentes e pode n?o representar todo o hist?rico. O uso dos dados tamb?m envolve risco de interpreta??o dos termos e condi??es da Apple; a pesquisadora deve confirmar com a orienta??o se o uso previsto ? permitido.
+A App Store é usada na busca e na verificação de disponibilidade e, por decisão da pesquisadora, também como fonte de avaliações. Como o RSS fornece só as avaliações mais recentes, a amostra pode não representar todo o histórico. O uso desses dados também envolve um risco de interpretação dos termos e condições da Apple, e a pesquisadora deve confirmar com a orientação se o uso previsto é permitido.
 
-Espanha e M?xico podem retornar avalia??es em espanhol que n?o correspondem exclusivamente ao pa?s da loja. Os resultados devem ser interpretados por idioma e mercado de coleta, sem presumir que cada avalia??o identifica a resid?ncia do autor.
+As lojas da Espanha e do México podem trazer avaliações em espanhol que não vêm só daquele país. Por isso, os resultados devem ser lidos por idioma e mercado de coleta, sem presumir que cada avaliação indica o país de residência do autor.
 
-## Sentimento e defini??o de cr?tica
+## Sentimento e definição de crítica
 
-Primeiro, ret?m-se notas ? 3. Em seguida, classifica-se o sentimento:
+O filtro tem duas etapas. Primeiro, ficam só as avaliações com nota ≤ 3. Depois, o sentimento é classificado conforme o idioma:
 
-- **Portugu?s:** LeIA. Ficam avalia??es com compound < `C.POSITIVE_COMPOUND` (0,05).
-- **Ingl?s:** VADER. Aplica-se o mesmo corte, compound < 0,05.
-- **Espanhol:** `pysentimiento`. Ficam os r?tulos `NEG` e `NEU`; o r?tulo `POS` ? descartado.
+- **Português:** LeIA. Ficam as avaliações com *compound* < `C.POSITIVE_COMPOUND` (0,05).
+- **Inglês:** VADER, com o mesmo corte (*compound* < 0,05).
+- **Espanhol:** `pysentimiento`. Ficam os rótulos `NEG` e `NEU`, e o rótulo `POS` é descartado.
 
-Portanto, a defini??o final ? nota ? 3 e sentimento negativo ou neutro. S? avalia??es positivas s?o removidas pelo crit?rio de sentimento. Compound igual a 0,05 j? ? positivo e sai. No espanhol, o valor compound ? apenas refer?ncia num?rica; a decis?o ? feita pelo r?tulo. Uma avalia??o sem texto n?o deve interromper o processamento.
+A definição final é, portanto, nota ≤ 3 **e** sentimento negativo ou neutro. O critério de sentimento remove só as avaliações positivas; um *compound* igual a 0,05 já conta como positivo e sai. No espanhol, o *compound* é apenas uma referência numérica, e a decisão é tomada pelo rótulo. Uma avaliação sem texto não interrompe o processamento.
 
 ## Etapas do pipeline
 
-1. **Busca e triagem (01?03):** consulta as seis strings nas duas lojas e aplica crit?rios de elegibilidade.
-2. **Disponibilidade e pareamento (03b?04):** procura apps eleg?veis na outra loja e forma a amostra comum, com revis?o manual de pares amb?guos.
-3. **Coleta e anonimiza??o inicial (05 e 05b):** coleta avalia??es das duas lojas para os apps da amostra e remove identificadores do perfil do avaliador.
-4. **Filtro de sentimento (06):** mant?m nota ? 3 e sentimento negativo ou neutro conforme idioma.
-5. **C?pias redigidas (07):** censura dados pessoais, nomes, empresas, marcas e lugares no texto, e reduz a data ao dia.
-6. **Publica??o (08b):** verifica todos os arquivos antes de gerar a pasta p?blica particionada por pa?s, loja e m?scara de app.
+1. **Busca e triagem (01–03):** consulta as seis strings nas duas lojas e aplica os critérios de elegibilidade.
+2. **Disponibilidade e pareamento (03b–04):** procura os apps elegíveis na outra loja e forma a amostra comum, com revisão manual dos pares ambíguos.
+3. **Coleta e anonimização inicial (05 e 05b):** coleta as avaliações das duas lojas para os apps da amostra e remove os identificadores do perfil do avaliador.
+4. **Filtro de sentimento (06):** mantém as avaliações com nota ≤ 3 e sentimento negativo ou neutro, conforme o idioma.
+5. **Cópias redigidas (07):** censura dados pessoais, nomes, empresas, marcas e lugares no texto e reduz a data ao dia.
+6. **Publicação (08b):** verifica todos os arquivos antes de gerar a pasta pública, dividida por país, loja e máscara de app.
 
-Para buscas, coleta e filtragem internacionais, defina `MARKET=us`, `MARKET=es` ou `MARKET=mx`. A gera??o p?blica ? executada sem um mercado selecionado para reunir os pa?ses. Os comandos detalhados e depend?ncias est?o no README.
+Para busca, coleta e filtragem internacionais, defina `MARKET=us`, `MARKET=es` ou `MARKET=mx`. A geração pública roda sem mercado selecionado, para reunir todos os países. Os comandos e as dependências estão no README.
 
 ## Censura no passo 7
 
-O passo 7 usa regras determin?sticas e o modelo NER multil?ngue `Davlan/bert-base-multilingual-cased-ner-hrl`. Os marcadores s?o:
+O passo 7 usa regras determinísticas e o modelo NER multilíngue `Davlan/bert-base-multilingual-cased-ner-hrl`. Os marcadores são:
 
 | Entidade | Marcador |
 | --- | --- |
 | Pessoa | `[NOME]` |
 | Marca de um app da amostra | `[APP]` |
-| Outra empresa ou organiza??o | `[MARCA]` |
+| Outra empresa ou organização | `[MARCA]` |
 | Lugar | `[LOCAL]` |
 | E-mail | `[EMAIL]` |
 | Telefone | `[PHONE]` |
@@ -75,27 +100,29 @@ O passo 7 usa regras determin?sticas e o modelo NER multil?ngue `Davlan/bert-bas
 | URL | `[URL]` |
 | Identificador com @ | `[HANDLE]` |
 
-As regras tamb?m capturam nomes escritos em express?es como ?meu nome ?? e assinaturas. Uma lista de marcas de apps compara os textos ?s marcas da amostra. Termos que tamb?m s?o palavras comuns, como ?era? e ?wallet?, s?o exclu?dos dessa lista para evitar substitui??es indevidas. A censura autom?tica ? conservadora, mas pode deixar identificadores n?o previstos; revise uma amostra antes de compartilhar.
+As regras também capturam nomes em expressões como “meu nome é…” e em assinaturas. Uma lista de marcas compara os textos com as marcas dos apps da amostra. Termos que também são palavras comuns, como “era” e “wallet”, ficam fora dessa lista para evitar substituições indevidas. A censura automática é conservadora, mas pode deixar passar identificadores não previstos, por isso convém revisar uma amostra antes de compartilhar.
 
-## Pasta p?blica versionada
+## Pasta pública versionada
 
-`data/publico/` ? a ?nica pasta de dados versionada. A etapa `src/08b_build_public_criticas.py` gera:
+`data/publico/` é a única pasta de dados versionada. A etapa `src/08b_build_public_criticas.py` gera:
 
 ```text
-data/publico/<pa?s>/apps.csv
- data/publico/<pa?s>/<google_play|app_store>/APP_xxx.csv
+data/publico/<país>/apps.csv
+data/publico/<país>/<google_play|app_store>/APP_xxx.csv
 ```
 
-`apps.csv` cont?m apenas a m?scara `APP_xxx`, a categoria e o n?mero de cr?ticas. Cada arquivo por loja cont?m avalia??es de uma m?scara e tem no m?ximo 1.500 linhas, para que o GitHub possa exibi-lo como tabela. Pa?ses: `brasil`, `estados_unidos`, `espanha` e `mexico`.
+- `apps.csv` contém apenas a máscara `APP_xxx`, a categoria e o número de críticas.
+- Cada arquivo por loja contém as avaliações de uma máscara, com no máximo 1.500 linhas, para que o GitHub consiga exibi-lo como tabela.
+- Os países são `brasil`, `estados_unidos`, `espanha` e `mexico`.
 
-Antes de gravar, a fun??o de checagem recusa os dados se encontrar marca de app, e-mail, URL, @, telefone, CPF ou data com hora. A etapa valida as tabelas antes de gravar os arquivos p?blicos. Os antigos `data/publico/reviews_criticas_*.csv` deixam de existir; a estrutura atual ? por pa?s, loja e m?scara.
+Antes de gravar, uma função de checagem valida as tabelas e recusa os dados se encontrar marca de app, e-mail, URL, @, telefone, CPF ou data com hora. Os antigos `data/publico/reviews_criticas_*.csv` deixaram de existir; a estrutura atual é por país, loja e máscara.
 
-A chave que relaciona `APP_xxx` a um app real fica em `data/chave_apps_mascarados_NAO_COMPARTILHAR/` e nunca deve ser publicada. As pastas de coleta, trabalho e modelos n?o s?o a sa?da p?blica.
+A chave que relaciona cada `APP_xxx` a um app real fica em `data/chave_apps_mascarados_NAO_COMPARTILHAR/` e nunca deve ser publicada. As pastas de coleta, de trabalho e de modelos não fazem parte da saída pública.
 
-## Validade e limita??es
+## Validade e limitações
 
-- **Cobertura desigual das lojas:** a App Store disponibiliza at? 500 avalia??es mais recentes por app. Nos mercados internacionais, a coleta da Google Play se limita a notas 1?3 e at? 1.000 avalia??es por nota por app.
-- **Termos da Apple:** a App Store permanece como fonte por decis?o da pesquisadora; a conformidade do uso do feed RSS deve ser confirmada com a orienta??o.
-- **Classifica??o autom?tica:** sentimento e censura podem cometer erros. No espanhol, o classificador ? `pysentimiento`, e os resultados usam os r?tulos negativos e neutros.
-- **Escopo das avalia??es:** cr?ticas p?blicas n?o representam necessariamente a experi?ncia de todos os usu?rios. Os textos permitem analisar relatos, n?o inferir causalidade ou inten??o do desenvolvedor.
-- **Censura:** a reda??o reduz risco de identifica??o, mas n?o garante anonimiza??o absoluta. N?o tente reidentificar usu?rios ou apps.
+- **Cobertura desigual das lojas:** a App Store fornece até 500 avaliações recentes por app. Nos mercados internacionais, a coleta da Google Play se limita às notas 1 a 3, com até 1.000 avaliações por nota e por app.
+- **Termos da Apple:** a App Store continua como fonte por decisão da pesquisadora, e a conformidade do uso do feed RSS deve ser confirmada com a orientação.
+- **Classificação automática:** a classificação de sentimento e a censura podem errar. No espanhol, o classificador é o `pysentimiento`, e os resultados usam os rótulos negativo e neutro.
+- **Escopo das avaliações:** críticas públicas não representam necessariamente a experiência de todos os usuários. Os textos permitem analisar relatos, mas não inferir causalidade nem intenção do desenvolvedor.
+- **Censura:** a redação reduz o risco de identificação, mas não garante anonimização absoluta. Não tente reidentificar usuários ou apps.
