@@ -146,11 +146,21 @@ Geradas na mesma execução de `src/06_filter_sentiment.py` (regra de interseç�
 
 \*Nos mercados internacionais, a Google Play foi coletada apenas para notas de 1 a 3 estrelas (`removed_by_score_gt_3 = 0`). Além disso, observou-se na execução que `mx/google_play` compartilha grande parte das avaliações em espanhol já presentes em `es/google_play` (apenas 456 textos únicos novos em `mx/google_play` além dos 6.876 de `es/google_play`); considerar deduplicação entre ES e MX caso o BERTopic seja rodado por idioma (`es`).
 
+### 3.4. Auditoria manual do filtro de sentimento (`06b_manual_sentiment_check`)
+
+Realizada em `data/checagem_manual_sentimento_100.csv` (`seed = 42`, pontuada por `src/06b_manual_sentiment_check.py --score` e gravada em `outputs/funnel_metrics.json`):
+
+- **Amostra (100 avaliações):** 50 retidas como `critica` + 50 descartadas como `removida_positiva` (nota $\le 3$), estratificadas em 34 `pt` (LeIA), 33 `en` (VADER) e 33 `es` (`pysentimiento`, sem duplicatas entre ES e MX), sendo 70 Google Play e 30 App Store.
+- **Resultado global:** `40/100` erros (**40,0%**), com forte assimetria entre os estratos:
+  - **Falsos positivos entre retidas como críticas:** `6/50` (**12,0%**, isto é, **88,0% de precisão** no corpus crítico que segue para o BERTopic).
+  - **Falsos negativos entre removidas por sentimento positivo (nota $\le 3$):** `34/50` (**68,0%**), confirmando empiricamente a limitação de exclusão de relatos críticos com tom polido, misto ou irônico.
+- **Por idioma/classificador:** `pt` (LeIA) `11/34` (**32,35%**); `es` (`pysentimiento`) `12/33` (**36,36%**); `en` (VADER) `17/33` (**51,52%**).
+- **Por loja:** Google Play `26/70` (**37,14%**); App Store `14/30` (**46,67%**).
+
 ---
 
 ## 4. Próximos passos imediatos (para continuidade do artigo)
 
-1. **Obrigatório antes do BERTopic (Passo 0 de `prompt_codex.md`):** como `src/06_filter_sentiment.py` agora aplica o pré-processamento antes do filtro de criticidade, reexecutar `src/07_build_ai_share.py` (para `br`, `us`, `es` e `mx`) e em seguida `python src/08b_build_public_criticas.py` (sem `MARKET`), atualizando as cópias redigidas (`reviews_critical_redacted.csv`) e `data/publico/` com o novo $N_2$ (`51.763` avaliações críticas no total).
-2. **Checagem manual de sentimento (Etapa 2):** preencher a coluna `e_critica_de_fato (s/n)` nos arquivos `checagem_manual_sentimento.csv` (`seed=42`, já gerados para todos os 4 mercados e 2 lojas), calcular a taxa de erro e substituir `[N]\%` na subseção *Análise de sentimento e filtro de criticidade* em `artigo/secoes/metodologia.tex`.
-3. **Etapa 3 (BERTopic):** seguir `docs/guia_artigo/prompt_codex.md`, lembrando de verificar a sobreposição entre Espanha e México na Google Play ao consolidar o corpus em espanhol (`es`).
-4. **Pendências de orientação:** confirmar a verificação formal dos Termos de Serviço (Google Play e Apple RSS) e fechar as decisões em aberto da Etapa 3 (modelagem por idioma vs. conjunta) e Etapa 5 (referencial dedutivo).
+1. **Obrigatório antes do BERTopic (Passo 0 de `prompt_codex.md`):** concluir `src/07_build_ai_share.py br us es mx` → `src/10_build_country_folders.py` → `src/08b_build_public_criticas.py` (em andamento) para atualizar `reviews_critical_redacted.csv` e `data/publico/` com o novo $N_2$ (`51.763` avaliações críticas no total).
+2. **Etapa 3 (BERTopic):** seguir `docs/guia_artigo/prompt_codex.md`, lembrando de verificar a sobreposição entre Espanha e México na Google Play ao consolidar o corpus em espanhol (`es`).
+3. **Pendências de orientação:** confirmar a verificação formal dos Termos de Serviço (Google Play e Apple RSS) e fechar as decisões em aberto da Etapa 3 (modelagem por idioma vs. conjunta) e Etapa 5 (referencial dedutivo).

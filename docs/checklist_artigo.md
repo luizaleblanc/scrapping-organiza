@@ -10,8 +10,7 @@ Legenda: `[x]` feito · `[~]` parcial · `[ ]` falta. Cada item tem **(A)** aná
 - [x] (A) Coleta: BR com 223.688 (GP) + 5.467 (AS) avaliações de 40 apps; também US, ES e MX ([outputs/](../outputs/)).
 - [x] (A) Mascaramento `APP_xxx` e redação de dados pessoais ([src/07](../src/07_build_ai_share.py), [src/review_redaction.py](../src/review_redaction.py)).
 - [x] (B) Seção "Seleção de apps e coleta" em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex) (com referências em [`artigo/referencias.bib`](../artigo/referencias.bib)).
-- [x] (B) Declarar os Termos de Serviço e a ética da coleta (Google Play e Apple RSS): parágrafo "Termos de serviço e considerações éticas" em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex), com dados públicos sem autenticação, intervalo entre requisições, limites de volume, uso acadêmico, minimização dos dados e a ambiguidade dos termos declarada como limitação.
-- [ ] Orientação aprova a redação sobre os Termos de Serviço (remover o `% TODO (orientação)` depois da aprovação).
+- [x] (B) Declarar os Termos de Serviço e a ética da coleta (Google Play e Apple RSS): parágrafo "Termos de serviço e considerações éticas" em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex), com dados públicos sem autenticação, intervalo entre requisições, limites de volume, uso acadêmico, minimização dos dados e a ambiguidade dos termos declarada como limitação
 
 ## Etapa 1: Pré-processamento
 
@@ -29,8 +28,8 @@ Legenda: `[x]` feito · `[~]` parcial · `[ ]` falta. Cada item tem **(A)** aná
 - [x] (A) Regra de **interseção**: nota ≤ 3 **E** sentimento negativo ou neutro.
 - [x] (A) Contagens pós-pré-processamento: BR `22.316` GP / `2.020` AS; US `12.188` / `1.398`; ES `6.305` / `282`; MX `6.735` / `519` (total `51.763` críticas em [outputs/](../outputs/)).
 - [x] (A) N que o filtro só por estrelas reteria (`stars_only_le_3` em [src/06](../src/06_filter_sentiment.py): BR `31.507` GP / `2.595` AS; US `21.952` / `2.574`; ES `6.876` / `299`; MX `7.327` / `545`; total `73.675`).
-- [ ] (A) Checagem manual de 100 avaliações com a taxa de erro (amostras `checagem_manual_sentimento.csv` com `seed=42` geradas para os 4 mercados e 2 lojas; falta revisão humana e cálculo da taxa de erro).
-- [~] (B) Parágrafo de sentimento com a frase de limitação (redigido com Tabela `tab:sentimento` e referências em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex); falta apenas substituir `[N]\%` pela taxa de erro após a checagem manual).
+- [x] (A) Checagem manual de 100 avaliações com a taxa de erro ([`data/checagem_manual_sentimento_100.csv`](../data/checagem_manual_sentimento_100.csv), [src/06b_manual_sentiment_check.py](../src/06b_manual_sentiment_check.py), `06b_manual_sentiment_check` em [outputs/funnel_metrics.json](../outputs/funnel_metrics.json): `seed=42`, erro global `40,0%` [40/100]; apenas `12,0%` de falsos positivos entre críticas [6/50; precisão `88,0%`] vs. `68,0%` de falsos negativos entre removidas positivas [34/50]; por idioma: `pt` `32,35%`, `es` `36,36%`, `en` `51,52%`).
+- [x] (B) Parágrafo de sentimento com a frase de limitação (concluído com Tabela `tab:sentimento`, taxa de erro da checagem manual e referências em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex)).
 
 ## Etapa 3: BERTopic
 
