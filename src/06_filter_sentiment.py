@@ -64,12 +64,30 @@ def label_counts(labels):
     return {k: {"n": int(vc.get(k, 0)), "pct": round(100 * vc.get(k, 0) / total, 2)} for k in ("pos", "neu", "neg")}
 
 
-def main():
-    try:
-        from leia import SentimentIntensityAnalyzer as LeIA
-    except ImportError as exc:
-        raise SystemExit("LeIA não encontrado. Rode: git clone https://github.com/rafjaa/LeIA.git vendor/LeIA") from exc
-    pt, en, es = LeIA(), SentimentIntensityAnalyzer(), None
+def predict_spanish(es, texts, cache=None):
+    """Classifica textos em espanhol preservando a ordem original.
+
+    Para lotes grandes (> 64), deduplica e ordena por comprimento antes da
+    inferência (evita padding excessivo nos lotes de 32 do DataCollator) e
+    reaproveita predições idênticas via `cache`. O resultado é idêntico.
+    """
+    if len(texts) <= 64 and cache is None:
+        return es.predict(texts)
+    if cache is None:
+        cache = {}
+    missing = sorted({t for t in texts if t not in cache}, key=len)
+    if missing:
+        chunk = 512
+        for i in range(0, len(missing), chunk):
+            part = missing[i:i + chunk]
+            for t, pred in zip(part, es.predict(part)):
+                cache[t] = pred
+            done = min(i + chunk, len(missing))
+            print(f"  [pysentimiento] {done}/{len(missing)} textos únicos classificados", flush=True)
+    return [cache[t] for t in texts]
+
+
+def run_market(pt, en, es, es_cache):
     for store, src, dst in [("google_play", "reviews", "critical"), ("app_store", "as_reviews", "as_critical")]:
         if not C.PATHS[src].exists():
             print(f"[{store}] sem arquivo de reviews ({C.PATHS[src].name}); pulando")
@@ -88,7 +106,7 @@ def main():
         df.loc[comp <= NEG_COMPOUND, "sentiment"] = "neg"
         if is_es.any():
             es = es or spanish_analyzer()
-            preds = es.predict(df.loc[is_es, "content"].astype(str).tolist())
+            preds = predict_spanish(es, df.loc[is_es, "content"].astype(str).tolist(), es_cache)
             df.loc[is_es, "compound"] = [p.probas["POS"] - p.probas["NEG"] for p in preds]
             df.loc[is_es, "sentiment"] = [p.output.lower() for p in preds]
 
@@ -122,8 +140,28 @@ def main():
             "manual_check_sample": {"seed": SEED, "critical": min(SAMPLE_N, len(critical)),
                                     "removed_positive": min(SAMPLE_N, len(removed_pos))},
         })
-        print(f"[{store}] {pre['n0_collected']} coletadas -> {pre['n1_after_preprocessing']} após pré-proc. "
-              f"-> {len(low)} nota <= 3 -> {len(critical)} críticas")
+        print(f"[{C.MARKET}/{store}] {pre['n0_collected']} coletadas -> {pre['n1_after_preprocessing']} após pré-proc. "
+              f"-> {len(low)} nota <= 3 -> {len(critical)} críticas", flush=True)
+    return es
+
+
+def main():
+    try:
+        from leia import SentimentIntensityAnalyzer as LeIA
+    except ImportError as exc:
+        raise SystemExit("LeIA não encontrado. Rode: git clone https://github.com/rafjaa/LeIA.git vendor/LeIA") from exc
+    pt, en, es = LeIA(), SentimentIntensityAnalyzer(), None
+    markets = [a for a in sys.argv[1:] if a in C.MARKETS]
+    if not markets:
+        run_market(pt, en, es, None)
+        return
+    import importlib
+    import os
+    es_cache = {}
+    for m in markets:
+        os.environ["MARKET"] = m
+        importlib.reload(C)
+        es = run_market(pt, en, es, es_cache)
 
 
 if __name__ == "__main__":
