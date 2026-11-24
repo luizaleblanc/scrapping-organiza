@@ -30,13 +30,13 @@ def app_brand_terms():
 BRANDS = brand_regex(app_brand_terms())
 
 
-def main():
+def run_market(ner_cache=None):
     allowed = set(pd.read_csv(C.PATHS["mapping"], encoding="utf-8-sig").app_mask_id)
     counts = {}
     # Só as críticas: a cópia redigida de TODAS as reviews não era usada por nenhuma etapa.
     for src, dst in [("critical", "ai_critical"), ("as_critical", "ai_as_critical")]:
         if not C.PATHS[src].exists():
-            print(f"{C.PATHS[src].name} não existe; pulando")
+            print(f"[{C.MARKET}] {C.PATHS[src].name} não existe; pulando", flush=True)
             continue
         df = pd.read_csv(C.PATHS[src], encoding="utf-8-sig")
         outside = set(df.app_mask_id) - allowed
@@ -45,15 +45,29 @@ def main():
         counter = Counter()
         df["content"] = [redact_text(x, counter) for x in df.content.fillna("").astype(str)]
         df["content"] = redact_brands(df.content.tolist(), BRANDS, counter)  # marcas da amostra -> [APP]
-        df["content"] = redact_person_names(df.content.tolist(), counter)  # pessoas e outras marcas
+        df["content"] = redact_person_names(df.content.tolist(), counter, ner_cache=ner_cache)  # pessoas e outras marcas
         # Só a data (sem hora): o horário exato da review, junto com o texto, ajuda a
         # identificar quem escreveu.
         df["at"] = df["at"].astype(str).str.slice(0, 10)
         cols = ["app_mask_id", "content", "score", "lang", "at"] + (["compound"] if "compound" in df else [])
         write_csv(df[cols], C.PATHS[dst])
         counts[dst] = {"rows": int(len(df)), "apps": int(df.app_mask_id.nunique()), "redactions": dict(counter)}
-        print(f"{C.PATHS[dst]}: {len(df)} linhas, {df.app_mask_id.nunique()} apps")
+        print(f"[{C.MARKET}] {C.PATHS[dst]}: {len(df)} linhas, {df.app_mask_id.nunique()} apps", flush=True)
     update_metrics("07_ai_share", counts)
+
+
+def main():
+    markets = [a for a in sys.argv[1:] if a in C.MARKETS]
+    if not markets:
+        run_market(None)
+        return
+    import importlib
+    import os
+    ner_cache = {}
+    for m in markets:
+        os.environ["MARKET"] = m
+        importlib.reload(C)
+        run_market(ner_cache)
 
 
 if __name__ == "__main__":

@@ -89,8 +89,13 @@ NER_LABELS = {"PER": "[NOME]", "ORG": "[MARCA]", "LOC": "[LOCAL]"}  # pessoas, m
 _ner = None
 
 
-def redact_person_names(texts, counters=None, batch_size=32):
-    """Troca pessoas por [NOME] e marcas/empresas (ORG) por [MARCA]. Recebe e devolve uma lista."""
+def redact_person_names(texts, counters=None, batch_size=32, ner_cache=None):
+    """Troca pessoas por [NOME], empresas (ORG) por [MARCA] e lugares (LOC) por [LOCAL].
+
+    Para lotes grandes (> 64 trechos), deduplica e ordena trechos por comprimento
+    antes de chamar o pipeline NER (reduz padding em CPU) e opcionalmente reaproveita
+    predições de trechos idênticos via `ner_cache`.
+    """
     global _ner
     if counters is None:
         counters = {}
@@ -108,7 +113,23 @@ def redact_person_names(texts, counters=None, batch_size=32):
             if t[pos:end].strip():
                 pieces.append((i, pos, t[pos:end]))
             pos = end
-    results = _ner([p[2] for p in pieces], batch_size=batch_size) if pieces else []
+    if not pieces:
+        results = []
+    elif len(pieces) <= 64 and ner_cache is None:
+        results = _ner([p[2] for p in pieces], batch_size=batch_size)
+    else:
+        cache = ner_cache if ner_cache is not None else {}
+        missing = sorted({p[2] for p in pieces if p[2] not in cache}, key=len)
+        if missing:
+            chunk = 1024
+            for k in range(0, len(missing), chunk):
+                part = missing[k:k + chunk]
+                for txt, ents in zip(part, _ner(part, batch_size=batch_size)):
+                    cache[txt] = ents
+                done = min(k + chunk, len(missing))
+                if len(missing) > chunk:
+                    print(f"  [NER] {done}/{len(missing)} trechos únicos processados", flush=True)
+        results = [cache[p[2]] for p in pieces]
     spans = {}
     for (i, off, _), ents in zip(pieces, results):
         spans.setdefault(i, []).extend((off + e["start"], off + e["end"], NER_LABELS[e["entity_group"]])
