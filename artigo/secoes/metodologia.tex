@@ -78,16 +78,71 @@ $^c$Corresponde a 67 aplicativos distintos; 12 aplicativos aparecem em mais de u
 % TODO: confirmar com a orientação a verificação formal dos Termos de Serviço da Google Play e a conformidade do uso do feed RSS público frente aos Termos e Condições da Apple antes da submissão.
 
 \subsection{Pré-processamento}
-% TODO (Etapa 1): ainda não implementado no pipeline.
+
+Em conformidade com o protocolo adotado, o pré-processamento é aplicado \textbf{antes} da análise de sentimento e do filtro por estrelas, sempre sobre uma cópia dos dados, mantendo-se intacto o conjunto bruto coletado ($N_0$). Como unidade textual, definimos \textit{palavra} como sequência de caracteres delimitada por espaços em branco. O procedimento executa quatro operações sequenciais em cada mercado e loja: (1) remoção de avaliações com texto vazio após a supressão de espaços nas extremidades; (2) remoção de avaliações com três ou menos palavras ($\le 3$), por conterem informação insuficiente para a modelagem de tópicos; (3) geração de uma versão normalizada do texto em minúsculas com espaços padronizados, \textbf{sem} remoção de \textit{stopwords} nem \textit{stemming}, preservando o contexto semântico exigido pelos \textit{embeddings} na etapa de modelagem de tópicos; e (4) remoção de duplicatas exatas sobre o texto normalizado dentro de cada loja, retendo-se a ocorrência cronologicamente mais antiga. Para preservar sinais de ênfase lexical (como uso de letras maiúsculas) explorados pelo LeIA e pelo VADER, a análise de sentimento da etapa seguinte incide sobre o texto original das avaliações retidas em $N_1$.
+
+No Brasil, das 223.688 avaliações coletadas na Google Play, foram removidas 158 avaliações vazias, 67.507 com três ou menos palavras e 5.739 duplicatas exatas, restando 150.284 avaliações ($N_1$); na App Store, das 5.467 coletadas, foram removidas 0 vazias, 315 curtas e 16 duplicatas, restando 5.136 avaliações (155.420 no total). Nos Estados Unidos, restaram 21.952 avaliações na Google Play (de 23.638 coletadas) e 6.451 na App Store (de 6.664), totalizando 28.403 avaliações. Na Espanha, restaram 6.876 avaliações na Google Play (de 7.441) e 866 na App Store (de 901), somando 7.742 avaliações; no México, restaram 7.327 na Google Play (de 7.911) e 2.195 na App Store (de 2.336), totalizando 9.522 avaliações. No conjunto dos quatro mercados, das 278.046 avaliações brutas ($N_0$), foram removidas 170 avaliações vazias, 70.999 com três ou menos palavras e 5.790 duplicatas exatas (76.959 remoções), resultando em 201.087 avaliações pré-processadas ($N_1$), conforme detalhado na Tabela~\ref{tab:preprocessamento}.
+
+\begin{table}[htbp]
+\centering
+\caption{Funil de pré-processamento ($N_0 \to N_1$) por mercado e loja.}
+\label{tab:preprocessamento}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Mercado / Loja} & \textbf{Brutas ($N_0$)} & \textbf{Vazias} & \textbf{$\le 3$ pal.} & \textbf{Duplicatas} & \textbf{Restantes ($N_1$)} \\
+\midrule
+Brasil --- Google Play         & 223.688 & 158 & 67.507 & 5.739 & 150.284 \\
+Brasil --- App Store           &   5.467 &   0 &    315 &    16 &   5.136 \\
+Estados Unidos --- Google Play &  23.638 &   2 &  1.664 &    20 &  21.952 \\
+Estados Unidos --- App Store   &   6.664 &   0 &    212 &     1 &   6.451 \\
+Espanha --- Google Play        &   7.441 &   5 &    556 &     4 &   6.876 \\
+Espanha --- App Store          &     901 &   0 &     33 &     2 &     866 \\
+México --- Google Play         &   7.911 &   5 &    575 &     4 &   7.327 \\
+México --- App Store           &   2.336 &   0 &    137 &     4 &   2.195 \\
+\midrule
+\textbf{Total}                 & \textbf{278.046} & \textbf{170} & \textbf{70.999} & \textbf{5.790} & \textbf{201.087} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Análise de sentimento e filtro de criticidade}
-Para o português, utilizamos o LeIA; para o inglês, o VADER; para o espanhol, o \textit{pysentimiento}.
-Mantivemos as avaliações com nota igual ou inferior a três estrelas \textbf{e} sentimento negativo ou neutro
-(\textit{compound} $< 0{,}05$; no espanhol, rótulos \texttt{NEG} ou \texttt{NEU}).
-No Brasil, das 223.688 avaliações da Google Play e 5.467 da App Store, restaram 23.811 e 2.037
-\textit{avaliações críticas}, respectivamente.
-% TODO: distribuição % pos/neu/neg; N do filtro só por estrelas; checagem manual da amostra.
-Reconhecemos que relatos relevantes podem ter sido excluídos por discrepância entre sentimento e nota.
+
+Para identificar relatos críticos sobre o conjunto pré-processado ($N_1$), aplicamos classificadores adequados ao idioma de cada mercado: o LeIA\footnote{\url{https://github.com/rafjaa/LeIA}}, adaptação léxica do VADER para o português \parencite{pereira2021}, no Brasil; o VADER \parencite{hutto2014}, nos Estados Unidos; e o \textit{pysentimiento} \parencite{perez2021}, baseado no modelo \texttt{robertuito-sentiment-analysis}, na Espanha e no México. No LeIA e no VADER, adotaram-se os limiares padrão do índice \textit{compound}: valores $\ge 0{,}05$ indicam sentimento positivo, valores $\le -0{,}05$ indicam sentimento negativo e valores no intervalo intermediário ($-0{,}05 < \textit{compound} < 0{,}05$) indicam sentimento neutro. No \textit{pysentimiento}, a decisão utiliza diretamente o rótulo previsto (\texttt{POS}, \texttt{NEU} ou \texttt{NEG}).
+
+Seguindo \textcite{alsebayel2025}, aplicamos uma regra de \textbf{interseção}: foram retidas somente as avaliações com nota igual ou inferior a três estrelas ($\le 3$) \textbf{e} sentimento negativo ou neutro (\textit{compound} $< 0{,}05$ em português e inglês; rótulos \texttt{NEG} ou \texttt{NEU} em espanhol), descartando-se as avaliações classificadas como positivas. A Tabela~\ref{tab:sentimento} apresenta a distribuição de polaridade sobre $N_1$, o volume que seria retido por um filtro baseado apenas na nota em estrelas e o total de \textit{avaliações críticas} ($N_2$) obtido pela combinação. No conjunto dos quatro mercados, o filtro apenas por estrelas reteria 73.675 avaliações (excluindo 127.412 com nota $> 3$); a interseção com o sentimento descartou ainda 21.912 avaliações positivas, resultando em 51.763 \textit{avaliações críticas} ($N_2$): 24.336 no Brasil (22.316 Google Play e 2.020 App Store), 13.586 nos Estados Unidos (12.188 e 1.398), 6.587 na Espanha (6.305 e 282) e 7.254 no México (6.735 e 519).\footnote{Ressalta-se que, como a coleta na Google Play dos mercados internacionais já filtrou notas de 1 a 3 estrelas na origem, a proporção de avaliações negativas nesses recortes não é diretamente comparável à do Brasil ou da App Store; além disso, nos aplicativos presentes tanto na Espanha quanto no México, há sobreposição de avaliações em espanhol na Google Play.}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribuição de sentimento em $N_1$ e filtro de criticidade ($N_1 \to N_2$) por mercado e loja.}
+\label{tab:sentimento}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrrrrrr}
+\toprule
+\textbf{Mercado / Loja} & \textbf{$N_1$} & \textbf{Pos. (\%)} & \textbf{Neu. (\%)} & \textbf{Neg. (\%)} & \textbf{Nota $\le 3$} & \textbf{Pos. rem.} & \textbf{Críticas ($N_2$)} \\
+\midrule
+Brasil --- GP         & 150.284 & 68{,}50 & 10{,}52 & 20{,}98 & 31.507 &  9.191 & 22.316 \\
+Brasil --- AS         &   5.136 & 50{,}31 &  7{,}50 & 42{,}19 &  2.595 &    575 &  2.020 \\
+EUA --- GP$^a$        &  21.952 & 44{,}48 & 18{,}43 & 37{,}09 & 21.952 &  9.764 & 12.188 \\
+EUA --- AS            &   6.451 & 71{,}48 &  7{,}81 & 20{,}71 &  2.574 &  1.176 &  1.398 \\
+Espanha --- GP$^a$    &   6.876 &  8{,}30 & 25{,}12 & 66{,}58 &  6.876 &    571 &  6.305 \\
+Espanha --- AS        &     866 & 55{,}77 & 11{,}43 & 32{,}79 &    299 &     17 &    282 \\
+México --- GP$^a$     &   7.327 &  8{,}08 & 25{,}07 & 66{,}85 &  7.327 &    592 &  6.735 \\
+México --- AS         &   2.195 & 62{,}60 & 11{,}75 & 25{,}65 &    545 &     26 &    519 \\
+\midrule
+\textbf{Total}        & \textbf{201.087} & \textbf{---} & \textbf{---} & \textbf{---} & \textbf{73.675} & \textbf{21.912} & \textbf{51.763} \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\raggedright\scriptsize
+$^a$Coletadas na Google Play apenas para notas de 1 a 3 estrelas; portanto, todas as avaliações em $N_1$ possuem nota $\le 3$.
+\end{table}
+
+Para auditar a qualidade da classificação automática, foram geradas amostras aleatórias reprodutíveis (\texttt{seed = 42}) contendo até 100 avaliações retidas como críticas e até 100 avaliações com nota $\le 3$ descartadas por sentimento positivo em cada mercado e loja. A taxa de erro verificada nessa checagem manual foi de [N]\%.
+% TODO: preencher [N]% com a taxa de erro após a revisão humana dos arquivos checagem_manual_sentimento.csv.
+Reconhecemos que relatos relevantes podem ter sido excluídos por discrepância entre o sentimento atribuído automaticamente e a nota em estrelas, sobretudo em textos irônicos ou mistos.
 
 \subsection{Modelagem de tópicos}
 % TODO (Etapa 3).
