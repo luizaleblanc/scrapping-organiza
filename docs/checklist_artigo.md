@@ -10,7 +10,8 @@ Legenda: `[x]` feito · `[~]` parcial · `[ ]` falta. Cada item tem **(A)** aná
 - [x] (A) Coleta: BR com 223.688 (GP) + 5.467 (AS) avaliações de 40 apps; também US, ES e MX ([outputs/](../outputs/)).
 - [x] (A) Mascaramento `APP_xxx` e redação de dados pessoais ([src/07](../src/07_build_ai_share.py), [src/review_redaction.py](../src/review_redaction.py)).
 - [x] (B) Seção "Seleção de apps e coleta" em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex) (com referências em [`artigo/referencias.bib`](../artigo/referencias.bib)).
-- [~] (B) Declarar a verificação dos Termos de Serviço (Google Play e Apple RSS), que ainda depende de confirmação com a orientação (declaração redigida com `% TODO` em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex); aguarda confirmação final da orientação).
+- [x] (B) Declarar os Termos de Serviço e a ética da coleta (Google Play e Apple RSS): parágrafo "Termos de serviço e considerações éticas" em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex), com dados públicos sem autenticação, intervalo entre requisições, limites de volume, uso acadêmico, minimização dos dados e a ambiguidade dos termos declarada como limitação.
+- [ ] Orientação aprova a redação sobre os Termos de Serviço (remover o `% TODO (orientação)` depois da aprovação).
 
 ## Etapa 1: Pré-processamento
 
