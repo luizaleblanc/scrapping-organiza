@@ -19,6 +19,7 @@ def load_script(name, filename):
 
 
 sentiment = load_script("filter_sentiment", "06_filter_sentiment.py")
+manual_check = load_script("manual_sentiment_check", "06b_manual_sentiment_check.py")
 # The public script imports step 7 for its brand pattern. Stub that module so
 # importing the check cannot inspect any project data files.
 sys.modules["07_build_ai_share"] = types.SimpleNamespace(BRANDS=None)
@@ -212,6 +213,44 @@ class PublicCheckTests(unittest.TestCase):
     def test_rejects_datetime(self):
         with self.assertRaisesRegex(SystemExit, "data com hora"):
             public.check(self.frame(at="2024-01-02 10:30:00"), "teste")
+
+
+class ManualSentimentCheckTests(unittest.TestCase):
+    def test_sample_stratified_builds_100_rows_balanced_by_lang_and_group(self):
+        import pandas as pd
+        rows = []
+        for lang, market in (("pt", "br"), ("en", "us"), ("es", "es")):
+            for grupo in ("critica", "removida_positiva"):
+                for store in ("google_play", "app_store"):
+                    for i in range(25):
+                        rows.append({
+                            "market": market, "lang_group": lang, "store": store, "grupo": grupo,
+                            "app_mask_id": "APP_001", "score": 2, "sentiment": "neg" if grupo == "critica" else "pos",
+                            "compound": -0.3 if grupo == "critica" else 0.4,
+                            "content": f"avaliacao {lang} {grupo} {store} numero {i}",
+                        })
+        sheet = manual_check.sample_stratified(pd.DataFrame(rows))
+        self.assertEqual(len(sheet), 100)
+        self.assertEqual(sheet["grupo"].value_counts().to_dict(), {"critica": 50, "removida_positiva": 50})
+        self.assertEqual(sheet["lang_group"].value_counts().to_dict(), {"pt": 34, "en": 33, "es": 33})
+        self.assertTrue((sheet["store"] == "app_store").sum() >= 18)
+
+    def test_compute_error_metrics_counts_fp_fn_and_rejects_incomplete(self):
+        import pandas as pd
+        col = manual_check.ANSWER_COL
+        df = pd.DataFrame([
+            {"lang_group": "pt", "store": "google_play", "grupo": "critica", col: "s"},
+            {"lang_group": "pt", "store": "google_play", "grupo": "critica", col: "n"},  # FP
+            {"lang_group": "en", "store": "app_store", "grupo": "removida_positiva", col: "n"},
+            {"lang_group": "en", "store": "app_store", "grupo": "removida_positiva", col: "s"},  # FN
+        ])
+        m = manual_check.compute_error_metrics(df)
+        self.assertEqual(m["overall"], {"n": 4, "errors": 2, "error_rate_pct": 50.0})
+        self.assertEqual(m["false_positives_in_critical"], {"n": 2, "errors": 1, "error_rate_pct": 50.0})
+        self.assertEqual(m["false_negatives_in_removed_positive"], {"n": 2, "errors": 1, "error_rate_pct": 50.0})
+        df.loc[0, col] = ""
+        with self.assertRaisesRegex(ValueError, "1 linha"):
+            manual_check.compute_error_metrics(df)
 
 
 if __name__ == "__main__":
