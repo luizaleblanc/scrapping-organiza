@@ -159,8 +159,50 @@ Realizada em `data/checagem_manual_sentimento_100.csv` (`seed = 42`, pontuada po
 
 ---
 
-## 4. Próximos passos imediatos (para continuidade do artigo)
+## 4. Etapa 3 — Modelagem de tópicos (BERTopic) e preparação da Etapa 4
 
-1. **Obrigatório antes do BERTopic (Passo 0 de `prompt_codex.md`):** concluir `src/07_build_ai_share.py br us es mx` → `src/10_build_country_folders.py` → `src/08b_build_public_criticas.py` (em andamento) para atualizar `reviews_critical_redacted.csv` e `data/publico/` com o novo $N_2$ (`51.763` avaliações críticas no total).
-2. **Etapa 3 (BERTopic):** seguir `docs/guia_artigo/prompt_codex.md`, lembrando de verificar a sobreposição entre Espanha e México na Google Play ao consolidar o corpus em espanhol (`es`).
-3. **Pendências de orientação:** confirmar a verificação formal dos Termos de Serviço (Google Play e Apple RSS) e fechar as decisões em aberto da Etapa 3 (modelagem por idioma vs. conjunta) e Etapa 5 (referencial dedutivo).
+### 4.1. Sincronização prévia das cópias redigidas e `data/publico/`
+
+Antes de executar o BERTopic, foram atualizados todos os mercados para o novo funil pós-pré-processamento ($N_2 = 51.763$):
+- `src/07_build_ai_share.py` (Brasil `22.316` GP / `2.020` AS; EUA `12.188` / `1.398`; Espanha `6.305` / `282`; México `6.735` / `519`);
+- `src/10_build_country_folders.py` (pastas privadas por país e `apps_em_varios_paises.csv`, `12` aplicativos compartilhados);
+- `src/08b_build_public_criticas.py` (`data/publico/` regenerado para os 4 países e 2 lojas, aprovado em todas as travas contra vazamento).
+
+### 4.2. Decisões metodológicas, hiperparâmetros e versões (`src/11_bertopic.py`)
+
+- **Entrada segura:** exclusivamente `reviews_critical_redacted.csv` (Google Play + App Store unidas por idioma), com `review_id` estável (`R00001`–`R51763`) em ordem determinística de mercado, loja, máscara, data e texto.
+- **Modelagem por idioma (decisão registrada):** modelagem separada para **`pt`**, **`en`** e **`es`** (mantida opção `--juntos`), evitando que a língua domine a projeção UMAP/HDBSCAN e preservando palavras-chave semanticamente coerentes em cada idioma.
+- **Deduplicação intermercados e tratamento de marcadores:** na união de Espanha e México (`es`), foram removidas **`6.300` duplicatas exatas** compartilhadas na Google Play; na entrada dos *embeddings* e vetorização, marcadores de censura (`[NOME]`, `[APP]`, `[MARCA]`, `[LOCAL]` etc.) são retirados temporariamente (mantendo o texto redigido intacto nas saídas) e o texto vai em minúsculas sem remoção de *stopwords* nem *stemming* (`1` avaliação em `pt` ficou vazia após remover marcadores e saiu). Entrada única total: **`45.462` avaliações**.
+- **Hiperparâmetros e versões salvos em `outputs/funnel_metrics.json` (`11_bertopic_{pt,en,es}`):**
+  - Embeddings: `paraphrase-multilingual-MiniLM-L12-v2` (`sentence-transformers` `6.3.0`)
+  - UMAP (`umap-learn` `0.6.0`): `n_neighbors=15`, `n_components=5`, `min_dist=0.0`, `metric="cosine"`, `random_state=42`
+  - HDBSCAN (`hdbscan` `0.8.44`): `min_cluster_size=15`, `min_samples=None` (padrão = `15`), `metric="euclidean"`, `cluster_selection_method="eom"`, `prediction_data=True`
+  - BERTopic `0.17.4` (`Python` `3.14.4`): `nr_topics=None`, `top_n_words=10`
+  - `CountVectorizer` (`scikit-learn` `1.9.1`): *stopwords* gramaticais por idioma (`196` `pt`, `157` `en`, `180` `es`) aplicadas **somente** na extração de palavras-chave (c-TF-IDF)
+  - Coerência $c_v$ (Röder et al., 2015): implementação direta em `NumPy` `2.5.5` (`roder2015_numpy`, janela deslizante de 110 tokens e NPMI indireta sobre as 10 palavras-chave), adotada pela indisponibilidade de wheel do `gensim` para Python 3.14 no Windows
+  - Visualizações interativas: `plotly` `7.2.0`
+
+### 4.3. Resultados por idioma e funil acumulado ($N_0 \to N_4$)
+
+| Idioma (mercados) | Redigidas | Dup. intermercados / vazias | Entrada única | Tópicos ($T$) | Outliers ($-1$) | % Outliers | $N_3$ = $N_4$ | Clusters $< 15$ | $c_v$ média (mediana) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| Português (BR) | 24.336 | 0 / 1 | 24.335 | 116 | 13.824 | 56,81% | 10.511 | 0 | 0,4689 (0,4536) |
+| Inglês (EUA) | 13.586 | 0 / 0 | 13.586 | 98 | 6.526 | 48,03% | 7.060 | 0 | 0,4664 (0,4305) |
+| Espanhol (ES + MX) | 13.841 | 6.300 / 0 | 7.541 | 46 | 2.875 | 38,12% | 4.666 | 0 | 0,4594 (0,4396) |
+| **Total** | **51.763** | **6.300 / 1** | **45.462** | **260** | **23.225** | **51,09%** | **22.237** | **0** | **—** |
+
+**Artefatos privados gerados em `data/topicos/{pt,en,es}/`:**
+- `review_topics.csv` (todas as avaliações com `review_id`, metadados, `content` redigido, `topic` e `probability`)
+- `topic_info.csv` (`topic`, `n`, 10 `palavras_chave`, `c_v`)
+- `representative_docs.csv` (até 5 avaliações representativas por tópico ordenadas por similaridade de cosseno ao centroide)
+- `intertopic_map.html` e `similarity_matrix.html` (mapas interativos para inspeção visual)
+- `triagem_topicos.csv` (planilha da Etapa 4 sem tópico `-1`, com 3 exemplos por tópico e colunas `decisao`, `categoria_exclusao` e `motivo` vazias para preenchimento humano)
+
+---
+
+## 5. Próximos passos imediatos (Etapa 4 em diante)
+
+1. **Definir categorias de exclusão e realizar a triagem humana (Etapa 4):** inspecionar `data/topicos/{pt,en,es}/triagem_topicos.csv` junto aos mapas `intertopic_map.html` e `similarity_matrix.html`, preencher `decisao` (`manter`/`excluir`), `categoria_exclusao` e `motivo`, e submeter uma amostra à revisão de um segundo pesquisador para calcular concordância.
+2. **Fechar $N_5$ no LaTeX:** após a triagem humana, substituir os dois `[N]` de exclusões temáticas e $N_5$ em `artigo/secoes/metodologia.tex` (`\subsection{Inspeção manual dos tópicos}` e Tabela `tab:funil`).
+3. **Etapa 5 (Análise Temática Reflexiva):** definir o referencial dedutivo (ontologia de Gray et al., 2024; taxonomia de requisitos; ou duas camadas) antes de codificar o corpus final $N_5$.
+4. **Pendência de orientação:** confirmar a redação de Termos de Serviço (`% TODO` em `artigo/secoes/metodologia.tex`) antes da submissão.

@@ -33,22 +33,22 @@ Legenda: `[x]` feito · `[~]` parcial · `[ ]` falta. Cada item tem **(A)** aná
 
 ## Etapa 3: BERTopic
 
-- [ ] Decidir se cada mercado ou idioma é modelado separadamente ou em conjunto ([protocolo](protocolo_codificacao_qualitativa.md)).
-- [ ] (A) Script `src/11_bertopic.py` com embeddings multilíngues e `random_state=42`.
-- [ ] (A) Hiperparâmetros e versões salvos em `outputs/`.
-- [ ] (A) Exportar tópicos, palavras-chave, avaliações representativas, mapa e matriz.
-- [ ] (A) Coerência c_v por tópico.
-- [ ] (B) Parágrafo do BERTopic.
+- [x] Decidir se cada mercado ou idioma é modelado separadamente ou em conjunto (decisão: **separado por idioma** — `pt`, `en`, `es` — com deduplicação de `6.300` duplicatas exatas ES/MX na Google Play; opção `--juntos` mantida em [src/11_bertopic.py](../src/11_bertopic.py); documentado em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex) e [`docs/instrucoes_artigo.md`](instrucoes_artigo.md)).
+- [x] (A) Script [src/11_bertopic.py](../src/11_bertopic.py) com embeddings multilíngues (`paraphrase-multilingual-MiniLM-L12-v2`) e `random_state=42` (testado em [tests/test_review_rules.py](../tests/test_review_rules.py); dependências em [requirements.txt](../requirements.txt)).
+- [x] (A) Hiperparâmetros e versões salvos em [`outputs/funnel_metrics.json`](../outputs/funnel_metrics.json) (`11_bertopic_pt`, `11_bertopic_en`, `11_bertopic_es`).
+- [x] (A) Exportar tópicos, palavras-chave, avaliações representativas, mapa e matriz (`data/topicos/{pt,en,es}/`: `review_topics.csv`, `topic_info.csv`, `representative_docs.csv`, `intertopic_map.html`, `similarity_matrix.html`).
+- [x] (A) Coerência c_v por tópico (`roder2015_numpy`, 10 palavras-chave: `pt` `0,4689` [116 tópicos], `en` `0,4664` [98 tópicos], `es` `0,4594` [46 tópicos]; gravado em `topic_info.csv` e [`outputs/funnel_metrics.json`](../outputs/funnel_metrics.json)).
+- [x] (B) Parágrafo do BERTopic (redigido com Tabela `tab:bertopic` e referências `grootendorst2022`, `egger2022`, `roder2015` em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex) e [`artigo/referencias.bib`](../artigo/referencias.bib)).
 
 ## Etapa 4: Inspeção dos tópicos
 
-- [ ] (A) Outliers (−1) removidos e N registrado.
-- [ ] (A) Clusters < 15 removidos, com n e c_v média.
-- [ ] (A) Planilha de triagem com decisão e motivo.
+- [x] (A) Outliers (−1) removidos e N registrado (`23.225` outliers: `pt` `13.824` [56,81%], `en` `6.526` [48,03%], `es` `2.875` [38,12%] → `N3 = 22.237`; [src/11_bertopic.py](../src/11_bertopic.py), [`outputs/funnel_metrics.json`](../outputs/funnel_metrics.json)).
+- [x] (A) Clusters < 15 removidos, com n e c_v média (`0` clusters / `0` avaliações devido a `min_cluster_size = 15` no HDBSCAN → `N4 = 22.237`; [`outputs/funnel_metrics.json`](../outputs/funnel_metrics.json)).
+- [~] (A) Planilha de triagem com decisão e motivo (`data/topicos/{pt,en,es}/triagem_topicos.csv` geradas com `116`, `98` e `46` tópicos e 3 exemplos cada; colunas `decisao`, `categoria_exclusao` e `motivo` em branco aguardando triagem humana).
 - [ ] Definir as categorias de exclusão conforme a pergunta de pesquisa.
 - [ ] (A) Revisão por um segundo pesquisador e concordância.
 - [ ] (A) Funil fechando até N5.
-- [ ] (B) Parágrafo e tabela do funil.
+- [~] (B) Parágrafo e tabela do funil (redigidos até `N4` com Tabela `tab:funil` em [`artigo/secoes/metodologia.tex`](../artigo/secoes/metodologia.tex); exclusões temáticas e `N5` ficam como `[N]` + `% TODO` até concluir a triagem humana).
 
 ## Etapa 5: Análise temática
 
