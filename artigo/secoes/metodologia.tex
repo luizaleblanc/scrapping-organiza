@@ -143,10 +143,67 @@ $^a$Coletadas na Google Play apenas para notas de 1 a 3 estrelas; portanto, toda
 Para auditar a qualidade da classificação automática, construímos uma amostra aleatória estratificada e reprodutível de 100 avaliações (\texttt{seed = 42}), composta por 50 avaliações retidas como críticas e 50 avaliações com nota $\le 3$ descartadas por sentimento positivo, distribuídas entre os três idiomas (34 em português, 33 em inglês e 33 em espanhol, sem duplicatas entre Espanha e México) e entre as duas lojas (70 da Google Play e 30 da App Store). A checagem manual identificou taxa de erro global de 40{,}0\% (40/100) na amostra balanceada, revelando forte assimetria entre os dois estratos: entre as avaliações retidas como críticas houve apenas 12{,}0\% de falsos positivos (6/50; precisão de 88{,}0\%), ao passo que entre as avaliações com nota $\le 3$ descartadas por sentimento positivo ocorreram 68{,}0\% de falsos negativos (34/50). Por idioma, a taxa de erro foi de 32{,}35\% em português (11/34, LeIA), 36{,}36\% em espanhol (12/33, \textit{pysentimiento}) e 51{,}52\% em inglês (17/33, VADER); por loja, de 37{,}14\% na Google Play (26/70) e 46{,}67\% na App Store (14/30). Esses resultados indicam que o filtro por interseção garante alta precisão no corpus crítico retido para a modelagem de tópicos, mas confirmam empiricamente que relatos relevantes podem ser excluídos por discrepância entre o sentimento atribuído automaticamente e a nota em estrelas, sobretudo em textos mistos, polidos ou irônicos.
 
 \subsection{Modelagem de tópicos}
-% TODO (Etapa 3).
+
+Dado o volume e a natureza não estruturada do corpus crítico, utilizamos o BERTopic \parencite{grootendorst2022,egger2022}, que combina \textit{embeddings} contextuais, redução de dimensionalidade via UMAP, agrupamento baseado em densidade via HDBSCAN e extração de palavras-chave por TF-IDF baseado em classes (c-TF-IDF). Diferentemente de abordagens de \textit{bag-of-words}, como o LDA, o BERTopic preserva o contexto semântico das avaliações. Adotamos a modelagem \textbf{separada por idioma} (português, inglês e espanhol), unindo em cada idioma as cópias redigidas da Google Play e da App Store com um identificador estável por avaliação (\texttt{R00001}--\texttt{R51763}), de modo a impedir que diferenças linguísticas dominem a geometria dos agrupamentos e a preservar a interpretabilidade das palavras-chave em cada língua. Na consolidação do corpus em espanhol (Espanha e México), removemos 6.300 duplicatas exatas compartilhadas entre as lojas Google Play dos dois mercados (mesmo aplicativo, loja, data, nota e texto redigido), evitando duplicidade artificial nos agrupamentos. Além disso, os marcadores de censura (\texttt{[NOME]}, \texttt{[APP]}, \texttt{[MARCA]}, \texttt{[LOCAL]} e demais rótulos) foram suprimidos temporariamente apenas na entrada de \textit{embeddings} e vetorização (com texto em minúsculas, sem remoção de \textit{stopwords} nem \textit{stemming} nos \textit{embeddings}), preservando-se os textos redigidos originais nos arquivos exportados; nesse passo, 1 avaliação em português ficou vazia e foi descartada, totalizando 45.462 avaliações únicas modeladas (24.335 em português, 13.586 em inglês e 7.541 em espanhol).
+
+O número de tópicos não foi pré-definido (\texttt{nr\_topics = None}). Em todos os idiomas, empregamos o modelo multilíngue de \textit{embeddings} \texttt{paraphrase-multilingual-MiniLM-L12-v2} (\texttt{sentence-transformers} 6.3.0), UMAP (\texttt{umap-learn} 0.6.0) com \texttt{n\_neighbors = 15}, \texttt{n\_components = 5}, \texttt{min\_dist = 0{,}0}, \texttt{metric = "cosine"} e semente fixa (\texttt{random\_state = 42}), HDBSCAN (\texttt{hdbscan} 0.8.44) com \texttt{min\_cluster\_size = 15}, \texttt{min\_samples = None} (padrão equivalente a \texttt{min\_cluster\_size}), \texttt{metric = "euclidean"}, \texttt{cluster\_selection\_method = "eom"} e \texttt{prediction\_data = True}, e \texttt{BERTopic} 0.17.4 (\texttt{Python} 3.14.4). Na representação das 10 palavras-chave por tópico via c-TF-IDF (\texttt{CountVectorizer}, \texttt{scikit-learn} 1.9.1), aplicamos listas de \textit{stopwords} gramaticais específicas de cada idioma (196 termos em português, 157 em inglês e 180 em espanhol), sem afetar os \textit{embeddings}. Para avaliar a interpretabilidade dos tópicos, calculamos a coerência $c_v$ \parencite{roder2015} por tópico sobre as 10 palavras-chave (janela deslizante booleana de 110 tokens e similaridade de cosseno sobre vetores NPMI indiretos, implementada em NumPy 2.5.5 em razão da indisponibilidade de binário do \texttt{gensim} para Python 3.14). O modelo identificou 260 tópicos no total: 116 em português ($c_v$ média $= 0{,}4689$), 98 em inglês ($c_v$ média $= 0{,}4664$) e 46 em espanhol ($c_v$ média $= 0{,}4594$), resumidos na Tabela~\ref{tab:bertopic}. Para o material suplementar, foram exportados por idioma a tabela completa de tópicos, palavras-chave e $c_v$, até cinco avaliações representativas por tópico (selecionadas por similaridade de cosseno ao centroide), o mapa interativo de distância intertópicos e a matriz de similaridade (\texttt{plotly} 7.2.0).
+
+\begin{table}[htbp]
+\centering
+\caption{Resultados da modelagem de tópicos com BERTopic por idioma (\texttt{random\_state = 42}).}
+\label{tab:bertopic}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+\textbf{Idioma} & \textbf{Entrada} & \textbf{Tópicos} & \textbf{Outliers} & \textbf{Outliers} & \textbf{Após out.} & \textbf{Clusters} & \textbf{$c_v$} & \textbf{$c_v$} \\
+ & \textbf{única} & \textbf{($T$)} & \textbf{($-1$)} & \textbf{(\%)} & \textbf{($N_3$ = $N_4$)} & \textbf{$< 15$} & \textbf{média} & \textbf{mediana} \\
+\midrule
+Português (BR)       & 24.335 & 116 & 13.824 & 56{,}81 & 10.511 & 0 & 0{,}4689 & 0{,}4536 \\
+Inglês (EUA)         & 13.586 &  98 &  6.526 & 48{,}03 &  7.060 & 0 & 0{,}4664 & 0{,}4305 \\
+Espanhol (ES + MX)$^a$ & 7.541 &  46 &  2.875 & 38{,}12 &  4.666 & 0 & 0{,}4594 & 0{,}4396 \\
+\midrule
+\textbf{Total}       & \textbf{45.462} & \textbf{260} & \textbf{23.225} & \textbf{51{,}09} & \textbf{22.237} & \textbf{0} & \textbf{---} & \textbf{---} \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\raggedright\scriptsize
+$^a$Após remoção de 6.300 duplicatas exatas compartilhadas entre Espanha e México na Google Play (13.841 redigidas $\to$ 7.541 únicas). Em português, 1 avaliação ficou vazia após supressão dos marcadores de censura (24.336 $\to$ 24.335).
+\end{table}
 
 \subsection{Inspeção manual dos tópicos}
-% TODO (Etapa 4) + tabela do funil.
+
+Inspecionamos a saída do modelo removendo inicialmente as 23.225 avaliações classificadas como \textit{outliers} no tópico $-1$ (13.824 em português, 6.526 em inglês e 2.875 em espanhol), sem aplicação de \texttt{reduce\_outliers} para não forçar avaliações heterogêneas em agrupamentos temáticos, resultando em 22.237 avaliações agrupadas ($N_3$). Como o parâmetro \texttt{min\_cluster\_size = 15} do HDBSCAN já impôs o corte mínimo de 15 avaliações por agrupamento, 0 clusters ficaram abaixo desse limiar (0 avaliações removidas; $N_4 = 22.237$). Os 260 tópicos restantes (116 em português, 98 em inglês e 46 em espanhol) foram exportados em planilhas de triagem contendo identificador do tópico, volume, 10 palavras-chave, três avaliações representativas e coerência $c_v$, para avaliação manual conjunta com o mapa de distância intertópicos e a matriz de similaridade.
+Foram excluídos tópicos referentes a [N] avaliações em categorias fora do escopo, resultando no corpus final de [N] avaliações ($N_5$).
+% TODO (Etapa 4): preencher categorias de exclusão, concordância da revisão por segundo pesquisador e N5 após a triagem humana das planilhas triagem_topicos.csv (pt, en, es).
+A Tabela~\ref{tab:funil} sintetiza o funil completo de redução do corpus da coleta bruta às etapas concluídas.
+
+\begin{table}[htbp]
+\centering
+\caption{Funil de filtragem e redução do corpus de avaliações ($N_0 \to N_5$).}
+\label{tab:funil}
+\small
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Etapa} & \textbf{$N$ antes} & \textbf{Removidos} & \textbf{$N$ depois} \\
+\midrule
+Coleta bruta ($N_0$)                                      & ---     & ---     & 278.046 \\
+Pré-processamento ($N_0 \to N_1$)$^a$                     & 278.046 &  76.959 & 201.087 \\
+Filtro de sentimento + estrelas ($N_1 \to N_2$)$^b$       & 201.087 & 149.324 &  51.763 \\
+Deduplicação intermercados ES/MX e marcadores$^c$         &  51.763 &   6.301 &  45.462 \\
+Outliers do BERTopic (tópico $-1$; $\to N_3$)             &  45.462 &  23.225 &  22.237 \\
+Clusters pequenos ($< 15$ avaliações; $\to N_4$)          &  22.237 &       0 &  22.237 \\
+Exclusões temáticas (triagem manual; $\to N_5$)           &  22.237 &     [N] &     [N] \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\raggedright\scriptsize
+$^a$170 vazias, 70.999 com $\le 3$ palavras e 5.790 duplicatas exatas.\\
+$^b$127.412 com nota $> 3$ e 21.912 com nota $\le 3$ descartadas por sentimento positivo.\\
+$^c$6.300 duplicatas exatas compartilhadas entre Espanha e México na Google Play e 1 texto vazio em português após supressão dos marcadores de censura.
+\end{table}
 
 \subsection{Análise temática reflexiva}
 % TODO (Etapa 5).
