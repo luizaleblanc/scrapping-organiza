@@ -1,23 +1,22 @@
 ﻿app_mask_id,score,content,lang,at,compound
-APP_028,3,"It doesn't make sense to me once all expenses are below zero and all incomes are above zero, it should be obvious. I think the idea of an overview chart would be for example a day with your salary/income and then it would be decreasing gradually as you spend money. That would make our balance health more visible as the time goes.  And most of the time the decimal value is ignored.",pt,2013-11-25,0.0
-APP_028,2,"Please, Portuguese version.",pt,2013-11-25,0.0
-APP_028,1,"Bonitinha mas ordinária. Bugs nos relatórios,  na edição de datas, não retorna para o mês corrente nos relatórios, nao agrupa por categorias,  não projeta no mês os gastos semanais fixos.  Vou manter instalado para aguardar correções, se demorar,  desinstalo.",pt,2013-11-25,-0.8807
-APP_028,3,Falta opção para: 1. RENOMEAR categorias  2. deixar saldo negativo (relacionado à banco) 3. tradução pt-BR ou portugues O app tem visual lindo e prático!!  Após as alterações darei 5 estrelas e recomendarei aos amigos!,pt,2013-11-25,-0.6571
-APP_028,3,Provide the Portuguese version. Please!,pt,2013-11-25,0.0
-APP_028,3,"Funciona bem. Estou procurando alguma função que faça o calculo das entradas e saidas, porem ainda não encontrei nenhuma.",pt,2013-11-25,-0.0258
-APP_028,2,Could have portuguese version. Thanks,pt,2013-11-25,0.0
 APP_028,3,You guys should put a calculator in the application.,pt,2013-11-25,0.0
+APP_028,2,Could have portuguese version. Thanks,pt,2013-11-25,0.0
+APP_028,3,"Funciona bem. Estou procurando alguma função que faça o calculo das entradas e saidas, porem ainda não encontrei nenhuma.",pt,2013-11-25,-0.0258
+APP_028,3,Provide the Portuguese version. Please!,pt,2013-11-25,0.0
+APP_028,3,Falta opção para: 1. RENOMEAR categorias  2. deixar saldo negativo (relacionado à banco) 3. tradução pt-BR ou portugues O app tem visual lindo e prático!!  Após as alterações darei 5 estrelas e recomendarei aos amigos!,pt,2013-11-25,-0.6571
+APP_028,1,"Bonitinha mas ordinária. Bugs nos relatórios,  na edição de datas, não retorna para o mês corrente nos relatórios, nao agrupa por categorias,  não projeta no mês os gastos semanais fixos.  Vou manter instalado para aguardar correções, se demorar,  desinstalo.",pt,2013-11-25,-0.8807
+APP_028,3,"It doesn't make sense to me once all expenses are below zero and all incomes are above zero, it should be obvious. I think the idea of an overview chart would be for example a day with your salary/income and then it would be decreasing gradually as you spend money. That would make our balance health more visible as the time goes.  And most of the time the decimal value is ignored.",pt,2013-11-25,0.0
 APP_028,3,"Simples e bonito, mas falta a versão em português",pt,2013-11-29,-0.2144
 APP_028,3,Falta a tradução para o português e a opção de editar os ícones.,pt,2013-11-30,-0.4404
-APP_028,2,Não consegue exportar... Porque o nome do aquivo fica como se fossem várias pastas (por causa da data) e o programa não encontra a pasta pra exportar. Além disso não mostra o montante atual quando você separa por mês (não exibe o saldo do mês anterior pra acumular no montante).,pt,2013-12-03,-0.5423
 APP_028,3,An awesome application but have little problems when using cents if it does not complete an integer then it is simply ignored in the end ends up not having the total accuracy and Graphics.,pt,2013-12-03,0.0
+APP_028,2,Não consegue exportar... Porque o nome do aquivo fica como se fossem várias pastas (por causa da data) e o programa não encontra a pasta pra exportar. Além disso não mostra o montante atual quando você separa por mês (não exibe o saldo do mês anterior pra acumular no montante).,pt,2013-12-03,-0.5423
 APP_028,3,Só falta uma tradução para português.  E ter uma cauculadora no próprio programa,pt,2013-12-06,-0.4404
 APP_028,3,"not opening anymore, please fix this",pt,2014-01-22,0.0
-APP_028,1,Nao tem em  portugues-br!,pt,2014-01-30,-0.3595
-APP_028,2,Don't have version in [MARCA]!!!,pt,2014-01-30,0.0
-APP_028,3,Falta estar em português. Atualizem para Pt BR.,pt,2014-01-30,-0.4404
-APP_028,2,"Não é em português e leva tempo para se interpretar o sentido, dentro do aplicativo, que eles dão os termos do ""inglês contábil"" empregado. Atravessada essa dificuldade, os gráficos são bons entrada e exposições de dados bem legíveis.",pt,2014-01-30,-0.4588
 APP_028,1,Deveria ser em português né... 눈_눈,pt,2014-01-30,0.0
+APP_028,2,"Não é em português e leva tempo para se interpretar o sentido, dentro do aplicativo, que eles dão os termos do ""inglês contábil"" empregado. Atravessada essa dificuldade, os gráficos são bons entrada e exposições de dados bem legíveis.",pt,2014-01-30,-0.4588
+APP_028,3,Falta estar em português. Atualizem para Pt BR.,pt,2014-01-30,-0.4404
+APP_028,2,Don't have version in [MARCA]!!!,pt,2014-01-30,0.0
+APP_028,1,Nao tem em  portugues-br!,pt,2014-01-30,-0.3595
 APP_028,1,"Fez uma atualização hoje e me pede pra comprar a versão full, sendo que já a tenho! E apareceram ads, como se fosse free version.",pt,2014-02-01,0.0
 APP_028,2,Excellent app but need translate to [LOCAL] users.,pt,2014-02-02,0.0
 APP_028,3,Mas poderia ter mais gráficos e análises.,pt,2014-02-04,0.0
@@ -32,18 +31,17 @@ APP_028,3,"Funcional e com design apetecivel. So da para uma conta. Nao se tem a
 APP_028,2,Só falta colocar mais contas e deixar fazer transferência entre elas,pt,2015-02-27,-0.3182
 APP_028,3,Não é mau. Mas é bem limitado.,pt,2015-03-07,-0.1901
 APP_028,2,Mas infelizmente preciso de um App que também tenha a opção de definir e acompanhar um orçamento.,pt,2015-04-19,-0.5927
-APP_028,2,Mas não tem despesas com cartão de crédito. Mas o pior é não ter a opção de importar.,pt,2015-04-30,-0.8338
 APP_028,1,O pior de todos até agora,pt,2015-04-30,-0.6249
+APP_028,2,Mas não tem despesas com cartão de crédito. Mas o pior é não ter a opção de importar.,pt,2015-04-30,-0.8338
 APP_028,1,"O APP era excelente! Mas não sincronizava. Com a atualização é possível sincronizar, mas não tenho o balanço do mês atual como tinha antes; não faço ideia de onde tiraram o valor da ""minha conta"" que aparece na barra lateral; pra selecionar o mês atual (controle mais sensato de se utilizar), preciso ir em personalizar e todo dia escolher a data atual (ridículo); e mesmo assim não tem o  balanço,que agora é diário,como se eu recebesse um salário por dia..Perdi a vontade de usar!Queria voltar a versão antiga",pt,2015-06-16,-0.5837
 APP_028,3,faltou integrações e orçamentos,pt,2015-06-19,0.0
 APP_028,2,"Não tem opção de escolher como foi pago (dinheiro, cartão..).",pt,2015-07-04,-0.296
-APP_028,1,"On the appgratis description, it says that the premium version gets unlocked forever. When you unlock after creating your [APP] account, it says you only get it for 6 months. Kinda unfair and scam-ish, making us feeling like fools. You should, at least, warn that before we install it. And no, it is not an unfair review.",pt,2015-08-25,0.0
-APP_028,1,"I believe you or [MARCA] have failed. [MARCA] says the App is R$ 23,89 for free, but it only gives 6 months of Pro. Great Scam for having downloads. If you wish that I remove this comment, give everyone a free App for life, just as promised in [MARCA]. It is said nowhere that I would get a 6 months of Pro, it is said that I would get R$ 23.89 worth of software. And the software is free.",pt,2015-08-25,0.0
-APP_028,1,Não vale apena somente 6 meses pq mesmo não recomendo app com mensalidades afff,pt,2015-08-25,-0.2263
-APP_028,1,"Mentirosos, free somente por 6 meses.",pt,2015-08-25,-0.5267
-APP_028,1,Não foi grátis,pt,2015-08-25,-0.25
-APP_028,1,App ou é grátis ou não é...,pt,2015-08-25,-0.25
 APP_028,2,O app é bom mas na versão grátis não dá para nada...,pt,2015-08-25,-0.3612
+APP_028,1,App ou é grátis ou não é...,pt,2015-08-25,-0.25
+APP_028,1,"Mentirosos, free somente por 6 meses.",pt,2015-08-25,-0.5267
+APP_028,1,Não vale apena somente 6 meses pq mesmo não recomendo app com mensalidades afff,pt,2015-08-25,-0.2263
+APP_028,1,"I believe you or [MARCA] have failed. [MARCA] says the App is R$ 23,89 for free, but it only gives 6 months of Pro. Great Scam for having downloads. If you wish that I remove this comment, give everyone a free App for life, just as promised in [MARCA]. It is said nowhere that I would get a 6 months of Pro, it is said that I would get R$ 23.89 worth of software. And the software is free.",pt,2015-08-25,0.0
+APP_028,1,"On the appgratis description, it says that the premium version gets unlocked forever. When you unlock after creating your [APP] account, it says you only get it for 6 months. Kinda unfair and scam-ish, making us feeling like fools. You should, at least, warn that before we install it. And no, it is not an unfair review.",pt,2015-08-25,0.0
 APP_028,1,"a obrigatoriedade de se registrar para ter um possível App pro é simplesmente ridículo, pela lei brasileira isso é considerado propaganda enganosa.... zero pra voces.   pay attention ... by the laws of [LOCAL], it is illegal because it says something, and fulfills other, you know?",pt,2015-08-26,-0.0
 APP_028,3,"Ponto negativo é que não debita valores futuros só atuais e na versão gratuita não abre mais de uma carteira. Testando, mas acho que vou desinstalar. Outros AppGratis vem mais completos",pt,2015-08-27,-0.4019
 APP_028,3,"Eu queria comprar, não alugar. O valor  mensal é 1/4 da mensalidade de uma conta corrente. Não achei o recurso de lançamentos mensais.",pt,2015-09-30,-0.25
@@ -58,8 +56,8 @@ APP_028,1,"Pós atualização para pagamento para se utilizar os comandos básic
 APP_028,2,"Pensei até em comprar, porém não sincroniza com bancos do [LOCAL].",pt,2017-10-06,-0.296
 APP_028,1,Faltou visão agrupada de todas as contas. App mesmo na conta Premium não sincroniza conforme anunciado.,pt,2017-11-02,-0.0258
 APP_028,3,"[NOME], pois o pagamento não é único.",pt,2017-11-15,-0.3818
-APP_028,1,"Não sincroniza direito o valor do [MARCA], minha fatura está diferente do valor apresentado pelo aplicativo. E não consigo adicionar meu banco [LOCAL]. Ele não guarda as credenciais, preciso sempre colocar elas.",pt,2017-11-25,-0.0258
 APP_028,1,Não consegui conectar meu [MARCA] a minha carteira. 😔,pt,2017-11-25,-0.6486
+APP_028,1,"Não sincroniza direito o valor do [MARCA], minha fatura está diferente do valor apresentado pelo aplicativo. E não consigo adicionar meu banco [LOCAL]. Ele não guarda as credenciais, preciso sempre colocar elas.",pt,2017-11-25,-0.0258
 APP_028,2,"Não está preparado para a realidade brasileira ainda. Ele não conecta direito com a minha conta (nem [MARCA] e nem [MARCA]), coloca as transações nas datas erradas, entendeu LIS (juros de cheque especial) como cafezinho e pagamento de IPVA como compras. Fora q eu tive q traduzir todas as categorias, que obviamente não estão adaptadas para as categorias que geralmente temos no [LOCAL]. So sorry, mas falta um toque de ""brasilidade"" nesse app. Não vale a assinatura por enquanto.",pt,2017-12-01,-0.7003
 APP_028,1,"A versão free é tão limitada que praticamente te obriga a pagar pela versão premium, o que não faz sentido pra mim num app de finanças.",pt,2017-12-15,-0.296
 APP_028,1,Vou cancelar a assinatura pq não consigo nem cadastrar minhas contas,pt,2017-12-21,-0.4939
@@ -75,19 +73,18 @@ APP_028,2,"Não consegui conectar com meu banco, ao escolher ""iniciar avaliaç�
 APP_028,2,"Olha, não gostei por não ter meu banco para cadastrar a conta! Caixa, Inter não possui para cadastro. Então não me ajuda",pt,2018-03-12,-0.7901
 APP_028,2,Tem que assinar o premium pra dividir conta com outros membros. Desinstalei e vou tentar o wallet.,pt,2018-03-21,0.0
 APP_028,3,Falta [MARCA].. Pra eu usar o app,pt,2018-03-28,-0.3182
-APP_028,2,"A cada atualização financeira onde tento acompanhar, preciso digitar agencia, conta e senha do banco, isso não é prático, é mais fácil entrar no app do próprio banco.",pt,2018-04-14,-0.6705
-APP_028,2,"It doesn't work with ""[MARCA]"" in [LOCAL]. It says my credentials are wrong, 
-but I'm sure they're not.",pt,2018-04-14,0.0
 APP_028,1,"Used to work when I subscribed, but stopped syncronising my current 
 accounts a few months later. I want to cancel my premium subscription 
 (which I paid twice the current price) and my money back.",pt,2018-04-14,0.0
+APP_028,2,"It doesn't work with ""[MARCA]"" in [LOCAL]. It says my credentials are wrong, 
+but I'm sure they're not.",pt,2018-04-14,0.0
+APP_028,2,"A cada atualização financeira onde tento acompanhar, preciso digitar agencia, conta e senha do banco, isso não é prático, é mais fácil entrar no app do próprio banco.",pt,2018-04-14,-0.6705
 APP_028,1,"Tem que pagar pra sincronizar bancos, ou seja, o app é inutil sem pagar",pt,2018-04-17,-0.4404
 APP_028,1,Não sincroniza com a minha conta.,pt,2018-05-05,-0.296
-APP_028,2,É pago,pt,2018-05-24,0.0
-APP_028,2,"Aplicativo so permite vc ter acesso a fundações essenciais se pagar. 
-Portanto aconselho procurar outro.",pt,2018-06-01,0.0
 APP_028,1,"Bank synch. is problematic and slow. Auto-category doesn't work. Messy 
 interface, confusing menus. Awful app.",pt,2018-06-01,0.0
+APP_028,2,"Aplicativo so permite vc ter acesso a fundações essenciais se pagar. 
+Portanto aconselho procurar outro.",pt,2018-06-01,0.0
 APP_028,2,"Paguei a versão pro para vincular com a minha conta do [MARCA]. Até agora não 
 consegui, queria saber como eu faço, se coloco ifem na conta, a senha é a 
 eletrônica do banco ou do App? Muito confusa a configuracão, deveria 
@@ -111,14 +108,14 @@ APP_028,1,Aplicativo muito fraco. utilizei uma semana de teste e eles me cobrara
 APP_028,1,"Bugado! Não dá pra conectar a conta bancária, o botão para assinar a versão premium não funciona!",pt,2018-09-20,-0.6792
 APP_028,3,"O app é muito bem feito e fácil de trabalhar, mas não deixa cadastrar contas bancárias sem ter que me conectar com a agência.",pt,2018-10-12,-0.0772
 APP_028,2,"I had some issues with the bank data transfer but now it's solved. I'll be testing the app until expires to see if it worth to be bought! For now, I'm enjoying the app!",pt,2018-10-16,0.0
-APP_028,1,"A versao gratuita eh muito limitada, só pode adicionar uma única conta ou carteira!",pt,2018-10-22,0.0
 APP_028,3,Amei muito mas pega muitos gastos em duplicidade e isso bagunça muito os orçamentos,pt,2018-10-22,-0.5023
+APP_028,1,"A versao gratuita eh muito limitada, só pode adicionar uma única conta ou carteira!",pt,2018-10-22,0.0
 APP_028,3,"Straightfoward interface, has a nice feature that allows the export to .csv file. Did not sync to my credit card expenses, only worked with the current account transactions what makes it almost useless to me.",pt,2018-10-24,0.0
 APP_028,1,Comprei o premium e não consigo cadastrar nenhum dos meus bancos.. ocorre um erro e pede para informar..,pt,2018-10-25,-0.6597
 APP_028,1,One time invalid password ia até comprar mais não funciona,pt,2018-10-27,-0.296
 APP_028,1,Toda vez que insiro alguma transação e edito ela é duplicada. Além disso não sincroniza com o Itaú. Pelo preço esperava muito mais. Reduzi para uma estrela porque agora nem a data é sincronizada de forma correta. Péssimo app.,pt,2018-10-30,-0.0516
-APP_028,3,"O aplicativo é muito bom, porém minhas contas não fecham pois ele não sincroniza com o Bradesco. fica retornando um erro a cada tentativa",pt,2018-11-02,-0.4939
 APP_028,1,"Bug sistem, duplicate spending.",pt,2018-11-02,0.0
+APP_028,3,"O aplicativo é muito bom, porém minhas contas não fecham pois ele não sincroniza com o Bradesco. fica retornando um erro a cada tentativa",pt,2018-11-02,-0.4939
 APP_028,2,Não da para registrar gastos mensais passados (recorrentes) a não ser no dia. Não gostei,pt,2018-12-10,-0.5267
 APP_028,1,"Não compativel com [MARCA] em [LOCAL], ao invés do que é dito na app, estando sempre a dar erro quando tento ligar com o banco. Subscrevi o premium e vou cancelar pois escrevi a pedir apoio e ainda nao me foi dado resposta. Portanto 2 criticas muito negativas .",pt,2018-12-28,-0.8591
 APP_028,3,"I'm trying to add a [MARCA] account ([LOCAL]) but when I click in Add, it freeze in wait screen. I can't add :/ Premium account.",pt,2019-01-05,-0.34
@@ -139,7 +136,6 @@ APP_028,2,Nao tive experiência porque o app nao conecta com bancos básicos com
 APP_028,3,Não consigo seguir. Não lembro. Não confio porque tem muita propaganda de investimentos e já percebi que há uma cultura de enganar no meio econômico qie imagino que esteja aqui tbem.,pt,2019-06-20,-0.743
 APP_028,1,"aplicativo é muito legal e facil, fiz o upgrade para compartilhar as contas e o app passou a apresentar problemas, em contato com suporte, pedem pra deletar e instalar novamente, agora nem isso consigo fazer mais. Uma pena, pois havia gostado do app.",pt,2019-06-30,-0.0516
 APP_028,2,"Gostei da proposta do app, porém deu erro ao conectar minha conta do [MARCA] e não atualizava os débitos da conta. Não consegui utilizar.",pt,2019-07-04,-0.4939
-APP_028,2,nao é 100%portugues,pt,2019-08-12,-0.296
 APP_028,1,App muito ruim e nao tem linguagem em português,pt,2019-09-21,-0.7003
 APP_028,1,"Nao gostei, os bancos brasileiros nao aparecem e os que aparecem dao erro. Estou tentando cancelar meu plano Premium e nao consigo.",pt,2019-10-05,-0.7506
 APP_028,1,"Os bancos Brasileiros não funcionam, se não derem um jeito nesse problema, devolvam meu dinheiro e cancelem meu plano.",pt,2019-10-07,-0.7269
@@ -157,19 +153,17 @@ APP_028,1,"Não gostei do aplicativo, muito limitado. Aliás, eu deletei a conta
 APP_028,1,Não tem sincronização com [MARCA]. Se eu soubesse não teria pago o plano anual.,pt,2020-02-13,-0.5267
 APP_028,2,Poucos bancos disponíveis para integração. Acontece inclusive de um suposto a ser suportado não conseguir ser cadastrado ([MARCA]).,pt,2020-03-19,-0.4215
 APP_028,1,Assinei o Premium apenas para conectar ao [MARCA]. Mas não conecta. Vou cancelar a assinatura.,pt,2020-04-01,-0.6808
-APP_028,1,Desinstalando,pt,2020-04-13,0.0
 APP_028,3,Falta um modo de visualização específico para tablet. Principalmente no modo paisagem.,pt,2020-04-24,-0.4404
 APP_028,1,"Adquiri o plano vitalício e estou tendo problemas. Avaliei o app com uma estrela só e vou fazer um comentário negativo na [MARCA] e só vou mudar quando resolverem. Só tenho uma conta corrente sincronizada e ela se dividiu em duas e por isso não reflete a realidade dos gastos. Preciso da correção deste problema. Outra coisa que podiam melhorar é com ralação aos cartões de crédito, pois nem sempre fecham a fatura no último dia do mês. O meu por exemplo é dia 24 a 26. Incluam alteração.",pt,2020-05-16,-0.7269
 APP_028,1,Vários erros. Fecha repentinamente e não atualiza dados,pt,2020-06-13,-0.5719
 APP_028,1,"Nao conecta conta bancária, tem q pagar. Inútil",pt,2020-07-27,-0.6249
 APP_028,1,"Lots of errors on sincronization last few months, i have to clean data and restart app to keep updating. Updating from website also not working, what is very inconvenient. Used to work well but is in a bad shape now",pt,2020-12-03,0.0
-APP_028,1,"Não consigo sincronizar a conta bancária do [MARCA], ao selecionar a tela fica em branco, não disponibilizando o campo de inserção de dados para sincronizar. Resumindo, entrei no recurso premium para usar uma função que não funciona. Cancelando neste momento.",pt,2020-12-07,-0.8225
 APP_028,1,Última actualização foi péssima (mesmo a nova 5.0.4). As despesas adicionadas não aparecem no quadro geral. Não consigo adicionar categorias de despesas que fui pacientemente adicionando ao longo dos últimos 2 anos de uso desta app.( Parece que agora só podemos fazer se tivermos assinatura premium). Uma verdadeira desilusão. Tanto trabalho para coligir informação para agora ficar sem nada.,pt,2020-12-07,-0.6486
-APP_028,1,O aplicativo é ótimo uso a 3 anos mas essa última atualização ficou uma Droga Pelo amor de deus Demora uma eternidade para abrir Meu fluxo de caixa só aparece certo no modo mensal Não outros tudo errado Atualização tem que ser para melhorar mas vcs conseguiram pioraram e muito 🤦‍♂️🤦‍♂️🤦‍♂️,pt,2020-12-17,-0.3612
+APP_028,1,"Não consigo sincronizar a conta bancária do [MARCA], ao selecionar a tela fica em branco, não disponibilizando o campo de inserção de dados para sincronizar. Resumindo, entrei no recurso premium para usar uma função que não funciona. Cancelando neste momento.",pt,2020-12-07,-0.8225
 APP_028,1,A atualização retirou o widget da tela inicial para adicionar despesas,pt,2020-12-17,-0.1531
+APP_028,1,O aplicativo é ótimo uso a 3 anos mas essa última atualização ficou uma Droga Pelo amor de deus Demora uma eternidade para abrir Meu fluxo de caixa só aparece certo no modo mensal Não outros tudo errado Atualização tem que ser para melhorar mas vcs conseguiram pioraram e muito 🤦‍♂️🤦‍♂️🤦‍♂️,pt,2020-12-17,-0.3612
 APP_028,1,"Infelizmente, com o lançamento da versão 5, o app deixou de abrir. Ficava só em uma tela de carregamento. Resolvi reinstalar e, ao fazer login, os dados das contas não apareceram mais no app. A versão web está impossível de usar, consome toda a CPU e trava. Não dá pra adicionar transações.",pt,2020-12-24,-0.743
 APP_028,3,"I have been using this app for some years and I don't think the new interface was a good idea, I think having the spending overview graph at the front page back again would be much better because it helps you to visualize your spending on a much clearer way",pt,2021-01-07,0.0
-APP_028,3,"Achei bacana, mas não me adaptei. Gostaria de desativar minha conta. Como faço?",pt,2021-01-11,-0.4215
 APP_028,1,"Não consigo adicionar nenhuma conta bancária, nem conectando a uma, nem contas que nem se quer consigo conectar(nem adicionando manualmente)!!!! Não consigo usar o app por conta disso!!!",pt,2021-01-12,-0.6449
 APP_028,1,Nova atualização estragou o aplicativo.,pt,2021-01-18,0.0
 APP_028,1,"Com a atualização o app, ficou bastante ruim, cheio de bugs, o último agora não consigo lançar valores quebrados, por exemplo quero lançar uma despesa de R$ 6,88 e não consigo só digita R$ 688,00, o app antes da atualização era mil vezes melhor, não continuarei com o pagamento da versão premium.",pt,2021-01-25,-0.6124
@@ -191,7 +185,6 @@ APP_028,1,"Só permite uma carteira manual na versão free. Impossível testar o
 APP_028,3,"Cons: No Credit Card Feature, portuguese translation seems to behave weirdly (sentences bigger than the button size), no bank connection with the [MARCA], no instalments payment, you must creat manually a payment for every instalment. Pros: Ability to create shared accounts, this one is great, ability to add expenses bin other currencies, budget follows the accrual method, makes sense, since the app doesn't support credit cards. This is what I could get from my brief period of using the app.",pt,2021-11-27,0.0
 APP_028,1,Deveria ter opção de alterar idioma conforme preferir. Também fica travando.,pt,2022-01-25,0.0
 APP_028,3,"The App is admirably good and has a very smart interaction. But I would like provide t suggestions: Export transaction report to PDF format. If I need to send the report to someone, the app doesn't have this function today.",pt,2022-02-03,0.0
-APP_028,1,nao preciso,pt,2022-02-20,-0.296
 APP_028,1,"Por não condordar com a obrigatoriedade de criar cadastro, não usei o app, e pela obrigatoriedade 1 estrela, eu só queria baixar e usar sem ter que fazer cadastro ou vinculo algum.",pt,2022-03-21,-0.5267
 APP_028,1,"A versao gratuita so permite criar um orçamento, nao serve pra nada!",pt,2022-04-24,-0.3595
 APP_028,3,"Eu tinha uma assinatura promocional deste aplicativo...de uma hora pra outra ela sumiu, e não sei o que aconteceu...agora não consigo mais reave-la!!",pt,2022-05-01,-0.6103
@@ -222,13 +215,11 @@ APP_028,1,Ainda não exercitei ;não explorei esta facilidade; de modo professio
 APP_028,1,"Só o design que é bonito. não está totalmente em português, não tem bancos e carteiras digitais do [LOCAL] para sincronização automática e na opção gratuita não tem como adicionar contas manualmente.",pt,2023-11-11,-0.4588
 APP_028,1,"Um lixo. Não tem uma lista atualizada de bancos, não conecta corretamente no banco que tem. Paguei o plano para não ter nada.",pt,2023-11-17,-0.8519
 APP_028,2,"Desapareceram do nada algumas entradas que tinha colocado. Isto aconteceu justamente depois de ter aparecido um pop-up a pedir para classificar a app. Então, a minha classificação é negativa.",pt,2023-11-19,-0.1531
-APP_028,1,Nó momento não,pt,2023-12-14,-0.296
 APP_028,1,"Unfortunately the app stopped working when I switched to s24 Ultra (One UI 6.1). Everytime I try to open it, it immediately force closes.",pt,2024-02-09,0.0
 APP_028,3,"Preciso de um app simples que tenha versão web, atende bem! Só não consegui marcar um lançamento recorrente como pago entes da data programada. Isso faz falta pois o saldo fica errado até chegar a data do pagamento.",pt,2024-06-14,-0.7345
 APP_028,1,"I've been using this app since 2017 when I had my first job, at first it was a good app, lacking a lot of features, but manageble, did the job I needed. One day it realeased the cursed version 5 everything went downhill. App was slow, people started losing their data, just like me that had to add all my transactions from 2017 to 2020. Now you can barely see any updates from the app and the lack of community and support. Now that I decided to use again I see there stil isn't budget for labels.",pt,2024-07-04,0.0
 APP_028,3,Não estou conseguindo sincronizar o [MARCA] na versão paga.,pt,2024-10-18,-0.296
 APP_028,2,parecia ter tudo para ser óptima..... mas infelizmente não consigo efectuar a ligação às contas bancárias! talvez quando resolverem estes problemas de ligação bancária seja uma boa APP não me interessa uma APP em que ando a colocar/classificar movimentos manualmente.,pt,2025-08-09,-0.8805
-APP_028,2,Muita propaganda,pt,2025-08-14,-0.25
 APP_028,3,Analisarei primeiro... para depois dar o ultimato da avaliação.,pt,2025-09-13,-0.1531
 APP_028,3,crashing since the last update,pt,2025-10-14,0.0
 APP_028,2,"o aplicativo está bugando e não consigo entrar, já sai e fechei o aplicativo e não funcionou, também não funcionou entrar pela play store e sem opções de atualização.",pt,2026-01-26,-0.6808

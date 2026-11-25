@@ -15,9 +15,9 @@ APP_010,3,Lack of improvements in report functions ( no .CSV export) in Android,
 APP_010,1,"Após um tempo de compra e uso do aplicativo, ele trava, forçando a compra de uma nova versão. Embora esteja recebendo vários e-mails do suporte solicitando o envio de dados, até agora não tenho nenhuma resposta concreta sobre o problema. Não tem como anexar nenhuma despesa pois o aplicativo não permite, fechando inesperadamente.",pt,2018-02-14,-0.8074
 APP_010,1,"O app tinha tudo para ser perfeito. Mas a versão android não disponibiliza a função sincronizar. Ou seja, ele se torna um app local. Se voce possui um iPad ou Mac, juntamente com um android, esqueça esse app e parta para outro.",pt,2018-03-04,-0.1779
 APP_010,2,Não é possível exportar relatórios em PDF como no [MARCA],pt,2018-03-19,0.0258
-APP_010,2,"Não faz backup nas nuvens, se você perdeu o celular perdeu todo o seu lançamentos, sem backup no Google Drive. É uma pena interface agradável, muito fácil de usar, mas sem backup é inútil, já passei por isso perdi um ano inteiro de lançamento por que o aplicativo não tinha backup nas nuvens.",pt,2018-04-02,-0.631
-APP_010,3,"Não ter um backup na nuvem deixa muito atrás de seus concorrentes, além disso também não tem versão web. Mas tem ótimas funcionalidades, testei vários e esse foi um dos que mais me agradou, porém estou migrando para outro por causa do backup",pt,2018-04-02,-0.3612
 APP_010,3,"Tinha tudo para ser uma referência, mas ele não faz a leitura de SMS enviado pelo banco, otimizando os registros.",pt,2018-04-02,-0.5023
+APP_010,3,"Não ter um backup na nuvem deixa muito atrás de seus concorrentes, além disso também não tem versão web. Mas tem ótimas funcionalidades, testei vários e esse foi um dos que mais me agradou, porém estou migrando para outro por causa do backup",pt,2018-04-02,-0.3612
+APP_010,2,"Não faz backup nas nuvens, se você perdeu o celular perdeu todo o seu lançamentos, sem backup no Google Drive. É uma pena interface agradável, muito fácil de usar, mas sem backup é inútil, já passei por isso perdi um ano inteiro de lançamento por que o aplicativo não tinha backup nas nuvens.",pt,2018-04-02,-0.631
 APP_010,1,"Comprei a versão paga pensando que podia fazer backup na nuvem, pois havia lido no site que fazia e quando fui fazer, cadê? Pagar só ter mais temas e 3 relatórios a mais, não compensa #chateada.",pt,2018-04-12,-0.296
 APP_010,3,Bom mas falta sincronismo com [MARCA] ou [MARCA] drive.,pt,2018-04-21,-0.2617
 APP_010,2,"Não sincroniza com outros dispositivos. Tenho o money pro no iPad e 
@@ -49,8 +49,8 @@ APP_010,3,só dou 3 estrelas porque para ter a versão completa é preciso pagar
 APP_010,3,"Deveriam liberar o teste grátis de 7 dias, mas sem cobrar a assinatura primeiro. Se gostarmos do aplicativo, aí sim faríamos a assinatura. Agora como vou testar os orçamentos se na versão grátis não se consegue nem visualizar como seriam as telas?",pt,2019-05-14,-0.5106
 APP_010,2,"O que adianta pagar para sincronizar no. Aplicativo no celular, se tenho que pagar 112,00 para instalar e ter o mesmo recurso no Mac",pt,2019-05-15,-0.296
 APP_010,1,pago a mais pela sincronização que não funciona,pt,2019-05-26,-0.296
-APP_010,1,"fui cobrado duas vezes pelo serviço Plus, uma no android e outra no iphone. solicito reembolso.",pt,2019-06-05,0.0
 APP_010,1,Cada vez pior Agora com problemas na liquidação de passivo,pt,2019-06-05,-0.7964
+APP_010,1,"fui cobrado duas vezes pelo serviço Plus, uma no android e outra no iphone. solicito reembolso.",pt,2019-06-05,0.0
 APP_010,1,"aplicativo trava muito, não sincroniza bem as informações.",pt,2019-07-04,-0.0258
 APP_010,2,Não tô conseguindo adicionar meu cartão de crédito e a conta do banco. Essas opções é apenas pra [MARCA]?,pt,2019-07-16,-0.4019
 APP_010,3,"Não é bom, o aplicativo em si é legal com um bonito design, mas o aplicativo em si falta alguns recursos simples e tem que comprar de forma separada em cada plataforma diferente.",pt,2019-08-17,-0.0772
@@ -59,12 +59,10 @@ APP_010,3,"Tudo muito interessante e facil de usar mas com dois pontos muito neg
 APP_010,1,Não consigo cancelar! Cobraram meu cartão mas diz que não sou usuário,pt,2020-07-02,-0.636
 APP_010,1,They change the way I work with accounts on my iPad and soon they will do the same thing here... why let the paying customer decide about such things... nah... so ending my signature soon. WAS a good app.,pt,2020-08-06,-0.1027
 APP_010,2,Muito confuso. Não recomendo,pt,2020-08-07,-0.1531
-APP_010,1,paga-se,pt,2020-08-08,0.0
 APP_010,3,"Achei a aplicação simples de usar e intuito a uso correcto. Tenho outras aplicações, inclusive uma com conta premium e vim testar esta para ver se mudava. Porém, é mau ter que se subscrever ao PRO durante um mês para ter 3 dias grátis da experiência pro. Se queremos testar essa função, para ver se realmente compensa, não é a pagar. Uso outras aplicações que oferecem o pro vários dias ou semanas para o usuário se gostar passa realmente a pro. Motivo esse que me faz abandonar a app.",pt,2020-08-12,-0.6222
 APP_010,1,"A versão de teste é curta, não dá para testar as funções todas, tendo que adquirir. Assim que fiz, fiquei desiludido com a APP, pois esperava mais e mais simples.",pt,2020-08-14,-0.4767
-APP_010,1,Muito má...,pt,2020-08-25,0.0
-APP_010,1,Horrível Não faz backup no Google Drive,pt,2020-08-30,-0.7096
 APP_010,1,Muito confuso e não é pratico,pt,2020-08-30,-0.4767
+APP_010,1,Horrível Não faz backup no Google Drive,pt,2020-08-30,-0.7096
 APP_010,1,"I've made a backup, reset my phone and when I logged in the app after the reset, the backups was not there so I lost all my stuff",pt,2020-10-03,0.0
 APP_010,1,"Péssimo aplicativo, sempre dá erro de sincronização e os registros de 5 meses atrás se alteraram, terei que começar as anotações tudo do zero novamente, não recomendo, paguei mas me arrependi!!👎🏻👎🏻😡😡",pt,2020-10-20,-0.3036
 APP_010,1,"Desenvolvedores canalhas. Paguei pela versão PRO, e em seguida abandonaram o formato, migrando para planos por assinatura, onde se deve [claro] assinar para obter todos os recursos. Vocês não têm vergonha de si mesmos!? No que dependesse de mim – e creio que posso falar em nome de alguns outros usuários também lesados por desenvolvedores com essa postura vexatória –, vocês seriam banidos da loja, sendo obrigados, ainda, a ressarcir os usuários.",pt,2020-11-05,-0.75
@@ -92,15 +90,14 @@ APP_010,1,"Tô tentando fazer bakup e não consigo,uma vez já perdi meu dados .
 APP_010,1,"A finalidade de adquirir um aplicativo desse e ter um controle financeiro, mas os lançamentos não sincronizam corretamente, perdendo a confiabilidade nos dados, entre PC, Androide e IOS cada ambiente desses tem uma saldo diferente. Suporte ineficiente.",pt,2023-06-15,-0.3612
 APP_010,1,O aplicativo após a atualização está com BUG. Erro sempre não consegue utilizar,pt,2023-07-19,-0.5859
 APP_010,1,"não tem opção gratuita, se lascar",pt,2023-10-21,-0.296
-APP_010,1,É pago,pt,2023-11-24,0.0
 APP_010,3,"Estava usando há algumas semanas e não está funcionando. Não abre, fica reportando erro.",pt,2024-02-20,-0.5574
 APP_010,2,Ao migrar do Ipad para o Android descobri que o APP não tem formato em landscape no Tab S9 da [MARCA]. Que ruimmm,pt,2024-03-05,-0.4215
 APP_010,1,App muito ruim não vale o que é cobrado,pt,2024-04-10,-0.7003
 APP_010,1,Você compra o aplicativo e depois você tem que pagar de novo mensalmente pra ter função pro. Denunciem propaganda enganosa. Nem um backup na nuvem posso fazer.,pt,2024-07-09,-0.128
 APP_010,1,Não consigo acessar via e-mail. O app está bugado,pt,2024-08-22,-0.296
 APP_010,1,Faz dois anos que uso esse aplicativo nunca tive problemas. Agora fica pedindo e-mail e senha pra poder acessar....do nada isso....,pt,2024-09-18,-0.4588
-APP_010,1,"Comprei o aplicativo quando tinha iPhone em 2019, depois migrei pra Android e fiz a migração tranquilamente, aí agora eles estão cobrando pra usar no Android, pro meu tipo de uso, não faz sentido pagar, pois uso somente para controle de gastos e receitas, tenho uma planilha de Excel para análises. Perdi 5 anos de dados ... podiam pelo menos dar uma opção básica gratuita.",pt,2024-09-20,-0.25
 APP_010,1,They force me to have a subscription after I have already used the app and have all my data there. I do not recommend it.,pt,2024-09-20,0.0
+APP_010,1,"Comprei o aplicativo quando tinha iPhone em 2019, depois migrei pra Android e fiz a migração tranquilamente, aí agora eles estão cobrando pra usar no Android, pro meu tipo de uso, não faz sentido pagar, pois uso somente para controle de gastos e receitas, tenho uma planilha de Excel para análises. Perdi 5 anos de dados ... podiam pelo menos dar uma opção básica gratuita.",pt,2024-09-20,-0.25
 APP_010,1,"Usava à anos. Do nada começam a cobrar e não deixam aceder a nenhuns dados. Pelo menos tinha exportado todos os dados quando começou a aparecer o ""período de teste"" de 3 dias que não dava para rejeitar. Não dá para vê-los na aplicação, vou ter de ver no arquivo exportado e usar outra app.",pt,2024-09-24,-0.8591
 APP_010,1,"Infelizmente não consegui usar a mesma conta em dois aparelhos Android, eles não ficam pareados.",pt,2024-12-03,-0.743
 APP_010,1,"Aplicativo para Android mal feito, não fica na horizontal (a calculadora toma a tela toda), cheio de bugs de sincronização, configuração dos orçamentos péssima e visual cansado sem atualização há mais de 5 anos. Resumindo, foi abandonado pelos desenvolvedores.",pt,2024-12-07,-0.872

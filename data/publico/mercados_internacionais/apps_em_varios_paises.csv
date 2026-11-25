@@ -1,13 +1,13 @@
 ﻿app_mask_id,paises,n_paises,criticas_brasil,criticas_estados_unidos,criticas_espanha,criticas_mexico
-APP_026,brasil + estados_unidos + espanha + mexico,4,11836,1396,2051,2210
-APP_023,brasil + estados_unidos + espanha + mexico,4,158,1484,954,908
-APP_039,brasil + estados_unidos + espanha + mexico,4,710,1705,1727,1780
-APP_031,brasil + espanha + mexico,3,412,,785,800
-APP_048,estados_unidos + espanha + mexico,3,,1531,875,871
-APP_020,brasil + espanha + mexico,3,675,,341,349
-APP_009,brasil + espanha + mexico,3,6,,16,17
-APP_068,espanha + mexico,2,,,2,2
-APP_065,espanha + mexico,2,,,110,99
-APP_016,brasil + mexico,2,108,,,335
+APP_026,brasil + estados_unidos + espanha + mexico,4,11086,1311,1932,2090
+APP_023,brasil + estados_unidos + espanha + mexico,4,150,1340,904,857
+APP_039,brasil + estados_unidos + espanha + mexico,4,680,1613,1663,1715
+APP_031,brasil + espanha + mexico,3,382,,739,754
+APP_048,estados_unidos + espanha + mexico,3,,1322,757,755
+APP_020,brasil + espanha + mexico,3,607,,312,320
+APP_009,brasil + espanha + mexico,3,5,,15,16
+APP_068,espanha + mexico,2,,,1,1
+APP_065,espanha + mexico,2,,,97,86
+APP_016,brasil + mexico,2,104,,,327
 APP_025,brasil + espanha,2,2,,5,
-APP_062,espanha + mexico,2,,,190,189
+APP_062,espanha + mexico,2,,,162,162

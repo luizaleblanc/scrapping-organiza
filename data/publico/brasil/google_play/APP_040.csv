@@ -1,6 +1,6 @@
 ﻿app_mask_id,score,content,lang,at,compound
-APP_040,1,"não consegui nem passar do cadastro... eu coloco uma senha, vou em concluir e ele não conclui...",pt,2025-05-16,-0.5267
 APP_040,1,Não vai pra frente depois que cadastra a senha. A decepção vem antes da decepção que é cogitada.,pt,2025-05-16,-0.7906
+APP_040,1,"não consegui nem passar do cadastro... eu coloco uma senha, vou em concluir e ele não conclui...",pt,2025-05-16,-0.5267
 APP_040,3,#vimpeloTheNews.cc ainda estou testando o app ent n tenho nenhuma opinião formada pra poder avaliar 100%,pt,2025-06-06,0.0
 APP_040,3,"Estou testando este APP, mas já esbarrei com uma deficiência... Quando tento cadastrar transação do cartão de crédito, não avança para a confirmação. Mensagem de erro "" Ops! Tivemos um problema"".",pt,2025-07-04,-0.6114
 APP_040,1,"Achei o APP burocrático, fiz a assinatura para ver se melhorava minha experiência e ficou mais burocrático ainda, e no APP não tem a opção de cancelar a assinatura, eu nem uso mais e todo mesmo está sendo descontado o valor da assinatura pois não tem a opção de cancelar a assinatura.",pt,2025-08-15,-0.6597
@@ -9,7 +9,6 @@ APP_040,1,todo e-mail já está em uso,pt,2025-09-16,0.0
 APP_040,1,"Já pede o CPF logo de cara, não mesmo!!!!! nem se quer da pra conhecer se presta ou não.. Assim não da pra confiar.. CPF??? qual e a lógica de pedir um documento tão importante?",pt,2025-09-25,-0.5625
 APP_040,1,"App burocrático, não traz informações corretas nos lançamentos e ainda dificultam o atendimento ao cliente quando se precisa cancelar, provavelmente vão responder escrevendo para entrar em contato mas não vão dizer como.",pt,2025-09-29,-0.8689
 APP_040,1,"Já havia baixado no passado e não gostei, voltei aqui para ver se melhoraram, e ainda estão recebendo avaliações ruins, das duas a uma, ou estão pouco sem importando para opinião dos clientes e os poucos que pagam é o suficiente, ou o dono do app não se importa em crescer, o [APP] é igual a vocês, ESTACIONADOS no simples, uma ferramenta que poderia conquistar, mas não aproveitam a oportunidade.",pt,2025-10-16,-0.09
-APP_040,1,horrível,pt,2025-10-18,-0.5719
 APP_040,1,"baixei para testar e não consegui nem criar a conta. iniciei contato e só obtive retorno (só retorno, ainda sem solução) após 5 dias úteis",pt,2025-10-22,-0.4215
 APP_040,1,"Instalei, me cadastrei e não acessa... 🤦🏻",pt,2025-11-05,-0.296
 APP_040,1,"Faltam muitos recursos. Não pode dividir gastos em mais de uma categoria. Se você divide despesas com alguém, não dá pra dividir. Tive 12 parcelas do gasto do cartão como se fosse tudo do mesmo mês. Não dá pra exportar dados. Procurei o atendimento e falo com uma Inteligência Artificial que não ajuda em nada e não posso sugerir melhorias. Arrependido de ter pago achando que ia melhorar com o tempo. Saudade do GuiaBolso.",pt,2025-11-10,0.0258
@@ -18,20 +17,19 @@ APP_040,1,"boa tarde, acabei de instalar e ia fazer um teste.. como vou testar a
 APP_040,3,quando a gente vai ver o código no email o app desconecta e tem q pedir outro código indefinidamente,pt,2025-12-06,0.0
 APP_040,2,"- nao permite adicionar anexos - no cartao, deveria ter a opcao de data de fechamento e vencimento, e bandeira do cartao - seria interessante ter opcao de tags e observacoes (complemento da descricao) - bandeira do cartao ou conta seria interessante - no cadastro de conta e cartao da uma demorada no carregamento. - erro no cadastro de conta e no cancelamento. - lentidao na sincronizacao de informacoes, sendo necessario sair da tela e voltar. atualmente, para mim nao eh viavel.",pt,2025-12-14,-0.0772
 APP_040,1,"Use o gratuito, eu paguei pra sincronizar a conta e não consigo só dá erro e eles dificulta o reembolso, vou acionar o procon",pt,2025-12-15,-0.5859
-APP_040,3,"A Ideia do App é muito boa, as funcionalidades tem potencial, porém é muito lento e tem muitos bugs no carregamento das telas, o que dificulta a utilização do usuário e causa frustração.",pt,2025-12-24,-0.4767
 APP_040,1,"Horrivel, tudo que clica é uma eternidade a tela fica preta e não carrega, não tem a opção de marcar já pago/recebido, não tem configuração personalizada...não gostei",pt,2025-12-24,-0.7579
+APP_040,3,"A Ideia do App é muito boa, as funcionalidades tem potencial, porém é muito lento e tem muitos bugs no carregamento das telas, o que dificulta a utilização do usuário e causa frustração.",pt,2025-12-24,-0.4767
 APP_040,2,"Estava perfeito pra mim, simples e prático, porém com a última atualização ficou lento e difícil de manusear sendo que muitas vezes tem que fechar o aplicativo e reabrir... Não entendi o porquê dessa atualização",pt,2025-12-26,-0.0772
 APP_040,3,"a organização do planejamento por categorias e subcategorias é perfeito, mas deixa a desejar na falta de algumas opções de pagamentos fixos recorrente, deve ser cadastro mês a mês manualmente.",pt,2025-12-28,-0.3182
-APP_040,1,Aplicativo ruim demais,pt,2025-12-31,-0.5574
-APP_040,2,"Aplicativo muito lento, tão lento que não consegui nem ver se vale a pena usar.",pt,2026-01-03,-0.5667
 APP_040,2,"Não tem funcionalidade de cartão, não sincroniza com c6 e não me deu opção acessível de apagar a conta. pediu meu CPF logo de cara também.",pt,2026-01-03,-0.6808
+APP_040,2,"Aplicativo muito lento, tão lento que não consegui nem ver se vale a pena usar.",pt,2026-01-03,-0.5667
 APP_040,1,Experiência horrível. envia código e aplicativo nao aceita.,pt,2026-01-04,-0.5267
 APP_040,1,"muito pesado, lento, difícil de trabalhar assim",pt,2026-01-08,-0.4939
 APP_040,2,O aplicativo ficou muito confuso após as atualizações.,pt,2026-01-13,-0.2263
 APP_040,1,"solicitei o cancelamento e nunca fizeram, ate hoje estao me cobrando e nao respondem.",pt,2026-01-19,-0.296
 APP_040,1,já parei logo no início devido a exigência da conta ter que ser o meu cpf,pt,2026-01-22,0.0
-APP_040,1,"bem ruim, já nos primeiros passos trava, tela fica escura, inseguro!",pt,2026-02-06,-0.5848
 APP_040,1,Só da pra usar aplicativo colocando CPF? Podia ser por e-mail. Não coloco meu CPF em aplicativos e coisas de internet. Não gostei!,pt,2026-02-06,-0.2244
+APP_040,1,"bem ruim, já nos primeiros passos trava, tela fica escura, inseguro!",pt,2026-02-06,-0.5848
 APP_040,1,"não encontrei possibilidade de excluir meus dados no app não tem a opção, aqui em privacidade envia pra um site cheio de blá blá blá e nada de um lugar para pedir a exclusão dos dados",pt,2026-02-10,-0.8519
 APP_040,1,istalei 4veses ja e nao abri👎🏽nao entendi prq não abri,pt,2026-02-20,-0.5267
 APP_040,1,"muito ruim, tu esta fazendo o cadastro e vai conferir os token enviado precisa começar tudo de novo eu conheço um app melhor Money Gestão - Finanças",pt,2026-03-11,-0.1779
@@ -46,4 +44,3 @@ APP_040,2,"Instalei e tive que desinstalar, travou meu celular em 5 minutos de u
 APP_040,3,"Tem que pagar para sincronizar os gastos com os bancos, se o app realmente não cobrasse por isso e eu pudesse usar funções essenciais sem precisar pagar, eu com certeza seria premium e separaria uma parte do meu dinheiro para a assinatura.",pt,2026-05-25,-0.4005
 APP_040,1,nunca vi um app que seria para ajudar a economizar sendo pago kkkkk piada,pt,2026-05-27,-0.1531
 APP_040,3,"na hora de descrever as despesas do cartão não está funcionando, melhorem isso pfv",pt,2026-06-04,-0.296
-APP_040,1,Horrível,pt,2026-10-07,-0.5719

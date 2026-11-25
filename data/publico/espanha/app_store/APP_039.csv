@@ -14,7 +14,7 @@ APP_039,3,"Nice but needs work. I really like the design of this app but I have 
 APP_039,1,No actualiza. Desde el 24/04 no se actualizan los datos,es,2019-04-29,-0.8516415795311332
 APP_039,1,"Problems with [MARCA]. I have paid the version for life, and in my main bank it does not work, even if it is compatible ([MARCA] - [LOCAL]). There is no technical support email to expose the problems, without putting a review.",es,2019-05-05,-0.8360441094264388
 APP_039,1,Pictures removed. Picture are removed in 1 day.,es,2019-07-21,-0.2959871217608452
-APP_039,3,"Planned expenses. It doesn’t work on my cellphone, I make a new plan and when I save it just continue loading and never save it",es,2019-11-08,-0.8173184925690293
+APP_039,3,"Planned expenses. It doesn’t work on my cellphone, I make a new plan and when I save it just continue loading and never save it",es,2019-11-08,-0.8173184199258685
 APP_039,1,"Synchronization doesn t work - no need to buy the premium. I bought the premium package to be able to synchronize wallet with my bank account (caixa) - I tried to do it various times, no results so i sent an email - they actually got back to me with the obvious link that you can find in 2min in the website -> of course no results, so i went to my bank thinking that it might be a problem on my side - but no ... I sent 4 emails asking for help or at least the refund ... still waiting for them to answer me ! Don’t recommend it .. good luck",es,2019-11-12,-0.3153328448534012
 APP_039,1,"Te cobran el pedido de prueba. Quise ver si mi banco sincronizaba con la app. La función de sincronización es solo de pago. La app decía que tenía dos semana para probar el servicio y luego me cobrarían la suscripción anual, acepte la prueba y a los 2 días me cobraron la suscripción. La app no me ha satisfecho y cuando voy a dar de baja la suscripción al cuarto día me encuentro que ya me han suscrito y cobrado. Es una vergüenza tener que aguantar estos intentos de engaño.",es,2020-01-05,-0.9446402098983526
 APP_039,1,"Good idea, bad execution. At first I liked this app, the design is not that awesome, but hey, there are still worse apps out there. You can create and edit categories and do some very custom stuff with the transactions (the ones you create). The problem comes with the bank synchronization, it is a total mess, from time to time you get to lose the sync and when you reconnect it misses some transactions. It happened to me a few times and one I missed 3 months of transactions. The only solution they gave me was to make a screenshot of every missed transaction (really? 3 months of missing transactions?) or importing them manually, which is also a mess. It’s a pity, after paying for a yearly subscription I finally give up on this one.",es,2020-02-20,-0.8755912389606237
@@ -23,7 +23,7 @@ La tarjeta 123 del [MARCA], tiene un fallo, suma en vez de restar en el móvil, 
 Muy trabajada, pero tienen que pulir alguna cosa!!",es,2020-02-26,-0.5900266729295254
 APP_039,2,"Not god at synchronization. Quite dissappointed. i cannot synchronize with my bank (openbank from spain) very dissapointing. after all the process, the error comes out repeatedly. i don’t know if they can solve it out in 2 weeks bcz after trial period if it doesn’t still work, ill never use it back.",es,2020-04-08,-0.8996120737865567
 APP_039,2,"Falta de Bancos. Creo que faltan bancos. No bancos de debito credito, bancos y tarjetas prepago. Ni estan Rebellion Pay, ni esta la famosa BNEXT. Para jovenes no es recomendable.",es,2020-05-06,-0.9380522118881345
-APP_039,3,Versión para iPad. Para cuando la versión para iPad? Si la tuviera le pongo un 10!,es,2020-05-18,0.3113816883414984
+APP_039,3,Versión para iPad. Para cuando la versión para iPad? Si la tuviera le pongo un 10!,es,2020-05-18,0.3113816287368536
 APP_039,1,"No se puede cambiar la fecha de los movimientos. Para ser una app de pago tiene un fallo bastante grande. No se puede cambiar la fecha de los movimientos cuando está sincronizada con mis bancos. 
 
 Por ejemplo a mi me pagan la nómina a últimos de mes. No puedo cambiar la fecha al 1 del mes siguiente, para poder tener los ingresos y gastos mensuales juntos. Algo que si se puede hacer con [MARCA] (gratuita)
@@ -47,7 +47,7 @@ APP_039,2,"Falta cambiar fecha de inicio de mes financiero. La aplicación está
 APP_039,3,No actualizar. Con la ultima actualización se han borrado todos los datos de la app. 2 años de registros eliminados.,es,2021-06-10,-0.9350143019109964
 APP_039,3,No se puede cambiar moneda inicial. Excelente app! Le daría 5 estrellas pero no se las doy porque no se puede cambiar su configuración de moneda inicial. La descargué en [LOCAL] y puse como moneda inicial el Dinar. Ahora que he vuelto a [LOCAL] he creado una cuenta en euros pero cada gasto que añado lo registra en [LOCAL] lo cual lo hace muy raro. Por todo lo demás top.,es,2021-06-26,0.27549951523542404
 APP_039,2,"[MARCA]. The bank sync is very bad, sometimes it doesn’t sync sometimes it shows few records & wrong data.",es,2021-07-13,-0.9076748210936785
-APP_039,1,Disappointed after so long. I was using the app for 6 months. It is great. Fully customisable. But then I got connexion issues and have not received records for 1 month.. opemed 4 tickets and no response.. no way of treating customers like this.,es,2021-07-15,-0.907631404697895
+APP_039,1,Disappointed after so long. I was using the app for 6 months. It is great. Fully customisable. But then I got connexion issues and have not received records for 1 month.. opemed 4 tickets and no response.. no way of treating customers like this.,es,2021-07-15,-0.907631391659379
 APP_039,1,Bank connections and client support doesn't work. The banks connection works just the first time then stop updating or sync. The client support is the worst and inefficient that I've ever seen. Don't waste your time buying any license.,es,2021-07-15,-0.9301831051707268
 APP_039,2,Sim version iPad ni exportar. Ayuda la conexcion directa al banco pero no permite exportar los datos para poder analizarlos,es,2021-09-26,-0.5736343674361706
 APP_039,3,"Queda por mejorar. No se puede refrescar la información que viene de un banco.
@@ -57,7 +57,7 @@ No se pueden editar entradas que vienen de un banco conectado.
 Interpreta mal un movimiento entre espacios en el banco N26. Toma el mismo movimiento como uno de egresos + uno de ingresos, cuando debería ser registrado como una transferencia entre cuentas de la app.",es,2021-11-18,-0.9286985723301768
 APP_039,1,"No actualiza los movimientos. La ayuda hace referencia a botones que no existen, no se actualizan los movimientos bancarios, tengo que desvincular y vincular el banco desde la versión de navegador.
 
-La comunidad de usuarios y ayuda en redes sociales es prácticamente inexistente incluso en inglés.",es,2021-11-27,-0.9614723529666662
+La comunidad de usuarios y ayuda en redes sociales es prácticamente inexistente incluso en inglés.",es,2021-11-27,-0.9614723536651582
 APP_039,3,Falla la actualización bancaria. Se cuelga en la actualización de los datos de la cuenta bancaria… sería un puntazo.,es,2022-01-02,-0.9153821305371821
 APP_039,3,"Va fatal con la conexión a los bancos. Llevo más de un año con la app, y me ha ido genial. Siempre he metido los gastos e ingresos manuales. Ahora vincule mi cuenta de banco y ha sido un rollo, para actualizar puede pasar todo un día ahí y no hay manera que se actualice. Hay que hacerlo uno manual. No entiendo porque si se vincula con los bancos, la actualización no se hace mejor. Deberían mejorar eso!",es,2022-01-06,-0.9734118829946965
 APP_039,3,"Mala conexión imagin. No deja conectar, además cuando dejaba no se actualizaba solo.",es,2022-04-29,-0.895722312387079
@@ -70,8 +70,8 @@ Y si no hablas inglés, te quedas sin servicio técnico a menos que tengas la pa
 No la recomiendo en absoluto.",es,2023-02-03,-0.9666841737926006
 APP_039,3,"Works great but still needs improvements.. For me, it does almost everything that I need, only thing that I dislike is that with the last update, almost every register shows as pending, and I can not edit them or do anything until they stop been “pending”.
 
-I think it may be a bug, hope you could give me an answer or explanation and I will gladly change the review to 5 stars.",es,2023-03-03,-0.3476887196302414
-APP_039,2,Credit card not working properly. Would be a very nice app if everything works. I was trying to add my credit card. But even tho it was added it wouldnt work properly. I would have to add manually every spending. So it doesnt work for me. Tried to contacted with the support twice (before my free trial expires)but no answer. So I am not gonna renew. It is a shame.,es,2023-05-04,-0.9130906667560339
+I think it may be a bug, hope you could give me an answer or explanation and I will gladly change the review to 5 stars.",es,2023-03-03,-0.3476890027523041
+APP_039,2,Credit card not working properly. Would be a very nice app if everything works. I was trying to add my credit card. But even tho it was added it wouldnt work properly. I would have to add manually every spending. So it doesnt work for me. Tried to contacted with the support twice (before my free trial expires)but no answer. So I am not gonna renew. It is a shame.,es,2023-05-04,-0.9130906565114856
 APP_039,2,Errores con la conexión bancaria. Constantemente tiene errores con la conexión bancaria y tienes que desconectar todo y reconectar perdiendo así los datos anteriores... una pena porque sería genial si lo resolvieran. Tengo premium y no voy a renovar,es,2023-07-07,-0.9512458490207791
 APP_039,1,"Does not allow to change dates. There is no way to adjust the dates, you cannot set the month to start a different day or change the date you received your salary. 
 
@@ -82,11 +82,11 @@ APP_039,2,"Good analytics and dashboards but poor bank connection. I have been u
 
 On the other hand, the charts, analytics and dashboards are very good. If they could only improve the connectivity and reliability from their app to the banks it would be a 5-star application.",es,2023-07-22,-0.8055360652506351
 APP_039,1,"Auténtico desastre. Deja de sincronizar cuentas cuando le da la gana y encima pagando , borrada y al cajón, lastima de lo pagado. Falta mucho pero mucho por pulir.",es,2023-07-28,-0.9777480049524456
-APP_039,1,"Don’t spend your money. Bought a subscription for app, automatic bank sync is running once in a day if you’re lucky enough. In past month had 2 weeks when it wasn’t working because they been fixing something (for 2 weeks ??) now sync is just not working without any errors and nothing for a week. So if you have budget and notifications you can forget about it since app doesn’t do anything.",es,2023-10-23,-0.6506666466593742
+APP_039,1,"Don’t spend your money. Bought a subscription for app, automatic bank sync is running once in a day if you’re lucky enough. In past month had 2 weeks when it wasn’t working because they been fixing something (for 2 weeks ??) now sync is just not working without any errors and nothing for a week. So if you have budget and notifications you can forget about it since app doesn’t do anything.",es,2023-10-23,-0.6506666354835033
 APP_039,3,"La aplicación sería top pero…. Pero no te hace el flujo de caja por categorías, simplemente los ingresos. Lo suyo sería que te haga los ingresos - gastos. Porque en caso de que seas tú el que pague una cena con amigos que luego ellos te pagan, te mete el importe total en gastos.",es,2023-11-02,-0.29482798650860786
 APP_039,1,"Incompleta. Sin la capacidad de cambiar la fecha de la nómina a principios de mes (para los que cobramos a finales, como casi todos), no hay manera de controlar el flujo de gastos.",es,2023-11-10,-0.9520276894327253
 APP_039,1,Código conectar banco. Cuando intento conectar el [MARCA] en el último paso de recibir el código no me llega al móvil. La app está genial pero si no puedo conectar la cuenta bancaria no vale,es,2024-01-14,-0.7476337244734168
-APP_039,1,"No me restablece mi compra premium. Hice la compra del servicio premium, cambie de movil y no me reconoce mi compra.",es,2024-01-27,-0.8514936435967684
+APP_039,1,"No me restablece mi compra premium. Hice la compra del servicio premium, cambie de movil y no me reconoce mi compra.",es,2024-01-27,-0.851493651047349
 APP_039,1,"No es compatible con mi banco. Justo cuando estaba decidido a pagar el servicio Premium, se desconecta con mi banco y me avisan que en 15 días estará arreglado. Ahora la notificación ya se alarga un mes... Descontento por la previsión y comunicación.",es,2024-03-20,-0.9291524207219481
 APP_039,3,"Bien pero mal. Compré la versión premium de por vida, y justo desapareció mi banco y no me deja añadirlo para sincronizarlo. Mi banco es [MARCA]",es,2024-04-18,-0.9354708043392748
 APP_039,3,[MARCA]. Ya no me es operativa con [MARCA],es,2024-04-19,-0.8578198570758104
@@ -100,7 +100,7 @@ APP_039,3,"Buena app pero aún muy mejorable. Después de varios meses usándola
 - no sé pueden dividir gastos, como hayas hecho una compra con cosas de diferentes categorías, imposible segregarlo. 
 - la desconexión de los bancos es bastante frecuente con el engorro que supone el proceso de reconexion
 - los movimientos retenidos no se pueden categorizar hasta bastante tiempo después de que el banco los haya liberado
-- la mayoría de las veces no reconoce las transferencias entre tus cuentas, detectándolas como gastos en una y como ingresos externos en la otra.",es,2024-12-05,-0.902973695192486
+- la mayoría de las veces no reconoce las transferencias entre tus cuentas, detectándolas como gastos en una y como ingresos externos en la otra.",es,2024-12-05,-0.9029737589880824
 APP_039,3,"Falla sincronización. App muy buena y visual, mucho potencial aunque hay que mejorar la sincronización automática y/o manual con los bancos ya que a veces ni quitando y volviendo a añadir la cuenta sincroniza los datos.",es,2025-03-31,0.30895525962114334
 APP_039,2,Bien. Por alguna razón no me deja utilizar el periodo de pruebas de 14 días..,es,2025-06-17,-0.7757223839871585
 APP_039,1,"Funcionalidad incompleta en versión web. La versión web de Wallet no permite crear presupuestos, algo básico en una herramienta de control financiero. Esto la convierte en una solución a medias, sobre todo cuando otras aplicaciones sí ofrecen esta función tanto en web como en móvil. Es imprescindible que ambas versiones tengan las mismas opciones para brindar una experiencia completa al usuario. Esto no es un juego arcade para tu hijo, es una herramienta para gestionar las finanzas personales.",es,2025-08-14,-0.8622392807155848
@@ -125,7 +125,7 @@ APP_039,3,"No integra [MARCA]. No opcional de respaldo ni descarga de datos. Muy
 -no integra trade republic españa
 -no permite descargar o exportar la info en formato pdf ni guardar copias de seguridad de mi base de datos.
 El dia que integre todo esto tendrá mis 5 *",es,2026-05-18,-0.05601751059293747
-APP_039,1,"This is absurd. I have paid for the lifetime subs but I restarted my phone and download the app again and open my account, the subscription is gone i need a refund!",es,2026-06-09,-0.9285089219920337
+APP_039,1,"This is absurd. I have paid for the lifetime subs but I restarted my phone and download the app again and open my account, the subscription is gone i need a refund!",es,2026-06-09,-0.9285089252516627
 APP_039,2,"Pésimo servicio al cliente. La app está bien, pero llevo más de una semana intentando contactar al servicio de asistencia para un problema con mi cuenta y no tengo respuesta. Solo tienen un correo, no hay más maneras de contactarlos. Estoy pensando pedir reembolso.",es,2026-07-07,-0.9421317516826093
 APP_039,2,"Cubre todas mis necesidades. Update July 2026: Downgraded to 2 stars. The recent changes in the budgets [MARCA] have completely broken their usefulness. I can no longer check fast and easily how much money I can spend during the month, instead I have a badly applied “forecast” algorithm. Not good. 
 
@@ -136,10 +136,10 @@ Gestion de cuentas, presupuestos periodicos, presupuestos temporales, categorias
 
 Ademas bastante bonita y facil de usar.
 
-Perfecta.",es,2026-07-13,-0.6617254205048084
+Perfecta.",es,2026-07-13,-0.6617255173623562
 APP_039,1,De pago. Si para lo que la necesito me cobráis pues no sirve para mucho,es,2026-08-23,-0.9577803874853998
 APP_039,1,No desglosa imgresos no piedes cbiar la fecha de un imgreso para el proximo mes. Asi que inutil. Inutil,es,2026-08-29,-0.9137328946962953
-APP_039,1,No refund. Before the activation I was told that I have 14 days for refund. But now I see in faq that i have to send email [MARCA] for refund. This was a completely lie,es,2026-08-30,-0.8111237213015556
+APP_039,1,No refund. Before the activation I was told that I have 14 days for refund. But now I see in faq that i have to send email [MARCA] for refund. This was a completely lie,es,2026-08-30,-0.8111237250268459
 APP_039,1,"NO PUEDO MOVER SALARIOS. Es bastante frustrante que la app no permita cambiar la fecha de los movimientos cuando se sincroniza con el banco. Si cobras la nómina a finales de agosto (que corresponde al presupuesto e ingresos de septiembre), no te deja moverla de día. La única ""solución"" que da es registrarla manualmente como efectivo, pero tener que hacer ese truco todos los meses es un engorro y hace que el control financiero deje de ser real y automático.",es,2026-09-12,-0.9763976412359625
 APP_039,1,No sincroniza bien. Pagas para un funcionamiento fatal.,es,2026-10-11,-0.9569785236380994
 APP_039,3,Por mejorar. Pensaba que habia encontrado la app definitvia para sincronizar todas mis posiciones. No funciona para las ETF de manera sincronizada automatica. Va bastante bien para cuentas corrientes. No me hace el calculo de previsión mensual de gastos pendientes ni da tips con ia para donde ahorrar o en que estoy gastando mas solo te sale el menú un gráfico y porcentaje generales por cada tema pero no puede ver los cobros o recibos dentro de casa punto.,es,2026-10-18,-0.6236583134159446
