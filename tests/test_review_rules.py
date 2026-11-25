@@ -20,6 +20,7 @@ def load_script(name, filename):
 
 sentiment = load_script("filter_sentiment", "06_filter_sentiment.py")
 manual_check = load_script("manual_sentiment_check", "06b_manual_sentiment_check.py")
+bertopic_mod = load_script("bertopic_pipeline", "11_bertopic.py")
 # The public script imports step 7 for its brand pattern. Stub that module so
 # importing the check cannot inspect any project data files.
 sys.modules["07_build_ai_share"] = types.SimpleNamespace(BRANDS=None)
@@ -251,6 +252,74 @@ class ManualSentimentCheckTests(unittest.TestCase):
         df.loc[0, col] = ""
         with self.assertRaisesRegex(ValueError, "1 linha"):
             manual_check.compute_error_metrics(df)
+
+
+class BertopicHelpersTests(unittest.TestCase):
+    def test_clean_for_embedding_lowercases_and_strips_redaction_markers_only(self):
+        raw = "O [APP] cobrou de [NOME] no [LOCAL] via [EMAIL] sem avisar!"
+        cleaned = bertopic_mod.clean_for_embedding(raw)
+        self.assertEqual(cleaned, "o cobrou de no via sem avisar!")
+        for marker in ("[app]", "[nome]", "[local]", "[email]"):
+            self.assertNotIn(marker, cleaned)
+
+    def test_deduplicate_group_removes_es_mx_cross_market_duplicates(self):
+        import pandas as pd
+        rows = pd.DataFrame([
+            {"review_id": "R00001", "market": "es", "lang_group": "es", "store": "google_play",
+             "app_mask_id": "APP_026", "at": "2026-01-01", "score": 1,
+             "content": "La app cobra sin avisar nada", "text_embed": "la app cobra sin avisar nada"},
+            {"review_id": "R00002", "market": "mx", "lang_group": "es", "store": "google_play",
+             "app_mask_id": "APP_026", "at": "2026-01-01", "score": 1,
+             "content": "La app cobra sin avisar nada", "text_embed": "la app cobra sin avisar nada"},
+            {"review_id": "R00003", "market": "mx", "lang_group": "es", "store": "google_play",
+             "app_mask_id": "APP_026", "at": "2026-01-02", "score": 2,
+             "content": "No me deja cancelar la cuenta", "text_embed": "no me deja cancelar la cuenta"},
+            {"review_id": "R00004", "market": "mx", "lang_group": "es", "store": "google_play",
+             "app_mask_id": "APP_026", "at": "2026-01-03", "score": 1,
+             "content": "[NOME] [APP]", "text_embed": ""},
+        ])
+        out, stats = bertopic_mod.deduplicate_group(rows)
+        self.assertEqual(stats, {
+            "n_raw_redacted": 4,
+            "removed_cross_market_duplicates": 1,
+            "removed_empty_after_marker_strip": 1,
+            "n_input": 2,
+        })
+        self.assertEqual(out["review_id"].tolist(), ["R00001", "R00003"])
+
+    def test_build_triage_table_excludes_outliers_and_leaves_decisions_blank(self):
+        import pandas as pd
+        topic_info = pd.DataFrame([
+            {"topic": -1, "n": 50, "palavras_chave": "", "c_v": None},
+            {"topic": 0, "n": 120, "palavras_chave": "assinatura, cancelar, cobranca", "c_v": 0.61},
+            {"topic": 1, "n": 30, "palavras_chave": "erro, senha, login", "c_v": 0.55},
+        ])
+        rep = pd.DataFrame([
+            {"topic": 0, "rank": 1, "content": "ex 0a"},
+            {"topic": 0, "rank": 2, "content": "ex 0b"},
+            {"topic": 1, "rank": 1, "content": "ex 1a"},
+        ])
+        triage = bertopic_mod.build_triage_table(topic_info, rep)
+        self.assertEqual(triage["topic"].tolist(), [0, 1])
+        self.assertEqual(triage["exemplo_1"].tolist(), ["ex 0a", "ex 1a"])
+        self.assertEqual(triage["exemplo_3"].tolist(), ["", ""])
+        self.assertTrue((triage["decisao"] == "").all())
+        self.assertTrue((triage["categoria_exclusao"] == "").all())
+        self.assertTrue((triage["motivo"] == "").all())
+
+    def test_compute_cv_numpy_returns_bounded_coherence(self):
+        docs = [
+            ["assinatura", "cancelar", "cobranca", "cartao"],
+            ["assinatura", "cancelar", "plano", "valor"],
+            ["erro", "senha", "login", "conta"],
+            ["erro", "login", "acesso", "bloqueado"],
+        ]
+        scores = bertopic_mod.compute_cv_numpy([["assinatura", "cancelar"], ["erro", "login"]], docs)
+        self.assertEqual(len(scores), 2)
+        for s in scores:
+            self.assertIsNotNone(s)
+            self.assertGreaterEqual(s, 0.0)
+            self.assertLessEqual(s, 1.0)
 
 
 if __name__ == "__main__":

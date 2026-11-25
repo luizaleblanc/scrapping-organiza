@@ -7,3 +7,9 @@ pysentimiento>=0.7  # sentimento em espanhol (passo 6, MARKET=es/mx)
 # LeIA (analisador de sentimento em português) não é instalável via pip:
 #   git clone https://github.com/rafjaa/LeIA.git vendor/LeIA
 transformers>=4.40  # censura de nomes de pessoas (NER multilíngue, passo 7); já vem com o pysentimiento
+bertopic>=0.17  # modelagem de tópicos (Etapa 3, passo 11)
+umap-learn>=0.5
+hdbscan>=0.8.38
+sentence-transformers>=3.0
+plotly>=5.20  # visualizações HTML intertópicos e matriz de similaridade
+# gensim>=4.3  # opcional para c_v (sem wheel para Python 3.14; src/11_bertopic.py implementa c_v de Röder et al., 2015 em NumPy como fallback)
